@@ -1,4 +1,4 @@
-// PHYS370 Introduction to fomputations Physics
+// PHYS370 Introduction to Computational Physics
 // Homework 1
 // 1-29-18
 // David Jedynak
@@ -14,9 +14,9 @@
 #define D 2
 
 //changes to make
-//1. added buttons for initial conditions for all particle velocities and positions
+//1. added buttons and dynamics for initial conditions for all particle velocities and positions in sub menu init
 //2. added mass factor in calculating forces
-//3. added initial condition for 2 rotating masses
+//3. 
 
 double q[N]; // charges of the particles
 double x[N][D],v[N][D]; // State of the system
@@ -25,12 +25,8 @@ double initial_velocity[N][D];
 double initial_position[N][D];
 
 // parameters
-double C[D],scalefac=100;
-//k is constant for e field calculations?
-double k=1,x0=1,v0=1,dt=0.1;
-
-//define the starting positions for the x and y positions
-
+double scalefac=100;
+double k=1,dt=0.1;
 
 int points=100,iterations=0;
 
@@ -47,12 +43,13 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
         dR+=dr[d]*dr[d];
 
       }
-      double Fabs=k*q[n]*q[m]/pow(dR,2);// why 1.5?
+      double Fabs=k*q[n]*q[m]/pow(dR,2);
 
       for (int d=0;d<D; d++){
 
-        FF[n][d]-=Fabs*dr[d]/mass[n];
-        FF[m][d]+=Fabs*dr[d]/mass[m];
+	//equations governing the system dynamics
+        FF[n][d]-=Fabs*dr[d]/mass[n]; //divided by mass for the particle to account for the particles mass.
+        FF[m][d]+=Fabs*dr[d]/mass[m]; //decided to add this using a lagrangian
       }
     }
   return;
@@ -105,19 +102,15 @@ void init(){
     x[n][d]= initial_position[n][d];
     v[n][d]= initial_velocity[n][d];
     	}
-  //x[n][0] = n;
-  //v[n][1] = 0;
 }
-  //x[N-1][0]+=x0;
-  //v[N-1][1]+=v0;
   iterations=0;
 }
 
 void draw(int xdim, int ydim){
 
   for (int n=0; n<N; n++){
-    int xx=(x[n][0]-C[0])*scalefac;
-    int yy=(x[n][1]-C[1])*scalefac;
+    int xx=(x[n][0])*scalefac;
+    int yy=(x[n][1])*scalefac;
     mycircle(n+1,xdim/2+xx,ydim/2-yy,10);
   }
 }
@@ -130,13 +123,13 @@ int main(){
   int done=0;
   int n;
  
+
+//GUI Components
   AddFreedraw("Particles",&draw);
   StartMenu("Newton",1);
   DefineDouble("dt",&dt);
   DefineDouble("k",&k);
   StartMenu("init",0);
-  //DefineDouble("x0",&x0);
-  //DefineDouble("v0",&v0);
   for (int n=0; n<N; n++){
   	DefineDouble("q",&q[n]);
   	DefineDouble("mass",&mass[n]);
@@ -150,9 +143,6 @@ int main(){
   DefineFunction("init",&init);
   DefineFunction("CM",&CM);
   EndMenu();
-  for (int d=0; d<D; d++){
-    DefineDouble("C",&C[d]);
-  }
   DefineDouble("scale",&scalefac);
   DefineInt("points",&points);
   DefineGraph(freedraw_,"graph");

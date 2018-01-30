@@ -1,1 +1,1 @@
-cc -I ~/include -L ~/lib particles.c -lgraph -lm -lX11
+gcc -I ~/include -L ~/lib particles.c -lgraph -lm -lX11
