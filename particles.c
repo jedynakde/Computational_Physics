@@ -10,7 +10,7 @@
 #include <string.h>
 #include <time.h>
 
-#define N 2
+#define N 3
 #define D 2
 
 //changes to make
@@ -24,15 +24,54 @@ double mass[N]; //masses or the particles
 double initial_velocity[N][D];
 double initial_position[N][D];
 
+//initial conditions for 3 stable orbiting particles
+double iv1[3][2] = {{0,1.3228},{0,0},{0,-1.3228}};
+double ip1[3][2] = {{-1,0},{0,0},{1,0}};
+double im1[3] = {1,1,1};
+double iq1[3] = {1,-2,1};
+
+//initial conditions 
+double iv2[2][2] =  {{0,1.41},{0,0}};
+double ip2[2][2] = {{0,0},{1,0}};
+double im2[2] = {1,1};
+double iq2[2] = {-1,1};
+
+
 // parameters
 double scalefac=100;
-double k=1,dt=0.1;
+double k=1,dt=0.1,g=1;
 
 int points=100,iterations=0;
 
+// sets the initial conditions to 2 or 3 orbiting, stable particles 
+void init2(){
+
+if(N == 3){
+for(int n = 0;n<N;n++){
+for(int d = 0;d<D;d++){
+initial_velocity[n][d] = iv1[n][d];
+initial_position[n][d] = ip1[n][d];
+}
+q[n] = iq1[n]; // charges of the particles
+mass[n] = im1[n]; //masses or the particles
+}
+}
+else if(N == 2){
+for(int n = 0;n<N;n++){
+for(int d = 0;d<D;d++){
+initial_velocity[n][d] = iv2[n][d];
+initial_position[n][d] = ip2[n][d];
+}
+q[n] = iq2[n]; // charges of the particles
+mass[n] = im2[n]; //masses or the particles
+}
+}
+return;
+}
+
 void F(double x[N][D], double v[N][D],double FF[N][D]){
 
-  memset(&FF[0][0],0,N*D*sizeof(double));//what is this?
+  memset(&FF[0][0],0,N*D*sizeof(double));//sets everything in array to zero
 
   for (int n=0; n<N; n++)
     for (int m=n+1; m<N; m++){
@@ -43,7 +82,8 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
         dR+=dr[d]*dr[d];
 
       }
-      double Fabs=k*q[n]*q[m]/pow(dR,2);
+      double Fabs=k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
+       
 
       for (int d=0;d<D; d++){
 
@@ -129,6 +169,7 @@ int main(){
   StartMenu("Newton",1);
   DefineDouble("dt",&dt);
   DefineDouble("k",&k);
+  DefineDouble("g",&g);
   StartMenu("init",0);
   for (int n=0; n<N; n++){
   	DefineDouble("q",&q[n]);
@@ -142,6 +183,7 @@ int main(){
 }
   DefineFunction("init",&init);
   DefineFunction("CM",&CM);
+  DefineFunction("init2",&init2);
   EndMenu();
   DefineDouble("scale",&scalefac);
   DefineInt("points",&points);
