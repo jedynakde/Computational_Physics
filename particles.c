@@ -1,3 +1,9 @@
+// PHYS370 Introduction to fomputations Physics
+// Homework 1
+// 1-29-18
+// David Jedynak
+ 
+
 #include <math.h>
 #include <mygraph.h>
 #include <unistd.h>
@@ -7,28 +13,46 @@
 #define N 2
 #define D 2
 
+//changes to make
+//1. added buttons for initial conditions for all particle velocities and positions
+//2. added mass factor in calculating forces
+//3. added initial condition for 2 rotating masses
+
 double q[N]; // charges of the particles
 double x[N][D],v[N][D]; // State of the system
+double mass[N]; //masses or the particles
+double initial_velocity[N][D];
+double initial_position[N][D];
 
 // parameters
 double C[D],scalefac=100;
-double k=1,x0=0,v0=0,dt=0.1;
+//k is constant for e field calculations?
+double k=1,x0=1,v0=1,dt=0.1;
+
+//define the starting positions for the x and y positions
+
+
 int points=100,iterations=0;
 
 void F(double x[N][D], double v[N][D],double FF[N][D]){
 
-  memset(&FF[0][0],0,N*D*sizeof(double));
+  memset(&FF[0][0],0,N*D*sizeof(double));//what is this?
+
   for (int n=0; n<N; n++)
     for (int m=n+1; m<N; m++){
       double dr[D],dR=0;
       for (int d=0; d<D; d++){
+
         dr[d]=x[m][d]-x[n][d];
         dR+=dr[d]*dr[d];
+
       }
-      double Fabs=k*q[n]*q[m]/pow(dR,1.5);
+      double Fabs=k*q[n]*q[m]/pow(dR,2);// why 1.5?
+
       for (int d=0;d<D; d++){
-        FF[n][d]-=Fabs*dr[d];
-        FF[m][d]+=Fabs*dr[d];
+
+        FF[n][d]-=Fabs*dr[d]/mass[n];
+        FF[m][d]+=Fabs*dr[d]/mass[m];
       }
     }
   return;
@@ -77,11 +101,15 @@ void init(){
   memset(&x[0][0],0,N*D*sizeof(double));
   memset(&v[0][0],0,N*D*sizeof(double));
   for (int n=0; n<N; n++){
-    x[n][0]=n;
-    v[n][1]=0;
-  }
-  x[N-1][0]+=x0;
-  v[N-1][1]+=v0;
+    	for (int d=0; d<D; d++){
+    x[n][d]= initial_position[n][d];
+    v[n][d]= initial_velocity[n][d];
+    	}
+  //x[n][0] = n;
+  //v[n][1] = 0;
+}
+  //x[N-1][0]+=x0;
+  //v[N-1][1]+=v0;
   iterations=0;
 }
 
@@ -107,10 +135,18 @@ int main(){
   DefineDouble("dt",&dt);
   DefineDouble("k",&k);
   StartMenu("init",0);
-  DefineDouble("x0",&x0);
-  DefineDouble("v0",&v0);
-  for (int n=0; n<N; n++)
-    DefineDouble("q",&q[n]);
+  //DefineDouble("x0",&x0);
+  //DefineDouble("v0",&v0);
+  for (int n=0; n<N; n++){
+  	DefineDouble("q",&q[n]);
+  	DefineDouble("mass",&mass[n]);
+	for(int d = 0; d<D;d++){
+	DefineDouble("init pos",&initial_position[n][d]);
+	}
+	for(int d = 0; d<D;d++){
+	DefineDouble("init vel",&initial_velocity[n][d]);
+	}
+}
   DefineFunction("init",&init);
   DefineFunction("CM",&CM);
   EndMenu();
