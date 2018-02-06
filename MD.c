@@ -1,3 +1,5 @@
+//David Jedynak 
+//PHYS370 HW 2
 #include <math.h>
 #include <mygraph.h>
 #include <unistd.h>
@@ -15,22 +17,16 @@ double pressure = 0;
 int counter = 0;
 //double pressure_plot_data[20000];//for collecting pressure data to plot ~ 200 seconds of data
 double temperature = 0;
-
-//typedef struct part {double xx; double yy;;} part;
-//typedef struct TX{double tt; double xx;} TX;
-//TX pdp[20000];
-
 double m[Nmax]; // charges of the particles
 double mass[Nmax]; //particle masses
 double x[Nmax][D],v[Nmax][D]; // State of the system
-int ItNo = 20000;
+int ItNo = 200000;
 // parameters
 double C[D],scalefac=100;
 double k=1,x0[Nmax][D],v0[Nmax][D],dt=0.01,vv=1;
 double mass0 = 2.001;
 int N=Nmax,points=100,iterations=0;
-double pdp[20000];
-//int time[20000];
+double pdp[200000];
 
 //function to determine the density, temperature, and pressure of the system
 void density_function(){
@@ -39,7 +35,7 @@ tm = 0;
 ke = 0;
 //sum up all masses to find the total system mass
 for (int n = 0; n < N;n++){
-	tm = tm + m[n];
+	tm = tm + mass[n];
 	for(int d = 0; d < D;d++){
 		//calculate the total kinetic energy of the particles in the sytem
 		ke = ke	+ .5*mass[n]*v[n][d]*v[n][d];	
@@ -52,7 +48,7 @@ density = (double) tm / (L*L);
 temperature = (double)(2/(3*bc))*ke;//in Kelvin
 pressure = ((2/(3.000))*N*ke/(L*L));//changed 3 to 3.000 to avoid pressur being changed to zero
 //store last 200 seconds of pressure data for plotting.
-pdp[counter%20000] = pressure;
+pdp[counter%200000] = pressure;
 //time[counter%20000] = counter;
 counter = (counter + 1);
 
@@ -228,7 +224,7 @@ int main(){
   DefineDouble("mass0",&mass0);
   DefineInt("points",&N);
   DefineGraph(freedraw_,"graph");
-  DefineGraph ( curve2d_, "Graph" );
+  DefineGraph ( curve2d_, "Graph Pressure Isotherm");
   DefineInt("repeat",&repeat);
   DefineBool("sstep",&sstep);
   DefineLong("NS slow",&ts.tv_nsec);
