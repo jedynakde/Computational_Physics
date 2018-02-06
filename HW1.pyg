@@ -1,90 +1,8 @@
-\documentclass[a4paper]{article}
-
-%% Language and font encodings
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{minted}
-%% Sets page size and margins
-\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-
-%% Useful packages
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-
-\title{Introduction to Computational Physics: HW1}
-\author{David Jedynak}
-
-\begin{document}
-\maketitle
-
-\begin{abstract}
-This paper will cover simulating multiple particles in the programming language C. The states of the simulation contain 2 dimensional space, mass, and forces from electric and gravitational forces. Several initial conditions will be simulated to observe particles orbiting each other. The simulations were done on a computer with a Linux operating system.
-\end{abstract}
-
-\section{Introduction}
-
-Simulating particle models with computers can be very useful. A model could be used to describe a physical system and predict how it will change in the future or with given inputs. If the model is accurate enough, it could be used to help in engineering design or to learn more about the natural world.
-
-\section{Results}
-
-\subsection{Adding mass to the simulation}
-
-Lagrangian dynamics were used to calculate the dynamics of this system. 
-\[L = KE - PE\]
-\[KE = .5*mass*velocity^2\]
-\[PE = distance*\frac{K*Q_1}{distance^2}\]
-Take partials
-\[\frac{dL}{dx} = distance*\sum\frac{K*Q*Q_n}{distance^2}\]
-\[\frac{dL}{d\dot{x}} = mass *\dot{x}\]
-\[\frac{dL}{d\ddot{x}} = mass *\ddot{x}\]
-Equation describing the dynamics
-\[F = \frac{dL}{d\ddot{x}}-\frac{dL}{dx} \]
-
-Solve for the highest order derivative. This is then used in the code to calculate the dynamics of the system
-\[\ddot{x} = \frac{1}{mass}\sum\frac{K*Q*Q_n}{distance^2}\]
-
-
-
-
-\subsection{Solution for two particles orbiting around each other in perfect circles}
-
-To find the initial condition for 2 orbiting particles in a perfect circle, the initial condition should ensure that the force from the electric field is equivalent to the force from the accelerating mass: \[\frac{velocity^2}{radius} = \frac{k*Q_1*Q_2}{radius^2}\] 
-
-\begin{figure}
-\centering
-\includegraphics[width=0.3\textwidth]{2particles.png}
-\caption{\label{fig:two orbiting particles} simulation of 2 orbiting particles with their initial conditions}
-\end{figure}
-
-
-\subsection{Solution for three particles orbiting around each other staying in the relatively same space}
-
-To find the initial condition for 3 orbiting particles in a perfect circle the same condition from 2.2 must be met. 
-\[\frac{velocity^2}{radius} = \frac{k*Q_1*Q_2}{radius^2}+ \frac{k*Q_1*Q_3}{radius^2}\] 
-
-
-\begin{figure}
-\centering
-\includegraphics[width=0.3\textwidth]{3particles.png}
-\caption{\label{fig:three orbiting particles} simulation of 3 orbiting around each other with their initial conditions}
-\end{figure}
-
-\section{Conclusion}
-
-The initial conditions calculated using the technique in subsection 2.2 for the 2 and 3 particle solutions worked. The simulation with the 3 particles did not achieve a perfect circle as there was some oscillation between the electric potential energy and kinetic energy of the particles. Some error in the simulation could be due to the discrete integration in the program.
-
-
-\section{Simulation Code}
-
-\begin{minted}{c}
 // PHYS370 Introduction to Computational Physics
 // Homework 1
 // 1-29-18
 // David Jedynak
- 
+
 
 #include <math.h>
 #include <mygraph.h>
@@ -98,7 +16,7 @@ The initial conditions calculated using the technique in subsection 2.2 for the 
 //changes to make
 //1. added buttons and dynamics for initial conditions for all particle velocities and positions in sub menu init
 //2. added mass factor in calculating forces
-//3. 
+//3.
 
 double q[N]; // charges of the particles
 double x[N][D],v[N][D]; // State of the system
@@ -112,7 +30,7 @@ double ip1[3][2] = {{-1,0},{0,0},{1,0}};
 double im1[3] = {1,1,1};
 double iq1[3] = {1,-2,1};
 
-//initial conditions 
+//initial conditions
 double iv2[2][2] =  {{0,1.41},{0,0}};
 double ip2[2][2] = {{0,0},{1,0}};
 double im2[2] = {1,1};
@@ -125,7 +43,7 @@ double k=1,dt=0.1,g=1;
 
 int points=100,iterations=0;
 
-// sets the initial conditions to 2 or 3 orbiting, stable particles 
+// sets the initial conditions to 2 or 3 orbiting, stable particles
 void init2(){
 
 if(N == 3){
@@ -165,7 +83,7 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 
       }
       double Fabs=k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
-       
+
 
       for (int d=0;d<D; d++){
 
@@ -189,7 +107,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++)
         v[n][d]+=ff[n][d]*dt;
- 
+
   for (int n=0;n<N;n++)
     for (int d=0;d<D;d++)
       x[n][d]+=v[n][d]*dt;
@@ -244,7 +162,7 @@ int main(){
   int repeat=1;
   int done=0;
   int n;
- 
+
 
 //GUI Components
   AddFreedraw("Particles",&draw);
@@ -287,10 +205,3 @@ int main(){
     else sleep(1);
   }
 }
-\end{minted}
-
-\bibliographystyle{alpha}
-\bibliography{sample}
-\url{https://www.ndsu.edu/pubweb/~carswagn/LectureNotes/370/index.html}
-
-\end{document}
