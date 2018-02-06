@@ -9,8 +9,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+<<<<<<< HEAD
 #define pi  3.14159265358979323846264338327950288419716939937
 #define N 3
+=======
+
+#define N 2
+>>>>>>> feb471c17fd1aec8ff1dc29bf2e09fd9f0bba0fd
 #define D 2
 
 //changelog
