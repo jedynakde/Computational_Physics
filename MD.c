@@ -4,18 +4,60 @@
 #include <string.h>
 #include <time.h>
 
-#define Nmax 400
+#define Nmax 1000
 #define D 2
 double  L=50; // size of box
+double tm = 0;//total mass of system
+double density = 0;
+double ke = 0;//kinetic energy of the particles
+double bc = 1.38064852E-23;//boltzmann constant
+double pressure = 0;
+int counter = 0;
+//double pressure_plot_data[20000];//for collecting pressure data to plot ~ 200 seconds of data
+double temperature = 0;
 
+//typedef struct part {double xx; double yy;;} part;
+//typedef struct TX{double tt; double xx;} TX;
+//TX pdp[20000];
 
 double m[Nmax]; // charges of the particles
+double mass[Nmax]; //particle masses
 double x[Nmax][D],v[Nmax][D]; // State of the system
-
+int ItNo = 20000;
 // parameters
 double C[D],scalefac=100;
 double k=1,x0[Nmax][D],v0[Nmax][D],dt=0.01,vv=1;
+double mass0 = 2.001;
 int N=Nmax,points=100,iterations=0;
+double pdp[20000];
+//int time[20000];
+
+//function to determine the density, temperature, and pressure of the system
+void density_function(){
+density = 0;
+tm = 0;
+ke = 0;
+//sum up all masses to find the total system mass
+for (int n = 0; n < N;n++){
+	tm = tm + m[n];
+	for(int d = 0; d < D;d++){
+		//calculate the total kinetic energy of the particles in the sytem
+		ke = ke	+ .5*mass[n]*v[n][d]*v[n][d];	
+	}
+	
+}
+//use the box size to calculate density
+density = (double) tm / (L*L);
+//pressure and temperature of the system
+temperature = (double)(2/(3*bc))*ke;//in Kelvin
+pressure = ((2/(3.000))*N*ke/(L*L));//changed 3 to 3.000 to avoid pressur being changed to zero
+//store last 200 seconds of pressure data for plotting.
+pdp[counter%20000] = pressure;
+//time[counter%20000] = counter;
+counter = (counter + 1);
+
+return;
+}
 
 void F(double x[N][D], double v[N][D],double FF[N][D]){
 
@@ -36,8 +78,8 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
       double dR12=dR6*dR6;
       double Fabs=12/dR12/dR-6/dR6/dR;
       for (int d=0;d<D; d++){
-	FF[n][d]-=Fabs*dr[d];
-	FF[m][d]+=Fabs*dr[d];
+	FF[n][d]-=Fabs*dr[d]/mass[n];
+	FF[m][d]+=Fabs*dr[d]/mass[n];
       }
     }
   return;
@@ -46,8 +88,10 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 void iterate(double x[N][D],double v[N][D],double dt){
   double ff[N][D];
   F(x,v,ff);
+  density_function();
   if (iterations==0)
     for (int n=0;n<N;n++)
+	
       for (int d=0;d<D;d++)
 	v[n][d]+=0.5*ff[n][d]/m[n]*dt;
   else
@@ -109,6 +153,10 @@ void init(){
     x[n][1]=x0[n][1];
     v[n][0]=v0[n][0];
     v[n][1]=v0[n][1];
+//populate the mass array
+	for (int n = 0; n < N;n++ ){
+		mass[n] = mass0; 
+	}
   }
   iterations=0;
 }
@@ -127,6 +175,7 @@ void draw(int xdim, int ydim){
   }
 }
 
+
 int main(){
   struct timespec ts={0,0};
   int cont=0;
@@ -139,6 +188,7 @@ int main(){
   init();
   
   AddFreedraw("Particles",&draw);
+  DefineGraphN_R("pressure",&pdp[0],&ItNo,NULL);
   StartMenu("Newton",1);
   DefineDouble("L",&L);
   DefineDouble("dt",&dt);
@@ -164,14 +214,21 @@ int main(){
   DefineDouble("vv",&vv);
   DefineFunction("setup",&setup);
   DefineFunction("init",&init);
+//function to find and print density to terminal
+  DefineFunction("density_function",&density_function);
   DefineFunction("CM",&CM);
   EndMenu();
   for (int d=0; d<D; d++){
     DefineDouble("C",&C[d]);
   }
   DefineDouble("scale",&scalefac);
-  DefineInt("points",&points);
+  DefineDouble("density",&density);
+  DefineDouble("pressure",&pressure);
+  DefineDouble("tempertature",&temperature);
+  DefineDouble("mass0",&mass0);
+  DefineInt("points",&N);
   DefineGraph(freedraw_,"graph");
+  DefineGraph ( curve2d_, "Graph" );
   DefineInt("repeat",&repeat);
   DefineBool("sstep",&sstep);
   DefineLong("NS slow",&ts.tv_nsec);
@@ -189,4 +246,4 @@ int main(){
     else sleep(1);
   }
 }
-
+
