@@ -9,14 +9,16 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
-
+#define pi  3.14159265358979323846264338327950288419716939937
 #define N 3
 #define D 2
 
-//changes to make
+//changelog
 //1. added buttons and dynamics for initial conditions for all particle velocities and positions in sub menu init
 //2. added mass factor in calculating forces
-//3. 
+//3. add traces for particles to display there trajectories.. orbits... etc
+//4. add in gravitational forces
+//5. Extra: adapt this system to use actual data from the solar system. i.e. initial condition for our solar system
 
 double q[N]; // charges of the particles
 double x[N][D],v[N][D]; // State of the system
@@ -43,29 +45,29 @@ double k=1,dt=0.1,g=1;
 
 int points=100,iterations=0;
 
-// sets the initial conditions to 2 or 3 orbiting, stable particles 
+// sets the initial conditions to 2 or 3 orbiting, stable particles,
 void init2(){
 
 if(N == 3){
-for(int n = 0;n<N;n++){
-for(int d = 0;d<D;d++){
-initial_velocity[n][d] = iv1[n][d];
-initial_position[n][d] = ip1[n][d];
-}
-q[n] = iq1[n]; // charges of the particles
-mass[n] = im1[n]; //masses or the particles
-}
+	for(int n = 0;n<N;n++){
+		for(int d = 0;d<D;d++){
+			initial_velocity[n][d] = iv1[n][d];
+			initial_position[n][d] = ip1[n][d];
+		}
+	q[n] = iq1[n]; // charges of the particles
+	mass[n] = im1[n]; //masses or the particles
+	}
 }
 else if(N == 2){
-for(int n = 0;n<N;n++){
-for(int d = 0;d<D;d++){
-initial_velocity[n][d] = iv2[n][d];
-initial_position[n][d] = ip2[n][d];
-}
-q[n] = iq2[n]; // charges of the particles
-mass[n] = im2[n]; //masses or the particles
-}
-}
+	for(int n = 0;n<N;n++){
+		for(int d = 0;d<D;d++){
+			initial_velocity[n][d] = iv2[n][d];
+			initial_position[n][d] = ip2[n][d];
+		}
+		q[n] = iq2[n]; // charges of the particles
+		mass[n] = im2[n]; //masses or the particles
+		}
+	}
 return;
 }
 
@@ -188,6 +190,7 @@ int main(){
   DefineDouble("scale",&scalefac);
   DefineInt("points",&points);
   DefineGraph(freedraw_,"graph");
+  DefineGraph ( curve2d_,"Graph" ); 
   DefineInt("repeat",&repeat);
   DefineBool("sstep",&sstep);
   DefineLong("NS slow",&ts.tv_nsec);
