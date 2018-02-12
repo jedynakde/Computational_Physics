@@ -1,0 +1,408 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{minted}
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Observing Density, Pressure, and Temperature in a Molecular Dynamics Simulation: HW2}
+\author{David Jedynak}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper will show how to calculate pressure ,temperature, and density in a molecular dynamics simulation. Density, Pressure, and Temperature will be calculated. The calculations will be implemented in code. Pressures will be plotted using code for observations.
+\end{abstract}
+
+\section{Introduction}
+
+Particles in this system have mass and velocity. They also have forces that repel each other. Energy is initially added to the system with velocity. The energy can be stored as potential energy in the fields in the system, but this will cause accelerations and the potential energy will eventually be converted back to the kinetic energy. Since these particles have energy, we can also calculate their absolute temperature in Kelvins. 
+\section{Pressure and Temperature}
+
+\subsection{Calculating Pressure and Temperature}
+
+Equations for solving temperature, pressure, and density from the system dynamics. k = Boltzmann constant =  1.38064852E-23 Joules/Kelvin;
+
+\[Absolute Temeprature = \frac{2}{3*k}*\frac{1}{2}*mass*velocity^2\]
+\[Absolute Pressure = \frac{2}{3}*(Number of Particles)*\frac{1}{2}*mass*velocity^2\]
+\[Average Density = \frac{TotalMass}{Length^2}\]
+
+\subsection{Algorithms}
+
+This density function is called every time the iterate function is called. It sums up the total masses and kinetic energies using several looping constructs and then calculates the pressure and temperature. An array is used for collecting the last 200000 samples of pressure for plotting. ke and mass are cleared at the start of the function so they don't go to infinity.
+
+\begin{minted}{c}
+//function to determine the density, temperature, and pressure of the system
+void density_function(){
+density = 0;
+tm = 0;//total mass of system
+ke = 0;//total kinetic energy of system in all dimensions
+//sum up all masses to find the total system mass
+for (int n = 0; n < N;n++){
+	tm = tm + mass[n];
+	for(int d = 0; d < D;d++){
+		//calculate the total kinetic energy of the particles in the sytem
+		ke = ke	+ .5*mass[n]*v[n][d]*v[n][d];	
+	}
+	
+}
+//use the box size to calculate density
+density = (double) tm / (L*L);
+//pressure and temperature of the system
+temperature = (double)(2/(3*bc))*ke;//in Kelvin
+pressure = ((2/(3.000))*N*ke/(L*L));//changed 3 to 3.000 to avoid pressur being changed to zero
+//store last 200 seconds of pressure data for plotting.
+pdp[counter%200000] = pressure;
+//time[counter%20000] = counter;
+counter = (counter + 1);
+
+return;
+}
+\end{minted}
+
+Code for Plotting the pressure
+
+\begin{minted}{c}
+//function to find and print density to terminal
+  DefineFunction("density_function",&density_function);
+
+...
+
+DefineGraph ( curve2d_, "Graph Pressure Isotherm");
+\end{minted}
+
+
+
+
+\section{Results}
+\subsection{Calculating Density and changing it on the fly}
+
+Figures 1 through 3 show the density of the system with 100 particles. Fig one shows the density of the initial condition being 0.04. Figure 3 shows that if you decrease the box length, it increases density. One strange thing that occurs is that the density didn't change when the initial condition for mass of each particle was increased. The density can also be increase by increasing the number of particles using the points field.
+
+\subsection{Calculating Temperature and pressure}
+
+Figures 1 to 4 show the temperature and pressure being displayed as a double. As the mass increases, the temperature and pressure also increase. Increasing the initial velocity also increases the temperature and pressure. Fig 4 shows a very dramatic increase in temp and pressure and the dimensions shrink. When this happens it is very difficult to view all the displayed particles. 
+
+\subsection{Plotting Pressure}
+
+Fig 5 plot shows the pressure starting at Time = 0 and then increasing as the particles start to collide more. Eventually the pressure decreases and levels off to a more stable level. There is still a lot of high frequencies in the pressure signal though.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{initialcondition.png}
+\caption{\label{fig:100 particles initial }100 particles with an initial velocity of 1 and a mass of 2.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{100particles.png}
+\caption{\label{fig:100 particles final }100 particles after several seconds of motion}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{100particles2.png}
+\caption{\label{fig:changing density}}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{smallL.png}
+\caption{\label{fig:lowering L to increase density}}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{pressuregraph.png}
+\caption{\label{fig:Pressure starting at time 0. The pressure increases and then levels off once the particles reach a sort of repetitive random motion.}}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Conclusion}
+
+Density, temperature, and pressure were mostly successfully simulated. There is a problem where increasing the mass by 2 didn't increase the density. For the most part, all relations between energy, temperature, and pressure are correctly simulated. I was able to plot the pressure, but I was unsure about calculating pressure isotherms.  
+
+
+\section{Simulation Code}
+
+\begin{minted}{c}
+//David Jedynak 
+//PHYS370 HW 2
+#include <math.h>
+#include <mygraph.h>
+#include <unistd.h>
+#include <string.h>
+#include <time.h>
+
+#define Nmax 1000
+#define D 2
+double  L=50; // size of box
+double tm = 0;//total mass of system
+double density = 0;
+double ke = 0;//kinetic energy of the particles
+double bc = 1.38064852E-23;//boltzmann constant
+double pressure = 0;
+int counter = 0;
+//double pressure_plot_data[20000];//for collecting pressure data to plot ~ 200 seconds of data
+double temperature = 0;
+double m[Nmax]; // charges of the particles
+double mass[Nmax]; //particle masses
+double x[Nmax][D],v[Nmax][D]; // State of the system
+int ItNo = 200000;
+// parameters
+double C[D],scalefac=100;
+double k=1,x0[Nmax][D],v0[Nmax][D],dt=0.01,vv=1;
+double mass0 = 2.001;
+int N=Nmax,points=100,iterations=0;
+double pdp[200000];
+
+//function to determine the density, temperature, and pressure of the system
+void density_function(){
+density = 0;
+tm = 0;
+ke = 0;
+//sum up all masses to find the total system mass
+for (int n = 0; n < N;n++){
+	tm = tm + mass[n];
+	for(int d = 0; d < D;d++){
+		//calculate the total kinetic energy of the particles in the sytem
+		ke = ke	+ .5*mass[n]*v[n][d]*v[n][d];	
+	}
+	
+}
+//use the box size to calculate density
+density = (double) tm / (L*L);
+//pressure and temperature of the system
+temperature = (double)(2/(3*bc))*ke;//in Kelvin
+pressure = ((2/(3.000))*N*ke/(L*L));//changed 3 to 3.000 to avoid pressur being changed to zero
+//store last 200 seconds of pressure data for plotting.
+pdp[counter%200000] = pressure;
+//time[counter%20000] = counter;
+counter = (counter + 1);
+
+return;
+}
+
+void F(double x[N][D], double v[N][D],double FF[N][D]){
+
+  memset(&FF[0][0],0,N*D*sizeof(double));
+  for (int n=0; n<N; n++)
+    for (int m=n+1; m<N; m++){
+      double dr[D],dR=0;
+      for (int d=0; d<D; d++){
+	dr[d]=x[m][d]-(x[n][d]-L);
+	double ddr;
+	ddr=x[m][d]-(x[n][d]);
+	if (fabs(ddr)<fabs(dr[d])) dr[d]=ddr;
+	ddr=x[m][d]-(x[n][d]+L);
+	if (fabs(ddr)<fabs(dr[d])) dr[d]=ddr;
+	dR+=dr[d]*dr[d];
+      }
+      double dR6=dR*dR*dR;
+      double dR12=dR6*dR6;
+      double Fabs=12/dR12/dR-6/dR6/dR;
+      for (int d=0;d<D; d++){
+	FF[n][d]-=Fabs*dr[d]/mass[n];
+	FF[m][d]+=Fabs*dr[d]/mass[n];
+      }
+    }
+  return;
+}
+
+void iterate(double x[N][D],double v[N][D],double dt){
+  double ff[N][D];
+  F(x,v,ff);
+  density_function();
+  if (iterations==0)
+    for (int n=0;n<N;n++)
+	
+      for (int d=0;d<D;d++)
+	v[n][d]+=0.5*ff[n][d]/m[n]*dt;
+  else
+    for (int n=0;n<N;n++)
+      for (int d=0;d<D;d++)
+	v[n][d]+=ff[n][d]/m[n]*dt;
+  
+  for (int n=0;n<N;n++)
+    for (int d=0;d<D;d++){
+      x[n][d]+=v[n][d]*dt;
+      if (x[n][d]<0) x[n][d]+=L;
+      else if (x[n][d]>=L) x[n][d]-=L;
+    }
+  iterations++;
+}
+
+void CM(){
+  double cm[D],cmv[D],M=0;
+  memset(&cm[0],0,D*sizeof(double));
+  memset(&cmv[0],0,D*sizeof(double));
+  for (int n=0; n<N; n++) M+=m[n]; 
+  for (int d=0; d<D; d++){
+    for (int n=0; n<N; n++){
+      cm[d]+=m[n]*x[n][d];
+      cmv[d]+=m[n]*v[n][d];
+    }
+    cm[d]/=M;
+    cmv[d]/=M;
+  }
+  for (int n=0; n<N; n++)
+    for (int d=0; d<D; d++){
+      x[n][d]-=cm[d]+L/2;
+      v[n][d]-=cmv[d]+L/2;
+    }
+
+}
+
+void setup(){
+  int M=pow(N,1./D)+1;
+  for (int n=0; n<N; n++){
+    m[n]=1;
+    for (int d=0; d<D; d++){
+      int nn=n;
+      for (int dd=0; dd<d; dd++) nn/=M;
+      x0[n][d]=(nn%M)*L/M;
+      if (d==1){
+	if (x0[n][0]<L/2)
+	  v0[n][d]=vv;
+	else v0[n][d]=-vv;
+      }
+      else v0[n][d]=0;
+    }
+  }
+}
+
+void init(){
+  for (int n=0; n<N; n++){
+    x[n][0]=x0[n][0];
+    x[n][1]=x0[n][1];
+    v[n][0]=v0[n][0];
+    v[n][1]=v0[n][1];
+//populate the mass array
+	for (int n = 0; n < N;n++ ){
+		mass[n] = mass0; 
+	}
+  }
+  iterations=0;
+}
+
+void draw(int xdim, int ydim){
+  int size=xdim;
+  if (ydim<size) size=ydim;
+  scalefac=size/L;
+
+  mydrawline(1,0,size,size,size);
+  mydrawline(1,size,0,size,size);
+  for (int n=0; n<N; n++){
+    int xx=x[n][0]*scalefac;
+    int yy=x[n][1]*scalefac;
+    myfilledcircle(n+1,xx,size-yy,0.5*scalefac);
+  }
+}
+
+
+int main(){
+  struct timespec ts={0,0};
+  int cont=0;
+  int sstep=0;
+  int repeat=10;
+  int done=0;
+  char name[50],mname[N][50];
+
+  setup();
+  init();
+  
+  AddFreedraw("Particles",&draw);
+  DefineGraphN_R("pressure",&pdp[0],&ItNo,NULL);
+  StartMenu("Newton",1);
+  DefineDouble("L",&L);
+  DefineDouble("dt",&dt);
+  DefineDouble("k",&k);
+  StartMenu("init",0);
+  for (int n=0; n<N; n++){
+  }
+  if (N<15)
+    for (int n=0; n<N; n++){
+      sprintf(mname[n],"Particle %i",n);
+      StartMenu(mname[n],0);
+      DefineDouble("m",&m[n]);
+      for (int d=0; d<D; d++){
+	sprintf(name,"x[%i]",d);
+	DefineDouble(name,&x0[n][d]);
+      }
+      for (int d=0; d<D; d++){
+	sprintf(name,"v[%i]",d);
+	DefineDouble(name,&v0[n][d]);
+      }
+      EndMenu();
+    }
+  DefineDouble("vv",&vv);
+  DefineFunction("setup",&setup);
+  DefineFunction("init",&init);
+//function to find and print density to terminal
+  DefineFunction("density_function",&density_function);
+  DefineFunction("CM",&CM);
+  EndMenu();
+  for (int d=0; d<D; d++){
+    DefineDouble("C",&C[d]);
+  }
+  DefineDouble("scale",&scalefac);
+  DefineDouble("density",&density);
+  DefineDouble("pressure",&pressure);
+  DefineDouble("tempertature",&temperature);
+  DefineDouble("mass0",&mass0);
+  DefineInt("points",&N);
+  DefineGraph(freedraw_,"graph");
+  DefineGraph ( curve2d_, "Graph Pressure Isotherm");
+  DefineInt("repeat",&repeat);
+  DefineBool("sstep",&sstep);
+  DefineLong("NS slow",&ts.tv_nsec);
+  DefineBool("cont",&cont);
+  DefineBool("done",&done);
+  EndMenu();
+  while (!done){
+    Events(1);
+    DrawGraphs();
+    if (cont||sstep){
+      sstep=0;
+      for (int i=0; i<repeat; i++) iterate(x,v,dt);
+      nanosleep(&ts,NULL);
+    }
+    else sleep(1);
+  }
+}
+\end{minted}
+
+\bibliographystyle{alpha}
+\bibliography{sample}
+\url{https://www.ndsu.edu/pubweb/~carswagn/LectureNotes/370/index.html}
+
+\end{document}
