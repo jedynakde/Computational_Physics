@@ -1,0 +1,789 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.1.30)  5 FEB 2018 21:10
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**SampleReport.tex
+(./SampleReport.tex
+LaTeX2e <2017-04-15>
+Babel <3.12> and hyphenation patterns for 84 language(s) loaded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2016/11/05 v2.16a AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks14
+\ex@=\dimen103
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen104
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count87
+LaTeX Info: Redefining \frac on input line 213.
+\uproot@=\count88
+\leftroot@=\count89
+LaTeX Info: Redefining \overline on input line 375.
+\classnum@=\count90
+\DOTSCASE@=\count91
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen105
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
+\macc@depth=\count92
+\c@MaxMatrixCols=\count93
+\dotsspace@=\muskip10
+\c@parentequation=\count94
+\dspbrk@lvl=\count95
+\tag@help=\toks15
+\row@=\count96
+\column@=\count97
+\maxfields@=\count98
+\andhelp@=\toks16
+\eqnshift@=\dimen106
+\alignsep@=\dimen107
+\tagshift@=\dimen108
+\tagwidth@=\dimen109
+\totwidth@=\dimen110
+\lineht@=\dimen111
+\@envbody=\toks17
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2017/06/24 v1.0g Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen112
+\Gin@req@width=\dimen113
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count99
+\lst@gtempboxa=\box28
+\lst@token=\toks20
+\lst@length=\count100
+\lst@currlwidth=\dimen114
+\lst@column=\count101
+\lst@pos=\count102
+\lst@lostspace=\dimen115
+\lst@width=\dimen116
+\lst@newlines=\count103
+\lst@lineno=\count104
+\lst@maxwidth=\dimen117
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count105
+\lst@skipnumbers=\count106
+\lst@framebox=\box29
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(./SampleReport.aux)
+\openout1 = `SampleReport.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count107
+\scratchdimen=\dimen118
+\scratchbox=\box30
+\nofMPsegments=\count108
+\nofMParguments=\count109
+\everyMPshowfont=\toks21
+\MPscratchCnt=\count110
+\MPscratchDim=\dimen119
+\MPnumerator=\count111
+\makeMPintoPDFobject=\count112
+\everyMPtoPDFconversion=\toks22
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)))
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+\c@lstlisting=\count113
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
+Package epstopdf Info: Source file: <Periodic.eps>
+(epstopdf)                    date: 2018-02-01 22:14:04
+(epstopdf)                    size: 8535 bytes
+(epstopdf)             Output file: <Periodic-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:07:59
+(epstopdf)                    size: 5533 bytes
+(epstopdf)             Command: <repstopdf --outfile=Periodic-eps-converted-to.
+pdf Periodic.eps>
+(epstopdf)             \includegraphics on input line 21.
+Package epstopdf Info: Output file is already uptodate.
+<Periodic-eps-converted-to.pdf, id=1, pagebox=cropbox, 436.63126pt x 490.83376p
+t>
+File: Periodic-eps-converted-to.pdf Graphic file (type pdf)
+<use Periodic-eps-converted-to.pdf>
+Package pdftex.def Info: Periodic-eps-converted-to.pdf  used on input line 21. 
+on input line 21.
+Package pdftex.def Info: Requested size: 172.5pt x 193.9109pt on input line 21.
+
+ [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 <./Periodic-eps-convert
+ed-to.pdf>]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 49.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
+File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 49.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 49.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
+Package epstopdf Info: Source file: <graph3d_002.eps>
+(epstopdf)                    date: 2018-02-01 23:25:31
+(epstopdf)                    size: 3219 bytes
+(epstopdf)             Output file: <graph3d_002-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:07:59
+(epstopdf)                    size: 4549 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_002-eps-converted-
+to.pdf graph3d_002.eps>
+(epstopdf)             \includegraphics on input line 77.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_002-eps-converted-to.pdf, id=22, pagebox=cropbox, 577.7284pt x 577.728
+4pt>
+File: graph3d_002-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_002-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_002-eps-converted-to.pdf  used on input line 7
+7. on input line 77.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.5426pt on input line 7
+7.
+Package epstopdf Info: Source file: <graph3d_003.eps>
+(epstopdf)                    date: 2018-02-01 23:25:40
+(epstopdf)                    size: 3225 bytes
+(epstopdf)             Output file: <graph3d_003-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:07:59
+(epstopdf)                    size: 4972 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_003-eps-converted-
+to.pdf graph3d_003.eps>
+(epstopdf)             \includegraphics on input line 78.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_003-eps-converted-to.pdf, id=23, pagebox=cropbox, 577.7284pt x 625.838
+12pt>
+File: graph3d_003-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_003-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_003-eps-converted-to.pdf  used on input line 7
+8. on input line 78.
+Package pdftex.def Info: Requested size: 65.55084pt x 71.00058pt on input line 
+78.
+Package epstopdf Info: Source file: <graph3d_004.eps>
+(epstopdf)                    date: 2018-02-01 23:25:47
+(epstopdf)                    size: 3222 bytes
+(epstopdf)             Output file: <graph3d_004-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:00
+(epstopdf)                    size: 4981 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_004-eps-converted-
+to.pdf graph3d_004.eps>
+(epstopdf)             \includegraphics on input line 79.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_004-eps-converted-to.pdf, id=24, pagebox=cropbox, 577.7284pt x 602.350
+36pt>
+File: graph3d_004-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_004-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_004-eps-converted-to.pdf  used on input line 7
+9. on input line 79.
+Package pdftex.def Info: Requested size: 65.55084pt x 68.33594pt on input line 
+79.
+Package epstopdf Info: Source file: <graph3d_005.eps>
+(epstopdf)                    date: 2018-02-01 23:25:51
+(epstopdf)                    size: 3222 bytes
+(epstopdf)             Output file: <graph3d_005-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:00
+(epstopdf)                    size: 4983 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_005-eps-converted-
+to.pdf graph3d_005.eps>
+(epstopdf)             \includegraphics on input line 80.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_005-eps-converted-to.pdf, id=25, pagebox=cropbox, 577.7284pt x 577.728
+4pt>
+File: graph3d_005-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_005-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_005-eps-converted-to.pdf  used on input line 8
+0. on input line 80.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.5426pt on input line 8
+0.
+Package epstopdf Info: Source file: <graph3d_006.eps>
+(epstopdf)                    date: 2018-02-01 23:25:56
+(epstopdf)                    size: 3227 bytes
+(epstopdf)             Output file: <graph3d_006-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:00
+(epstopdf)                    size: 5007 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_006-eps-converted-
+to.pdf graph3d_006.eps>
+(epstopdf)             \includegraphics on input line 81.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_006-eps-converted-to.pdf, id=26, pagebox=cropbox, 577.7284pt x 649.396
+1pt>
+File: graph3d_006-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_006-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_006-eps-converted-to.pdf  used on input line 8
+1. on input line 81.
+Package pdftex.def Info: Requested size: 65.55084pt x 73.67322pt on input line 
+81.
+Package epstopdf Info: Source file: <graph3d_007.eps>
+(epstopdf)                    date: 2018-02-01 23:26:04
+(epstopdf)                    size: 3228 bytes
+(epstopdf)             Output file: <graph3d_007-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:00
+(epstopdf)                    size: 4999 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_007-eps-converted-
+to.pdf graph3d_007.eps>
+(epstopdf)             \includegraphics on input line 82.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_007-eps-converted-to.pdf, id=27, pagebox=cropbox, 577.7284pt x 580.589
+05pt>
+File: graph3d_007-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_007-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_007-eps-converted-to.pdf  used on input line 8
+2. on input line 82.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.86714pt on input line 
+82.
+Package epstopdf Info: Source file: <graph3d_008.eps>
+(epstopdf)                    date: 2018-02-01 23:26:11
+(epstopdf)                    size: 3222 bytes
+(epstopdf)             Output file: <graph3d_008-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:00
+(epstopdf)                    size: 5089 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_008-eps-converted-
+to.pdf graph3d_008.eps>
+(epstopdf)             \includegraphics on input line 83.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_008-eps-converted-to.pdf, id=28, pagebox=cropbox, 577.7284pt x 607.409
+29pt>
+File: graph3d_008-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_008-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_008-eps-converted-to.pdf  used on input line 8
+3. on input line 83.
+Package pdftex.def Info: Requested size: 65.55084pt x 68.90985pt on input line 
+83.
+Package epstopdf Info: Source file: <graph3d_009.eps>
+(epstopdf)                    date: 2018-02-01 23:26:17
+(epstopdf)                    size: 3222 bytes
+(epstopdf)             Output file: <graph3d_009-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:01
+(epstopdf)                    size: 5243 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_009-eps-converted-
+to.pdf graph3d_009.eps>
+(epstopdf)             \includegraphics on input line 84.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_009-eps-converted-to.pdf, id=29, pagebox=cropbox, 577.7284pt x 618.530
+79pt>
+File: graph3d_009-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_009-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_009-eps-converted-to.pdf  used on input line 8
+4. on input line 84.
+Package pdftex.def Info: Requested size: 65.55084pt x 70.17159pt on input line 
+84.
+Package epstopdf Info: Source file: <graph3d_011.eps>
+(epstopdf)                    date: 2018-02-01 23:26:23
+(epstopdf)                    size: 3221 bytes
+(epstopdf)             Output file: <graph3d_011-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:01
+(epstopdf)                    size: 5350 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_011-eps-converted-
+to.pdf graph3d_011.eps>
+(epstopdf)             \includegraphics on input line 86.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_011-eps-converted-to.pdf, id=30, pagebox=cropbox, 577.7284pt x 577.728
+4pt>
+File: graph3d_011-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_011-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_011-eps-converted-to.pdf  used on input line 8
+6. on input line 86.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.5426pt on input line 8
+6.
+Package epstopdf Info: Source file: <graph3d_012.eps>
+(epstopdf)                    date: 2018-02-01 23:26:28
+(epstopdf)                    size: 3224 bytes
+(epstopdf)             Output file: <graph3d_012-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:01
+(epstopdf)                    size: 5480 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_012-eps-converted-
+to.pdf graph3d_012.eps>
+(epstopdf)             \includegraphics on input line 87.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_012-eps-converted-to.pdf, id=31, pagebox=cropbox, 577.7284pt x 627.243
+4pt>
+File: graph3d_012-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_012-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_012-eps-converted-to.pdf  used on input line 8
+7. on input line 87.
+Package pdftex.def Info: Requested size: 65.55084pt x 71.16002pt on input line 
+87.
+Package epstopdf Info: Source file: <graph3d_013.eps>
+(epstopdf)                    date: 2018-02-01 23:26:33
+(epstopdf)                    size: 3227 bytes
+(epstopdf)             Output file: <graph3d_013-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:01
+(epstopdf)                    size: 5511 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_013-eps-converted-
+to.pdf graph3d_013.eps>
+(epstopdf)             \includegraphics on input line 88.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_013-eps-converted-to.pdf, id=32, pagebox=cropbox, 577.7284pt x 603.243
+7pt>
+File: graph3d_013-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_013-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_013-eps-converted-to.pdf  used on input line 8
+8. on input line 88.
+Package pdftex.def Info: Requested size: 65.55084pt x 68.43727pt on input line 
+88.
+Package epstopdf Info: Source file: <graph3d_014.eps>
+(epstopdf)                    date: 2018-02-01 23:26:38
+(epstopdf)                    size: 3221 bytes
+(epstopdf)             Output file: <graph3d_014-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:01
+(epstopdf)                    size: 5527 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_014-eps-converted-
+to.pdf graph3d_014.eps>
+(epstopdf)             \includegraphics on input line 89.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_014-eps-converted-to.pdf, id=33, pagebox=cropbox, 577.7284pt x 604.598
+8pt>
+File: graph3d_014-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_014-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_014-eps-converted-to.pdf  used on input line 8
+9. on input line 89.
+Package pdftex.def Info: Requested size: 65.55084pt x 68.59102pt on input line 
+89.
+Package epstopdf Info: Source file: <graph3d_015.eps>
+(epstopdf)                    date: 2018-02-01 23:26:45
+(epstopdf)                    size: 3230 bytes
+(epstopdf)             Output file: <graph3d_015-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:02
+(epstopdf)                    size: 5545 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_015-eps-converted-
+to.pdf graph3d_015.eps>
+(epstopdf)             \includegraphics on input line 90.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_015-eps-converted-to.pdf, id=34, pagebox=cropbox, 577.7284pt x 635.283
+39pt>
+File: graph3d_015-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_015-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_015-eps-converted-to.pdf  used on input line 9
+0. on input line 90.
+Package pdftex.def Info: Requested size: 65.55084pt x 72.07214pt on input line 
+90.
+Package epstopdf Info: Source file: <graph3d_016.eps>
+(epstopdf)                    date: 2018-02-01 23:26:50
+(epstopdf)                    size: 3226 bytes
+(epstopdf)             Output file: <graph3d_016-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:02
+(epstopdf)                    size: 5578 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_016-eps-converted-
+to.pdf graph3d_016.eps>
+(epstopdf)             \includegraphics on input line 91.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_016-eps-converted-to.pdf, id=35, pagebox=cropbox, 577.7284pt x 632.472
+9pt>
+File: graph3d_016-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_016-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_016-eps-converted-to.pdf  used on input line 9
+1. on input line 91.
+Package pdftex.def Info: Requested size: 65.55084pt x 71.7533pt on input line 9
+1.
+Package epstopdf Info: Source file: <graph3d_017.eps>
+(epstopdf)                    date: 2018-02-01 23:26:56
+(epstopdf)                    size: 3225 bytes
+(epstopdf)             Output file: <graph3d_017-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:02
+(epstopdf)                    size: 5564 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_017-eps-converted-
+to.pdf graph3d_017.eps>
+(epstopdf)             \includegraphics on input line 92.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_017-eps-converted-to.pdf, id=36, pagebox=cropbox, 614.65634pt x 607.69
+03pt>
+File: graph3d_017-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_017-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_017-eps-converted-to.pdf  used on input line 9
+2. on input line 92.
+Package pdftex.def Info: Requested size: 65.55084pt x 64.80617pt on input line 
+92.
+Package epstopdf Info: Source file: <graph3d_019.eps>
+(epstopdf)                    date: 2018-02-01 23:27:03
+(epstopdf)                    size: 3224 bytes
+(epstopdf)             Output file: <graph3d_019-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:02
+(epstopdf)                    size: 5546 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_019-eps-converted-
+to.pdf graph3d_019.eps>
+(epstopdf)             \includegraphics on input line 94.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_019-eps-converted-to.pdf, id=37, pagebox=cropbox, 615.0478pt x 624.884
+55pt>
+File: graph3d_019-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_019-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_019-eps-converted-to.pdf  used on input line 9
+4. on input line 94.
+Package pdftex.def Info: Requested size: 65.55084pt x 66.59215pt on input line 
+94.
+Package epstopdf Info: Source file: <graph3d_020.eps>
+(epstopdf)                    date: 2018-02-01 23:27:09
+(epstopdf)                    size: 3225 bytes
+(epstopdf)             Output file: <graph3d_020-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:02
+(epstopdf)                    size: 5550 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_020-eps-converted-
+to.pdf graph3d_020.eps>
+(epstopdf)             \includegraphics on input line 95.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_020-eps-converted-to.pdf, id=38, pagebox=cropbox, 597.73312pt x 629.55
+202pt>
+File: graph3d_020-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_020-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_020-eps-converted-to.pdf  used on input line 9
+5. on input line 95.
+Package pdftex.def Info: Requested size: 65.55084pt x 69.0396pt on input line 9
+5.
+Package epstopdf Info: Source file: <graph3d_021.eps>
+(epstopdf)                    date: 2018-02-01 23:27:17
+(epstopdf)                    size: 3223 bytes
+(epstopdf)             Output file: <graph3d_021-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:03
+(epstopdf)                    size: 5576 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_021-eps-converted-
+to.pdf graph3d_021.eps>
+(epstopdf)             \includegraphics on input line 96.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_021-eps-converted-to.pdf, id=39, pagebox=cropbox, 614.65634pt x 611.95
+624pt>
+File: graph3d_021-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_021-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_021-eps-converted-to.pdf  used on input line 9
+6. on input line 96.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.2611pt on input line 9
+6.
+Package epstopdf Info: Source file: <graph3d_022.eps>
+(epstopdf)                    date: 2018-02-01 23:27:22
+(epstopdf)                    size: 3228 bytes
+(epstopdf)             Output file: <graph3d_022-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:03
+(epstopdf)                    size: 5563 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_022-eps-converted-
+to.pdf graph3d_022.eps>
+(epstopdf)             \includegraphics on input line 97.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_022-eps-converted-to.pdf, id=40, pagebox=cropbox, 621.01009pt x 631.17
+809pt>
+File: graph3d_022-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_022-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_022-eps-converted-to.pdf  used on input line 9
+7. on input line 97.
+Package pdftex.def Info: Requested size: 65.55084pt x 66.61755pt on input line 
+97.
+Package epstopdf Info: Source file: <graph3d_023.eps>
+(epstopdf)                    date: 2018-02-01 23:27:29
+(epstopdf)                    size: 3226 bytes
+(epstopdf)             Output file: <graph3d_023-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:03
+(epstopdf)                    size: 5561 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_023-eps-converted-
+to.pdf graph3d_023.eps>
+(epstopdf)             \includegraphics on input line 98.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_023-eps-converted-to.pdf, id=41, pagebox=cropbox, 618.53079pt x 639.49
+915pt>
+File: graph3d_023-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_023-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_023-eps-converted-to.pdf  used on input line 9
+8. on input line 98.
+Package pdftex.def Info: Requested size: 65.55084pt x 67.76901pt on input line 
+98.
+Package epstopdf Info: Source file: <graph3d_024.eps>
+(epstopdf)                    date: 2018-02-01 23:27:37
+(epstopdf)                    size: 3227 bytes
+(epstopdf)             Output file: <graph3d_024-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:03
+(epstopdf)                    size: 5563 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_024-eps-converted-
+to.pdf graph3d_024.eps>
+(epstopdf)             \includegraphics on input line 99.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_024-eps-converted-to.pdf, id=42, pagebox=cropbox, 631.8004pt x 608.754
+29pt>
+File: graph3d_024-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_024-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_024-eps-converted-to.pdf  used on input line 9
+9. on input line 99.
+Package pdftex.def Info: Requested size: 65.55084pt x 63.15475pt on input line 
+99.
+Package epstopdf Info: Source file: <graph3d_025.eps>
+(epstopdf)                    date: 2018-02-01 23:27:46
+(epstopdf)                    size: 3226 bytes
+(epstopdf)             Output file: <graph3d_025-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:04
+(epstopdf)                    size: 5554 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_025-eps-converted-
+to.pdf graph3d_025.eps>
+(epstopdf)             \includegraphics on input line 100.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_025-eps-converted-to.pdf, id=43, pagebox=cropbox, 631.9108pt x 639.780
+23pt>
+File: graph3d_025-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_025-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_025-eps-converted-to.pdf  used on input line 1
+00. on input line 100.
+Package pdftex.def Info: Requested size: 65.55084pt x 66.36375pt on input line 
+100.
+Package epstopdf Info: Source file: <graph3d_026.eps>
+(epstopdf)                    date: 2018-02-01 23:27:51
+(epstopdf)                    size: 3226 bytes
+(epstopdf)             Output file: <graph3d_026-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:04
+(epstopdf)                    size: 5537 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_026-eps-converted-
+to.pdf graph3d_026.eps>
+(epstopdf)             \includegraphics on input line 101.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_026-eps-converted-to.pdf, id=44, pagebox=cropbox, 627.64487pt x 639.89
+063pt>
+File: graph3d_026-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_026-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_026-eps-converted-to.pdf  used on input line 1
+01. on input line 101.
+Package pdftex.def Info: Requested size: 65.55084pt x 66.82434pt on input line 
+101.
+Package epstopdf Info: Source file: <graph3d_027.eps>
+(epstopdf)                    date: 2018-02-01 23:44:40
+(epstopdf)                    size: 3226 bytes
+(epstopdf)             Output file: <graph3d_027-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:04
+(epstopdf)                    size: 5550 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_027-eps-converted-
+to.pdf graph3d_027.eps>
+(epstopdf)             \includegraphics on input line 102.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_027-eps-converted-to.pdf, id=45, pagebox=cropbox, 628.14674pt x 631.97
+102pt>
+File: graph3d_027-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_027-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_027-eps-converted-to.pdf  used on input line 1
+02. on input line 102.
+Package pdftex.def Info: Requested size: 65.55084pt x 65.94908pt on input line 
+102.
+Package epstopdf Info: Source file: <graph3d_028.eps>
+(epstopdf)                    date: 2018-02-01 23:44:47
+(epstopdf)                    size: 3222 bytes
+(epstopdf)             Output file: <graph3d_028-eps-converted-to.pdf>
+(epstopdf)                    date: 2018-02-05 21:08:04
+(epstopdf)                    size: 5555 bytes
+(epstopdf)             Command: <repstopdf --outfile=graph3d_028-eps-converted-
+to.pdf graph3d_028.eps>
+(epstopdf)             \includegraphics on input line 103.
+Package epstopdf Info: Output file is already uptodate.
+<graph3d_028-eps-converted-to.pdf, id=46, pagebox=cropbox, 614.99763pt x 633.48
+67pt>
+File: graph3d_028-eps-converted-to.pdf Graphic file (type pdf)
+<use graph3d_028-eps-converted-to.pdf>
+Package pdftex.def Info: graph3d_028-eps-converted-to.pdf  used on input line 1
+03. on input line 103.
+Package pdftex.def Info: Requested size: 65.55084pt x 67.51851pt on input line 
+103.
+ [3] [4 <./graph3d_002-eps-converted-to.pdf> <./graph3d_003-eps-converted-to.pd
+f> <./graph3d_004-eps-converted-to.pdf> <./graph3d_005-eps-converted-to.pdf> <.
+/graph3d_006-eps-converted-to.pdf> <./graph3d_007-eps-converted-to.pdf> <./grap
+h3d_008-eps-converted-to.pdf> <./graph3d_009-eps-converted-to.pdf> <./graph3d_0
+11-eps-converted-to.pdf> <./graph3d_012-eps-converted-to.pdf> <./graph3d_013-ep
+s-converted-to.pdf> <./graph3d_014-eps-converted-to.pdf> <./graph3d_015-eps-con
+verted-to.pdf> <./graph3d_016-eps-converted-to.pdf> <./graph3d_017-eps-converte
+d-to.pdf> <./graph3d_019-eps-converted-to.pdf> <./graph3d_020-eps-converted-to.
+pdf> <./graph3d_021-eps-converted-to.pdf> <./graph3d_022-eps-converted-to.pdf> 
+<./graph3d_023-eps-converted-to.pdf> <./graph3d_024-eps-converted-to.pdf> <./gr
+aph3d_025-eps-converted-to.pdf> <./graph3d_026-eps-converted-to.pdf> <./graph3d
+_027-eps-converted-to.pdf> <./graph3d_028-eps-converted-to.pdf>]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.116 ...vid/Documents/Computational_Physics/MD.c}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+\sbox ...hbox {\color@setgroup #2\color@endgroup }
+                                                  
+l.116 ...vid/Documents/Computational_Physics/MD.c}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.116 ...vid/Documents/Computational_Physics/MD.c}
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.116 ...vid/Documents/Computational_Physics/MD.c}
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+(/home/david/Documents/Computational_Physics/MD.c [5] [6] [7] [8]) [9]
+(./SampleReport.aux) ) 
+Here is how much of TeX's memory you used:
+ 3711 strings out of 492990
+ 54100 string characters out of 6135005
+ 154216 words of memory out of 5000000
+ 7200 multiletter control sequences out of 15000+600000
+ 10288 words of font info for 37 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 41i,10n,49p,1158b,1465s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmti10.pfb>
+Output written on SampleReport.pdf (9 pages, 231237 bytes).
+PDF statistics:
+ 157 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+
