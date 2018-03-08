@@ -14,7 +14,7 @@
 
 
 double q[Nmax]; // charges of the particles
-double iq = 1.1;
+double iq = 2;
 double tf = 1;//acceleration field strength
 double field_strength = 1.1;
 double field_force = 0;
@@ -28,7 +28,7 @@ double x[Nmax][D],v[Nmax][D]; // State of the system
 
 // parameters
 double scalefac=100;
-double x0[Nmax][D],v0[Nmax][D],dt=0.01,vv=1;
+double x0[Nmax][D],v0[Nmax][D],dt=0.7,vv=0;
 double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax];
 
 int N=Nmax,Measlen=MeasMax,iterations=0;
@@ -166,16 +166,20 @@ void iterate(double x[N][D],double v[N][D],double dt){
 	//begin field crap
 	//check to see that the particle is in the field space
 	//if the particle is in the y dimension
+	if(v[n][d] > 10) v[n][d] = 10;	
 	if (d == 1){
 		//check to see if the particle is in the field centered in the middle of the space
 		if ((x[n][d] < (L/2+ft)) && (x[n][d] > (L/2-ft)) && (v[n][d] < 0)){//upward field
 			field_force = field_strength;
 			}
 		else if((x[n][d] > (L/2-ft)) && (x[n][d] < (L/2-ft-5)) && (v[n][d] > 0)){//downward field
-			field_force = -5*field_strength;
+			field_force = -2*field_strength;
 			}
-		else if((x[n][d] > L) && (x[n][d] < (L-5))){//voltage source
-			field_force = -20*field_strength;
+		else if((x[n][d] < (L-1)) && (x[n][d] > (L-5))){//voltage source
+			field_force = -1.5*field_strength;
+			}
+		else if((x[n][d] > 1) && (x[n][d] < 10) && v[n][d] < 0){//resistor
+			field_force = v[n][d]*v[n][d]*v[n][d];
 			}
 		else{
 			field_force = 0;		
