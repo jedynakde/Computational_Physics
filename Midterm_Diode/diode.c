@@ -6,12 +6,24 @@
 #include <stdlib.h>
 
 #define Nmax 1000
-#define D 3
+#define D 2
 #define MeasMax 100
+
+
+#define ft 5 //field thickness other dimensions based on variable L
+
+
+double q[Nmax]; // charges of the particles
+double iq = 1.1;
+double tf = 1;//acceleration field strength
+double field_strength = 1.1;
+double field_force = 0;
+double g = 1,k = 1.1;
+
 double  L=50; // size of box
 //changed code to always run setTemp() in iterate to keep T constant.
 
-double m[Nmax]; // charges of the particles
+double mass[Nmax]; // masses of the particles
 double x[Nmax][D],v[Nmax][D]; // State of the system
 
 // parameters
@@ -26,6 +38,9 @@ int Thermalize=10000, MeasNo=1000;
 
 // 3d visualization
 double tet=0,phi=0,tetdot=0.05,phidot=0,shift=150;
+
+
+
 /*The set density function changes the value L (box length) in order to achieve a given density*/
 void setdensity(){
   double fact=1/L;
@@ -48,7 +63,7 @@ double T(double v[N][D]){
   double t=0;
   for (int n=0; n<N; n++)
     for (int d=0; d<D; d++)
-      t+=m[n]*v[n][d]*v[n][d];
+      t+=mass[n]*v[n][d]*v[n][d];
   return t/N/D;
 }
 /*every time this is called the Temp gets set to whatever T is set to*/
@@ -112,7 +127,7 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 
   memset(&FF[0][0],0,N*D*sizeof(double)); //zeroize
   for (int n=0; n<N; n++) //iterate particles
-    for (int m=n+1; m<N; m++){ 
+    for (int m=n+1; m<N; m++){// 
       double dr[D],dR=0;
       for (int d=0; d<D; d++){ //iterate dimensions
 	dr[d]=x[m][d]-(x[n][d]-L);
@@ -122,10 +137,12 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 	ddr=x[m][d]-(x[n][d]+L);
 	if (fabs(ddr)<fabs(dr[d])) dr[d]=ddr; //as the particle gets far away force levels out
 	dR+=dr[d]*dr[d];
+	
       }
       double dR6=dR*dR*dR;
       double dR12=dR6*dR6;
-      double Fabs=12/dR12/dR-6/dR6/dR;
+      double Fabs=12/dR12/dR-6/dR6/dR + k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
+      //double Fabs=k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
       for (int d=0;d<D; d++){
 	FF[n][d]-=Fabs*dr[d];
 	FF[m][d]+=Fabs*dr[d];
@@ -142,12 +159,35 @@ void iterate(double x[N][D],double v[N][D],double dt){
   if (iterations==0)
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++)
-	v[n][d]+=0.5*ff[n][d]/m[n]*dt;
+	v[n][d]+=0.5*ff[n][d]/mass[n]*dt;
   else
     for (int n=0;n<N;n++)
-      for (int d=0;d<D;d++)
-	v[n][d]+=ff[n][d]/m[n]*dt;
-  
+      for (int d=0;d<D;d++){
+	//begin field crap
+	//check to see that the particle is in the field space
+	//if the particle is in the y dimension
+	if (d == 1){
+		//check to see if the particle is in the field centered in the middle of the space
+		if ((x[n][d] < (L/2+ft)) && (x[n][d] > (L/2-ft)) && (v[n][d] < 0)){//upward field
+			field_force = field_strength;
+			}
+		else if((x[n][d] > (L/2-ft)) && (x[n][d] < (L/2-ft-5)) && (v[n][d] > 0)){//downward field
+			field_force = -5*field_strength;
+			}
+		else if((x[n][d] > L) && (x[n][d] < (L-5))){//voltage source
+			field_force = -20*field_strength;
+			}
+		else{
+			field_force = 0;		
+		}
+	}
+	else{
+		field_force = 0;		
+		}
+	//printf("%f",field_force);
+	v[n][d]+=(ff[n][d]+field_force)/mass[n]*dt;
+
+	}
   for (int n=0;n<N;n++)
     for (int d=0;d<D;d++){
       x[n][d]+=v[n][d]*dt;
@@ -162,7 +202,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
 void setup(){
   int M=pow(N-1,1./D)+1;
   for (int n=0; n<N; n++){
-    m[n]=1;
+    mass[n]=1;
     for (int d=0; d<D; d++){
       int nn=n;
       for (int dd=0; dd<d; dd++) nn/=M;
@@ -178,11 +218,14 @@ void setup(){
 }
 /*sets initial positions and velocities for particles*/
 void init(){
-  for (int n=0; n<N; n++)
+  for (int n=0; n<N; n++){
     for (int d=0; d<D; d++){
       x[n][d]=x0[n][d];
       v[n][d]=v0[n][d];
     }
+    //set initial charge for each electron
+    q[n] = iq;
+}
   iterations=0;
 }
 /*saves the current state as the initial state. for future use. pretty nice*/
@@ -372,7 +415,7 @@ int main(){
     for (int n=0; n<N; n++){
       sprintf(mname[n],"Particle %i",n);
       StartMenu(mname[n],0);
-      DefineDouble("m",&m[n]);
+      DefineDouble("m",&mass[n]);
       for (int d=0; d<D; d++){
 	sprintf(name,"x[%i]",d);
 	DefineDouble(name,&x0[n][d]);
