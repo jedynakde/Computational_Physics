@@ -12,7 +12,19 @@
 
 #define ft 5 //field thickness other dimensions based on variable L
 
+/*
+additions
+1. graph for average y velocity for particles (i.e current)
+2. boxes around difference acceleration fields
+3. still have to fix the problem of the super fast particles... integration error... partcles only landing on accletartion fields when each iteration occurs... decrease dt? adn then speed up simulation
 
+phenomensa to observe
+1. diode voltage current curve
+2. effect of temperature
+3. transients
+4. compare ideal and actual voltages
+
+*/
 double q[Nmax]; // charges of the particles
 double iq = 2;
 double tf = 1;//acceleration field strength
@@ -166,6 +178,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
 	//begin field crap
 	//check to see that the particle is in the field space
 	//if the particle is in the y dimension
+	//if the par
 	if(v[n][d] > 10) v[n][d] = 10;	
 	if (d == 1){
 		//check to see if the particle is in the field centered in the middle of the space
@@ -246,6 +259,25 @@ void draw(int xdim, int ydim){
   int size=xdim;
   if (ydim<size) size=ydim;
   scalefac=size/L;
+
+//add lines for notatiting the acceleration fields
+// thickness, x1,y1,x2,y2
+
+//voltage source lines
+  mydrawline(2,0,size-1,size,size-1);
+  mydrawline(2,0,size-5,size,size-5);
+
+//diode field 1 lines
+  mydrawline(3,0,60,size,60);
+  mydrawline(3,0,80,size,80);
+
+//diode field 2 lines
+  mydrawline(4,0,100,size,100);
+  mydrawline(4,0,120,size,120);
+
+//resistor field lines
+  mydrawline(5,0,140,size,140);
+  mydrawline(5,0,160,size,160);
 
   mydrawline(1,0,size,size,size);
   mydrawline(1,size,0,size,size);
