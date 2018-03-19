@@ -15,8 +15,9 @@
 /*
 additions
 1. graph for average y velocity for particles (i.e current)
-2. boxes around difference acceleration fields
+2. boxes around difference acceleration fields --complete
 3. still have to fix the problem of the super fast particles... integration error... partcles only landing on accletartion fields when each iteration occurs... decrease dt? adn then speed up simulation
+4. add ways of setting voltage or current by changing field strength
 
 phenomensa to observe
 1. diode voltage current curve
@@ -26,11 +27,14 @@ phenomensa to observe
 
 */
 double q[Nmax]; // charges of the particles
-double iq = 2;
+double iq = 1.1;
 double tf = 1;//acceleration field strength
 double field_strength = 1.1;
 double field_force = 0;
 double g = 1,k = 1.1;
+//sizes and placements of componets
+double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
+double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5; 
 
 double  L=50; // size of box
 //changed code to always run setTemp() in iterate to keep T constant.
@@ -179,20 +183,21 @@ void iterate(double x[N][D],double v[N][D],double dt){
 	//check to see that the particle is in the field space
 	//if the particle is in the y dimension
 	//if the par
-	if(v[n][d] > 10) v[n][d] = 10;	
+	if(v[n][d] > 10) v[n][d] = 0;	
 	if (d == 1){
 		//check to see if the particle is in the field centered in the middle of the space
-		if ((x[n][d] < (L/2+ft)) && (x[n][d] > (L/2-ft)) && (v[n][d] < 0)){//upward field
-			field_force = field_strength;
+		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward field
+			field_force = 3*field_strength;
 			}
-		else if((x[n][d] > (L/2-ft)) && (x[n][d] < (L/2-ft-5)) && (v[n][d] > 0)){//downward field
-			field_force = -2*field_strength;
+		else if((x[n][d] > (diode_pos_n+diode_len_n/2)) && (x[n][d] < (diode_pos_n-diode_len_n/2))&& v[n][d] > 0){//downward field
+			//v[n][d] -0.5*v[n][d];
+			field_force = -10000*field_strength;
 			}
-		else if((x[n][d] < (L-1)) && (x[n][d] > (L-5))){//voltage source
-			field_force = -1.5*field_strength;
+		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source
+			field_force = 0.2*field_strength;
 			}
-		else if((x[n][d] > 1) && (x[n][d] < 10) && v[n][d] < 0){//resistor
-			field_force = v[n][d]*v[n][d]*v[n][d];
+		else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) /*&& v[n][d] < 0*/){//resistor
+			field_force = -(1000000*v[n][d]*v[n][d]);
 			}
 		else{
 			field_force = 0;		
@@ -261,23 +266,23 @@ void draw(int xdim, int ydim){
   scalefac=size/L;
 
 //add lines for notatiting the acceleration fields
-// thickness, x1,y1,x2,y2
+// color, x1,y1,x2,y2
 
 //voltage source lines
-  mydrawline(2,0,size-1,size,size-1);
-  mydrawline(2,0,size-5,size,size-5);
+  mydrawline(2,0,scalefac*(L-volt_pos+volt_len/2),size,scalefac*(L-volt_pos+volt_len/2));
+  mydrawline(2,0,scalefac*(L-volt_pos-volt_len/2),size,scalefac*(L-volt_pos-volt_len/2));
 
 //diode field 1 lines
-  mydrawline(3,0,60,size,60);
-  mydrawline(3,0,80,size,80);
+  mydrawline(3,0,scalefac*(L-diode_pos_p + diode_len_p/2),size,scalefac*(L-diode_pos_p + diode_len_p/2));
+  mydrawline(3,0,scalefac*(L-diode_pos_p - diode_len_p/2),size,scalefac*(L-diode_pos_p - diode_len_p/2));
 
 //diode field 2 lines
-  mydrawline(4,0,100,size,100);
-  mydrawline(4,0,120,size,120);
+ // mydrawline(4,0,100,size,100);
+  mydrawline(4,0,scalefac*(L-diode_pos_n - diode_len_n/2),size,scalefac*(L-diode_pos_n - diode_len_n/2));
 
 //resistor field lines
-  mydrawline(5,0,140,size,140);
-  mydrawline(5,0,160,size,160);
+  mydrawline(6,0,scalefac*(L-res_pos+res_len/2),size,scalefac*(L-res_pos+res_len/2));
+  mydrawline(6,0,scalefac*(L-res_pos-res_len/2),size,scalefac*(L-res_pos-res_len/2));
 
   mydrawline(1,0,size,size,size);
   mydrawline(1,size,0,size,size);
