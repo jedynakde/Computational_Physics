@@ -27,7 +27,7 @@ phenomensa to observe
 
 */
 double q[Nmax]; // charges of the particles
-double iq = 1.1;
+double iq = 5;
 double tf = 1;//acceleration field strength
 double field_strength = 1.1;
 double field_force = 0;
@@ -176,6 +176,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++)
 	v[n][d]+=0.5*ff[n][d]/mass[n]*dt;
+	//printf("velocity =%lf!\n",v[n][d]);
   else
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++){
@@ -183,31 +184,38 @@ void iterate(double x[N][D],double v[N][D],double dt){
 	//check to see that the particle is in the field space
 	//if the particle is in the y dimension
 	//if the par
-	if(v[n][d] > 10) v[n][d] = 0;	
+	//if(v[n][d] > 10) v[n][d] = 0;	
 	if (d == 1){
+		v[n][d]+=(ff[n][d])/mass[n]*dt;
+		printf("velocity =%lf!\n",v[n][d]);
 		//check to see if the particle is in the field centered in the middle of the space
 		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward field
-			field_force = 3*field_strength;
+			field_force = 0.2*field_strength;
+			//printf("d1\n");
 			}
-		else if((x[n][d] > (diode_pos_n+diode_len_n/2)) && (x[n][d] < (diode_pos_n-diode_len_n/2))&& v[n][d] > 0){//downward field
+		else if((x[n][d] < (diode_pos_n+diode_len_n/2)) && (x[n][d] > (diode_pos_n-diode_len_n/2))&& (v[n][d] > 0)){//downward field
 			//v[n][d] -0.5*v[n][d];
-			field_force = -10000*field_strength;
+			field_force = -5.9*field_strength;
+			//printf("velocity =%lf!\n",v[n][d]);
+			//printf("d2\n");
 			}
 		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source
-			field_force = 0.2*field_strength;
+			field_force = -5*field_strength;
+			//printf("voltage\n");
 			}
-		else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) /*&& v[n][d] < 0*/){//resistor
-			field_force = -(1000000*v[n][d]*v[n][d]);
-			}
+		//else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) /*&& v[n][d] < 0*/){//resistor
+		//	field_force = -(1000000*v[n][d]*v[n][d]); //force = current *resistance*charge/length of resistor
+		//	}
+
 		else{
 			field_force = 0;		
 		}
+	v[n][d]+=(field_force)/mass[n]*dt;
+
 	}
 	else{
 		field_force = 0;		
 		}
-	//printf("%f",field_force);
-	v[n][d]+=(ff[n][d]+field_force)/mass[n]*dt;
 
 	}
   for (int n=0;n<N;n++)
