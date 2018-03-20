@@ -10,7 +10,7 @@
 #define MeasMax 100
 
 
-#define ft 5 //field thickness other dimensions based on variable L
+//#define ft 5 //field thickness other dimensions based on variable L
 
 /*
 additions
@@ -26,15 +26,18 @@ phenomensa to observe
 4. compare ideal and actual voltages
 
 */
+
+//variables added for midterm project diode
 double q[Nmax]; // charges of the particles
-double iq = 5;
-double tf = 1;//acceleration field strength
-double field_strength = 1.1;
+double iq = 5;  //initial charge of particles
+double field_strength = 1.0;
 double field_force = 0;
 double g = 1,k = 1.1;
 //sizes and placements of componets
 double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
-double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5; 
+double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;
+double resistance = 1000,vs_v = -10,ud_v = 0.2,dd_v = -5.9;
+double v_f,ud_f,dd_f;//forces for the different fields
 
 double  L=50; // size of box
 //changed code to always run setTemp() in iterate to keep T constant.
@@ -176,41 +179,34 @@ void iterate(double x[N][D],double v[N][D],double dt){
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++)
 	v[n][d]+=0.5*ff[n][d]/mass[n]*dt;
-	//printf("velocity =%lf!\n",v[n][d]);
   else
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++){
-	//begin field crap
-	//check to see that the particle is in the field space
-	//if the particle is in the y dimension
-	//if the par
-	//if(v[n][d] > 10) v[n][d] = 0;	
-	if (d == 1){
-		v[n][d]+=(ff[n][d])/mass[n]*dt;
-		printf("velocity =%lf!\n",v[n][d]);
-		//check to see if the particle is in the field centered in the middle of the space
-		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward field
-			field_force = 0.2*field_strength;
-			//printf("d1\n");
+	//begin conditions for diode
+	if (d == 1){// if the dimension is in the Y dimension... vertical
+		
+		v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
+		
+		//check to see if the particle is in diode p, diode n, voltage, resistor regions, then apply the appropriate force
+		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward diode field.. if the particle has -v then force particle upwards
+			//field_force = 0.2*field_strength;//simulate the forward diode band gap
+			field_force = ud_f;
 			}
-		else if((x[n][d] < (diode_pos_n+diode_len_n/2)) && (x[n][d] > (diode_pos_n-diode_len_n/2))&& (v[n][d] > 0)){//downward field
-			//v[n][d] -0.5*v[n][d];
-			field_force = -5.9*field_strength;
-			//printf("velocity =%lf!\n",v[n][d]);
-			//printf("d2\n");
+		else if((x[n][d] < (diode_pos_n+diode_len_n/2)) && (x[n][d] > (diode_pos_n-diode_len_n/2))&& (v[n][d] > 0)){//downward diode field... stops reverse bias current throgh the diode
+			//field_force = -5.9*field_strength;//simulate the reverse diode band gap
+			field_force = dd_f;
 			}
-		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source
-			field_force = -5*field_strength;
-			//printf("voltage\n");
+		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source field... provides electromotive force to propel particles throgh diode
+			//field_force = -5*field_strength;//simualate voltage source
+			field_force = v_f;
 			}
-		//else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) /*&& v[n][d] < 0*/){//resistor
-		//	field_force = -(1000000*v[n][d]*v[n][d]); //force = current *resistance*charge/length of resistor
-		//	}
-
+		else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) && abs(v[n][d]) > 0){//resistor field... just a resistor for fun
+			field_force = -v[n][d]*q[n]*q[n]*resistance/(res_len*res_len);// derived from V=IR, V=E*dl, E=N/C
+			}
 		else{
 			field_force = 0;		
 		}
-	v[n][d]+=(field_force)/mass[n]*dt;
+	v[n][d]+=(field_force)/mass[n]*dt;//integrate again to update velocity with the accelerations of the fields
 
 	}
 	else{
@@ -255,7 +251,13 @@ void init(){
     }
     //set initial charge for each electron
     q[n] = iq;
+    
+    
 }
+  //calculate forces for the given voltages
+  v_f = iq*vs_v/volt_len;
+  ud_f = iq*ud_v/diode_len_p;
+  dd_f = iq*dd_v/diode_len_n;
   iterations=0;
 }
 /*saves the current state as the initial state. for future use. pretty nice*/
@@ -273,7 +275,7 @@ void draw(int xdim, int ydim){
   if (ydim<size) size=ydim;
   scalefac=size/L;
 
-//add lines for notatiting the acceleration fields
+//add lines for notatiting the different accelaration fields
 // color, x1,y1,x2,y2
 
 //voltage source lines
@@ -479,6 +481,13 @@ int main(){
   DefineFunction("setup",&setup);
   DefineFunction("Get State",&GetState);
   DefineFunction("init",&init);
+  EndMenu();
+  //menu code for diode midterm
+  StartMenu("Diode",0);
+  DefineDouble("Vs",&vs_v);
+  DefineDouble("forward gap V",&ud_v);
+  DefineDouble("downward gap V",&dd_v);
+  DefineDouble("resistance",&resistance);
   EndMenu();
   DefineGraph(curve2d_,"Measurements");
   DefineDouble("phi",&phi);
