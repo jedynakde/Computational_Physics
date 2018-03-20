@@ -48,9 +48,9 @@ double x[Nmax][D],v[Nmax][D]; // State of the system
 // parameters
 double scalefac=100;
 double x0[Nmax][D],v0[Nmax][D],dt=0.7,vv=0;
-double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax];
+double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax],Imeas[MeasMax],IImeas[MeasMax];
 
-int N=Nmax,Measlen=MeasMax,iterations=0;
+int N=500,Measlen=MeasMax,iterations=0;
 
 // Global variables for Isotherm
 int Thermalize=10000, MeasNo=1000;
@@ -93,6 +93,16 @@ void setTemp(){
     for (int d=0; d<D; d++)
       v[n][d]*=fact;
 }
+/*Actual Current I*/
+double Imeasf(double v[N][D]){
+	double i_avg = 0;
+	for (int n=0;n<N;n++){
+		i_avg+=v[n][1];//sum up all the velocities in the y direction		
+	}
+	i_avg = iq*i_avg/(N*L);//average current between each particle.
+	return i_avg;
+}
+
 /*Non ideal pressure*/
 double Pnid(double x[N][D]){
   double p=0;
@@ -377,6 +387,9 @@ void Measure(){
   Epot[0]=Ep(x,v);
   memmove(&Etot[1],&Etot[0],(MeasMax-1)*sizeof(double));
   Etot[0]=Epot[0]+Ekin[0];
+  //storing current values for graphing later
+  memmove(&IImeas[1],&IImeas[0],(MeasMax-1)*sizeof(double));
+  IImeas[0]=Imeasf(v);
 }
 /*isotherm file management / writing*/
 void Isotherm(){
@@ -437,6 +450,7 @@ int main(){
   DefineGraphN_R("E",&Etot[0],&Measlen,NULL);
   DefineGraphN_R("Epot",&Epot[0],&Measlen,NULL);
   DefineGraphN_R("Ekin",&Ekin[0],&Measlen,NULL);
+  DefineGraphN_R("Average Current",&IImeas[0],&Measlen,NULL);
   
   AddFreedraw("Particles",&draw);
   AddFreedraw("Particles 3d",&draw3d);
