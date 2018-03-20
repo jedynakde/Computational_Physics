@@ -28,11 +28,14 @@ phenomensa to observe
 */
 
 //variables added for midterm project diode
+//double t=0;
+double stupid = 0;
 double q[Nmax]; // charges of the particles
-double iq = 5;  //initial charge of particles
+double iq = 0.5;  //initial charge of particles
 double field_strength = 1.0;
 double field_force = 0;
 double g = 1,k = 1.1;
+double itotal = 0 ;
 //sizes and placements of componets
 double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
 double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;
@@ -50,7 +53,7 @@ double scalefac=100;
 double x0[Nmax][D],v0[Nmax][D],dt=0.7,vv=0;
 double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax],Imeas[MeasMax],IImeas[MeasMax];
 
-int N=500,Measlen=MeasMax,iterations=0;
+int N=Nmax,Measlen=MeasMax,iterations=0;
 
 // Global variables for Isotherm
 int Thermalize=10000, MeasNo=1000;
@@ -79,10 +82,14 @@ double density(){
 }
 /*calculate the average Temperature by summing the kinetic energy, then dividing it by D dimensions and D number of particles*/
 double T(double v[N][D]){
+  //double
+  stupid = 0;
   double t=0;
   for (int n=0; n<N; n++)
-    for (int d=0; d<D; d++)
+    for (int d=0; d<D; d++){
       t+=mass[n]*v[n][d]*v[n][d];
+      stupid+=v[n][d];
+	}
   return t/N/D;
 }
 /*every time this is called the Temp gets set to whatever T is set to*/
@@ -95,14 +102,12 @@ void setTemp(){
 }
 /*Actual Current I*/
 double Imeasf(double v[N][D]){
-	double i_avg = 0;
-	for (int n=0;n<N;n++){
-		i_avg+=v[n][1];//sum up all the velocities in the y direction		
-	}
-	i_avg = iq*i_avg/(N*L);//average current between each particle.
-	return i_avg;
+  double i_avg=0;
+  for (int n=0; n<N; n++)
+    for (int d=0; d<D; d++)
+      i_avg+=v[n][d];
+  return iq*i_avg/L/N;
 }
-
 /*Non ideal pressure*/
 double Pnid(double x[N][D]){
   double p=0;
@@ -184,6 +189,7 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 -iterate position integrate velocity*/
 void iterate(double x[N][D],double v[N][D],double dt){
   double ff[N][D];
+  itotal = 0;
   F(x,v,ff);
   if (iterations==0)
     for (int n=0;n<N;n++)
@@ -193,9 +199,11 @@ void iterate(double x[N][D],double v[N][D],double dt){
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++){
 	//begin conditions for diode
+	v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
+	
 	if (d == 1){// if the dimension is in the Y dimension... vertical
 		
-		v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
+		//v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
 		
 		//check to see if the particle is in diode p, diode n, voltage, resistor regions, then apply the appropriate force
 		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward diode field.. if the particle has -v then force particle upwards
@@ -205,6 +213,8 @@ void iterate(double x[N][D],double v[N][D],double dt){
 		else if((x[n][d] < (diode_pos_n+diode_len_n/2)) && (x[n][d] > (diode_pos_n-diode_len_n/2))&& (v[n][d] > 0)){//downward diode field... stops reverse bias current throgh the diode
 			//field_force = -5.9*field_strength;//simulate the reverse diode band gap
 			field_force = dd_f;
+			//using a variable resistor
+			//field_force = -v[n][d]*q[n]*q[n]*10000/(res_len*res_len);
 			}
 		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source field... provides electromotive force to propel particles throgh diode
 			//field_force = -5*field_strength;//simualate voltage source
@@ -217,13 +227,14 @@ void iterate(double x[N][D],double v[N][D],double dt){
 			field_force = 0;		
 		}
 	v[n][d]+=(field_force)/mass[n]*dt;//integrate again to update velocity with the accelerations of the fields
-
+	itotal +=v[n][d];
 	}
 	else{
 		field_force = 0;		
 		}
 
 	}
+  itotal = iq*itotal/N/L;
   for (int n=0;n<N;n++)
     for (int d=0;d<D;d++){
       x[n][d]+=v[n][d]*dt;
@@ -252,6 +263,18 @@ void setup(){
     }
   }
 }
+void setVoltageSource(){
+  //calculate forces for the given voltages
+  v_f = iq*vs_v/volt_len;
+  ud_f = iq*ud_v/diode_len_p;
+  dd_f = iq*dd_v/diode_len_n;
+  for (int n=0; n<N; n++){
+    for (int d=0; d<D; d++){
+      //set initial charge for each electron
+    q[n] = iq;
+    }}
+
+}
 /*sets initial positions and velocities for particles*/
 void init(){
   for (int n=0; n<N; n++){
@@ -264,10 +287,6 @@ void init(){
     
     
 }
-  //calculate forces for the given voltages
-  v_f = iq*vs_v/volt_len;
-  ud_f = iq*ud_v/diode_len_p;
-  dd_f = iq*dd_v/diode_len_n;
   iterations=0;
 }
 /*saves the current state as the initial state. for future use. pretty nice*/
@@ -377,6 +396,9 @@ void Measure(){
   rho[0]=density();
   memmove(&Tmeas[1],&Tmeas[0],(MeasMax-1)*sizeof(double));
   Tmeas[0]=T(v);
+  //storing current values for graphing later
+  memmove(&IImeas[1],&IImeas[0],(MeasMax-1)*sizeof(double));
+  IImeas[0]=itotal;//Imeasf(v);
   memmove(&ppnid[1],&ppnid[0],(MeasMax-1)*sizeof(double));
   ppnid[0]=Pnid(x);
   memmove(&pp[1],&pp[0],(MeasMax-1)*sizeof(double));
@@ -387,9 +409,7 @@ void Measure(){
   Epot[0]=Ep(x,v);
   memmove(&Etot[1],&Etot[0],(MeasMax-1)*sizeof(double));
   Etot[0]=Epot[0]+Ekin[0];
-  //storing current values for graphing later
-  memmove(&IImeas[1],&IImeas[0],(MeasMax-1)*sizeof(double));
-  IImeas[0]=Imeasf(v);
+
 }
 /*isotherm file management / writing*/
 void Isotherm(){
@@ -459,6 +479,7 @@ int main(){
   DefineDouble("L",&L);
   DefineDouble("dt",&dt);
   StartMenu("measure",0);
+  DefineDouble("Average Current",&IImeas[0]);
   DefineDouble("rho",&rho[0]);
   DefineFunction("setrho",setdensity);
   DefineDouble("T",&Tmeas[0]);
@@ -499,9 +520,11 @@ int main(){
   //menu code for diode midterm
   StartMenu("Diode",0);
   DefineDouble("Vs",&vs_v);
+  DefineFunction("setVoltageSource",setVoltageSource);
   DefineDouble("forward gap V",&ud_v);
   DefineDouble("downward gap V",&dd_v);
   DefineDouble("resistance",&resistance);
+  DefineDouble("charge",&iq);
   EndMenu();
   DefineGraph(curve2d_,"Measurements");
   DefineDouble("phi",&phi);
