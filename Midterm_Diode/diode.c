@@ -29,8 +29,9 @@ phenomena to observe
 
 //variables added for midterm project diode
 //double t=0;
+double current_var = 0;
 double q[Nmax]; // charges of the particles
-double iq = 0.5;  //initial charge of particles
+double iq = 5;  //initial charge of particles
 double field_strength = 1.0;
 double field_force = 0;
 double g = 1,k = 1.1;
@@ -40,7 +41,6 @@ double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
 double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;
 double resistance = 1000,vs_v = -10,ud_v = 0.2,dd_v = -5.9;
 double v_f,ud_f,dd_f;//forces for the different fields
-
 double  L=50; // size of box
 //changed code to always run setTemp() in iterate to keep T constant.
 
@@ -52,7 +52,7 @@ double scalefac=100;
 double x0[Nmax][D],v0[Nmax][D],dt=0.7,vv=0;
 double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax],Imeas[MeasMax],IImeas[MeasMax];
 
-int N=Nmax,Measlen=MeasMax,iterations=0;
+int N=300,Measlen=MeasMax,iterations=0;
 
 // Global variables for Isotherm
 int Thermalize=10000, MeasNo=1000;
@@ -61,10 +61,11 @@ int Thermalize=10000, MeasNo=1000;
 double tet=0,phi=0,tetdot=0.05,phidot=0,shift=150;
 
 double getCurrent(double v[N][D]){
-double sumV = 0;
-for(int n = 0;n<N;n++){
-	sumV += v[n][1];
-	}
+	double sumV = 0;
+	for(int n = 0;n<N;n++){
+		sumV += v[n][1];
+		printf("v = %e\n",v[n][1]);
+		}
 	return iq*sumV/L;
 }
 
@@ -230,6 +231,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
 			field_force = 0;		
 		}
 	v[n][d]+=(field_force)/mass[n]*dt;//integrate again to update velocity with the accelerations of the fields
+	
 	itotal +=v[n][d];
 	}
 	else{
@@ -237,6 +239,7 @@ void iterate(double x[N][D],double v[N][D],double dt){
 		}
 
 	}
+  current_var = getCurrent(v);
   itotal = iq*itotal/N/L;
   for (int n=0;n<N;n++)
     for (int d=0;d<D;d++){
@@ -462,23 +465,20 @@ void VI_Curve(){
 
   sprintf(IsoName,"VI_Curve%f_%i.dat",Tset,N);
   res=fopen(IsoName,"w");
-  //double itot = 0;
-  //set voltages
-  for (int ivolt = 0;ivolt<20;ivolt++){
-	v_f = ivolt;
+  //sweep the voltage
+  for (int ivolt = 5;ivolt>-5;ivolt--){
+	//set the voltage
+	vs_v = ivolt;
         setVoltageSource();
-	for(int t = 0;t<10;t++)
+	//loop to waste some time to get the current to settle
+	for(int t = 0;t<2000;t++)
 		{
-		//iterate(x,v,dt);
-		//for(int n = 0;n<N;n++){
-		//	itot += v[n][1];
-		//	}  
-		//itot = iq*itot/N/L;
 		iterate(x,v,dt);
        	 	Events(1);
         	DrawGraphs();
 		}
-	fprintf(res,"%e %i\n",getCurrent(v),ivolt);
+	//save the current and voltage data
+	fprintf(res,"%e %f\n",current_var,vs_v);
    }
   
   fclose(res);
@@ -486,7 +486,7 @@ void VI_Curve(){
 /*isotherm routine*/
 void VI_Routine(){
   //for (Tset=0.05; Tset<10; Tset+=0.05){
-    init();
+    //init();
     VI_Curve();
   //}
 }
@@ -567,6 +567,7 @@ int main(){
   DefineDouble("downward gap V",&dd_v);
   DefineDouble("resistance",&resistance);
   DefineDouble("charge",&iq);
+  DefineDouble("avg current",&current_var);
   DefineFunction("VI Curve",VI_Curve);
   EndMenu();
   DefineGraph(curve2d_,"Measurements");
