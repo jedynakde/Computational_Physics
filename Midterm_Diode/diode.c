@@ -1,3 +1,26 @@
+/*
+PHYS370 intro computational physics
+March 20th, 2018
+Miderm Project Diode Semiconductor
+David Jedynak, Jacob Connelly, Nick Zaler
+
+Purpose:
+	Model a Diode using the molecular dynamics sim to observe how changing band gap energy regions ~ (i.e. voltages) change the Voltage Current Characteristics. 
+
+Features:
+	Complete -Tested
+	- Diode make from 2 fields that allow particles to travel in one direction, and 
+	- Voltage source used to drive current through the diode
+	- Real time Plotting of Current WRT time
+	- A routine that sweeps voltage, measures current, and outputs the data to a file for VI curve plotting
+	- Inputs for forward voltage gap, Reverse votlage gap, volatge sweep(start,end,dv)
+	- GUI window for inputs 
+	Complete - Untested
+	- Resistor
+	Incomplete
+*/
+
+
 #include <math.h>
 #include <mygraph.h>
 #include <unistd.h>
@@ -10,52 +33,33 @@
 #define MeasMax 100
 
 
-//#define ft 5 //field thickness other dimensions based on variable L
-
-/*
-additions
-1. graph for average y velocity for particles (i.e current)
-2. boxes around difference acceleration fields --complete
-3. still have to fix the problem of the super fast particles... integration error... partcles only landing on accletartion fields when each iteration occurs... decrease dt? adn then speed up simulation
-4. add ways of setting voltage or current by changing field strength
-
-phenomena to observe
-1. diode voltage current curve
-2. effect of temperature
-3. transients
-4. compare ideal and actual voltages
-
-*/
 
 //variables added for midterm project diode
-//double t=0;
-double current_var = 0;
-double q[Nmax]; // charges of the particles
-double iq = 5;  //initial charge of particles
-double field_strength = 1.0;
-double field_force = 0;
-double g = 1,k = 1.1;
-double itotal = 0 ;
-//sizes and placements of componets
-double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
-double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;
-double resistance = 1000,vs_v = -10,ud_v = 0.2,dd_v = -5.9;
-double v_f,ud_f,dd_f;//forces for the different fields
-double v_start = 5.0,v_end = -5.0;
-double v_incr = -1.0;
-int v_sweep_delta = 2000;
-double  L=50; // size of box
-//changed code to always run setTemp() in iterate to keep T constant.
+double current_var = 0;				//global used for stoing the average current
+double field_force = 0;				//for storing the force derived from diode,voltage source, or resistor
+double g = 1,k = 1.1;				//gravity and electric field constants
+double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;//lengths of components
+double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;//positions of components
+double resistance = 0;
+double vs_v = -10,ud_v = 0.2,dd_v = -5.9;	//ideal voltages of diode band gaps
+double v_f,ud_f,dd_f;				//forces for the different fields
+//voltage sweep
+double v_start = 5.0,v_end = -5.0,v_incr = -1.0;//voltage sweep
+int v_sweep_delta = 500;			//delay for letting current settle out after a voltage change
 
-double mass[Nmax]; // masses of the particles
-double x[Nmax][D],v[Nmax][D]; // State of the system
+double  L=50; 					// size of box
+
+double mass[Nmax]; 				// masses of the particles
+double x[Nmax][D],v[Nmax][D]; 			// State of the system
+double q[Nmax];					// charges of the particles
+double iq = 5;					//initial charge of particles
 
 // parameters
 double scalefac=100;
-double x0[Nmax][D],v0[Nmax][D],dt=0.1,vv=0;
+double x0[Nmax][D],v0[Nmax][D],dt=0.1,vv=0;	//initial conditions of system
 double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax],Imeas[MeasMax],IImeas[MeasMax];
 
-int N=300,Measlen=MeasMax,iterations=0;
+int N=1000,Measlen=MeasMax,iterations=0;		//number of particles, length of values being taken for measurements
 
 // Global variables for Isotherm
 int Thermalize=10000, MeasNo=1000;
@@ -63,14 +67,16 @@ int Thermalize=10000, MeasNo=1000;
 // 3d visualization
 double tet=0,phi=0,tetdot=0.05,phidot=0,shift=150;
 
+// functions defined for midterm
 double getCurrent(double v[N][D]){
 	double sumV = 0;
 	for(int n = 0;n<N;n++){
 		sumV += v[n][1];
-		//printf("v = %e\n",v[n][1]);
 		}
 	return iq*sumV/L;
 }
+
+
 
 /*The set density function changes the value L (box length) in order to achieve a given density*/
 void setdensity(){
@@ -106,14 +112,6 @@ void setTemp(){
   for (int n=0;n<N; n++)
     for (int d=0; d<D; d++)
       v[n][d]*=fact;
-}
-/*Actual Current I*/
-double Imeasf(double v[N][D]){
-  double i_avg=0;
-  for (int n=0; n<N; n++)
-    for (int d=0; d<D; d++)
-      i_avg+=v[n][d];
-  return iq*i_avg/L/N;
 }
 /*Non ideal pressure*/
 double Pnid(double x[N][D]){
@@ -183,7 +181,6 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
       double dR6=dR*dR*dR;
       double dR12=dR6*dR6;
       double Fabs=12/dR12/dR-6/dR6/dR + k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
-      //double Fabs=k*q[n]*q[m]/pow(dR,2) + g*mass[n]*mass[m]/pow(dR,2);
       for (int d=0;d<D; d++){
 	FF[n][d]-=Fabs*dr[d];
 	FF[m][d]+=Fabs*dr[d];
@@ -196,7 +193,7 @@ void F(double x[N][D], double v[N][D],double FF[N][D]){
 -iterate position integrate velocity*/
 void iterate(double x[N][D],double v[N][D],double dt){
   double ff[N][D];
-  itotal = 0;
+  //itotal = 0;
   F(x,v,ff);
   if (iterations==0)
     for (int n=0;n<N;n++)
@@ -205,45 +202,38 @@ void iterate(double x[N][D],double v[N][D],double dt){
   else
     for (int n=0;n<N;n++)
       for (int d=0;d<D;d++){
-	//begin conditions for diode
+	//begin conditions for diode, resistor, and voltage source regions
 	v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
 	
 	if (d == 1){// if the dimension is in the Y dimension... vertical
 		
-		//v[n][d]+=(ff[n][d])/mass[n]*dt;// integrate to get velocity
 		
 		//check to see if the particle is in diode p, diode n, voltage, resistor regions, then apply the appropriate force
 		if ((x[n][d] < (diode_pos_p+diode_len_p/2)) && (x[n][d] > (diode_pos_p-diode_len_p/2))&& v[n][d] < 0){//upward diode field.. if the particle has -v then force particle upwards
-			//field_force = 0.2*field_strength;//simulate the forward diode band gap
-			field_force = ud_f;
+			field_force = ud_f - current_var;//simulate the forward diode band gap
 			}
 		else if((x[n][d] < (diode_pos_n+diode_len_n/2)) && (x[n][d] > (diode_pos_n-diode_len_n/2))&& (v[n][d] > 0)){//downward diode field... stops reverse bias current throgh the diode
-			//field_force = -5.9*field_strength;//simulate the reverse diode band gap
-			field_force = dd_f;
-			//using a variable resistor
-			//field_force = -v[n][d]*q[n]*q[n]*10000/(res_len*res_len);
+			field_force = dd_f + current_var;//simulate the reverse diode band gap
 			}
 		else if((x[n][d] < (volt_pos + volt_len/2)) && (x[n][d] > (volt_pos - volt_len/2))){//voltage source field... provides electromotive force to propel particles throgh diode
-			//field_force = -5*field_strength;//simualate voltage source
-			field_force = v_f;
+			field_force = v_f;//simualate voltage source
 			}
 		else if((x[n][d] > (res_pos - res_len/2)) && (x[n][d] < (res_pos + res_len/2)) && abs(v[n][d]) > 0){//resistor field... just a resistor for fun
 			field_force = -v[n][d]*q[n]*q[n]*resistance/(res_len*res_len);// derived from V=IR, V=E*dl, E=N/C
 			}
 		else{
-			field_force = 0;		
+			field_force = 0;	//particle is not in a component, then no force.	
 		}
 	v[n][d]+=(field_force)/mass[n]*dt;//integrate again to update velocity with the accelerations of the fields
 	
-	itotal +=v[n][d];
 	}
 	else{
 		field_force = 0;		
 		}
 
 	}
-  current_var = getCurrent(v);
-  itotal = iq*itotal/N/L;
+
+  current_var = getCurrent(v);		//update current value for measurements
   for (int n=0;n<N;n++)
     for (int d=0;d<D;d++){
       x[n][d]+=v[n][d]*dt;
@@ -274,13 +264,12 @@ void setup(){
 }
 void setVoltageSource(){
   //calculate forces for the given voltages
-  v_f = iq*vs_v/volt_len;
-  ud_f = iq*ud_v/diode_len_p;
-  dd_f = iq*dd_v/diode_len_n;
+  v_f = iq*vs_v/volt_len;		//calculate the field from the set voltage
+  ud_f = iq*ud_v/diode_len_p;		//calculate the field from the set upper diode voltage gap
+  dd_f = iq*dd_v/diode_len_n;		//calculate the field from the lower diode votlage gap
   for (int n=0; n<N; n++){
     for (int d=0; d<D; d++){
-      //set initial charge for each electron
-    q[n] = iq;
+    q[n] = iq;				//set initial charge for each electron
     }}
 
 }
@@ -312,7 +301,7 @@ void draw(int xdim, int ydim){
   int size=xdim;
   if (ydim<size) size=ydim;
   scalefac=size/L;
-
+//code added for midterm start
 //add lines for notatiting the different accelaration fields
 // color, x1,y1,x2,y2
 
@@ -331,6 +320,8 @@ void draw(int xdim, int ydim){
 //resistor field lines
   mydrawline(6,0,scalefac*(L-res_pos+res_len/2),size,scalefac*(L-res_pos+res_len/2));
   mydrawline(6,0,scalefac*(L-res_pos-res_len/2),size,scalefac*(L-res_pos-res_len/2));
+
+//code added for midterm end
 
   mydrawline(1,0,size,size,size);
   mydrawline(1,size,0,size,size);
@@ -407,7 +398,7 @@ void Measure(){
   Tmeas[0]=T(v);
   //storing current values for graphing later
   memmove(&IImeas[1],&IImeas[0],(MeasMax-1)*sizeof(double));
-  IImeas[0]=itotal;//Imeasf(v);
+  IImeas[0]=current_var;
   memmove(&ppnid[1],&ppnid[0],(MeasMax-1)*sizeof(double));
   ppnid[0]=Pnid(x);
   memmove(&pp[1],&pp[0],(MeasMax-1)*sizeof(double));
@@ -461,60 +452,51 @@ void Isotherms(){
   }
 }
 
-/*isotherm file management / writing*/
+/*This routine sweeps the voltage from start to end with an increment, outputs a file with the voltage and current information to look at diode VI characteristics*/
 void VI_Curve(){
   FILE *res;
   char IsoName[100];
   double sumI = 0;
 
-  sprintf(IsoName,"VI_Curve_Q_%f_N_%i_ud_v_%f_dd_v_%f.dat",iq,N,ud_v,dd_v);
+  sprintf(IsoName,"VI_Curve_Q_%f_N_%i_ud_v_%f_dd_v_%f.dat",iq,N,ud_v,dd_v);//put info in the filename to distinguish test params
   res=fopen(IsoName,"w");
   //sweep the voltage
   if(v_incr < 0 ){
-  for (double ivolt = v_start;ivolt>v_end;ivolt = ivolt + v_incr){
-	//set the voltage
-	vs_v = ivolt;
-        setVoltageSource();
-	//loop to waste some time to get the current to settle
-	for(int t = 0;t<v_sweep_delta;t++)
-		{
-		iterate(x,v,dt);
-       	 	Events(1);
-        	DrawGraphs();
-		sumI += current_var;
-		}
-	//save the current and voltage data
-	fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
-   }
+	  for (double ivolt = v_start;ivolt>v_end;ivolt = ivolt + v_incr){
+		//set the voltage
+		vs_v = ivolt;
+		setVoltageSource();
+		//loop to waste some time to get the current to settle
+		for(int t = 0;t<v_sweep_delta;t++)
+			{
+			iterate(x,v,dt);
+	       	 	Events(1);
+			DrawGraphs();
+			sumI += current_var;
+			}
+		//save the current and voltage data
+		fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
+	   }
    }
      else{
-  for (double ivolt = v_start;ivolt<v_end;ivolt = ivolt + v_incr){
-	//set the voltage
-	vs_v = ivolt;
-        setVoltageSource();
-	//loop to waste some time to get the current to settle
-	for(int t = 0;t<v_sweep_delta;t++)
-		{
-		iterate(x,v,dt);
-       	 	Events(1);
-        	DrawGraphs();
-		sumI += current_var;
-		}
-	//save the current and voltage data
-	fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
-   }
+	  for (double ivolt = v_start;ivolt<v_end;ivolt = ivolt + v_incr){
+		//set the voltage
+		vs_v = ivolt;
+		setVoltageSource();
+		//loop to waste some time to get the current to settle
+		for(int t = 0;t<v_sweep_delta;t++)
+			{
+			iterate(x,v,dt);
+	       	 	Events(1);
+			DrawGraphs();
+			sumI += current_var;
+			}
+		//save the current and voltage data
+		fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
+	   }
    }
 
-
-  
   fclose(res);
-}
-/*isotherm routine*/
-void VI_Routine(){
-  //for (Tset=0.05; Tset<10; Tset+=0.05){
-    //init();
-    VI_Curve();
-  //}
 }
 
 
@@ -588,7 +570,7 @@ int main(){
   //menu code for diode midterm
   StartMenu("Diode",0);
   DefineDouble("Vs",&vs_v);
-  DefineFunction("setVoltageSource",setVoltageSource);
+  DefineFunction("Update Diode Params",setVoltageSource);
   DefineDouble("forward gap V",&ud_v);
   DefineDouble("downward gap V",&dd_v);
   DefineDouble("resistance",&resistance);
