@@ -19,7 +19,7 @@ additions
 3. still have to fix the problem of the super fast particles... integration error... partcles only landing on accletartion fields when each iteration occurs... decrease dt? adn then speed up simulation
 4. add ways of setting voltage or current by changing field strength
 
-phenomensa to observe
+phenomena to observe
 1. diode voltage current curve
 2. effect of temperature
 3. transients
@@ -29,7 +29,6 @@ phenomensa to observe
 
 //variables added for midterm project diode
 //double t=0;
-double stupid = 0;
 double q[Nmax]; // charges of the particles
 double iq = 0.5;  //initial charge of particles
 double field_strength = 1.0;
@@ -61,7 +60,13 @@ int Thermalize=10000, MeasNo=1000;
 // 3d visualization
 double tet=0,phi=0,tetdot=0.05,phidot=0,shift=150;
 
-
+double getCurrent(double v[N][D]){
+double sumV = 0;
+for(int n = 0;n<N;n++){
+	sumV += v[n][1];
+	}
+	return iq*sumV/L;
+}
 
 /*The set density function changes the value L (box length) in order to achieve a given density*/
 void setdensity(){
@@ -83,12 +88,10 @@ double density(){
 /*calculate the average Temperature by summing the kinetic energy, then dividing it by D dimensions and D number of particles*/
 double T(double v[N][D]){
   //double
-  stupid = 0;
   double t=0;
   for (int n=0; n<N; n++)
     for (int d=0; d<D; d++){
       t+=mass[n]*v[n][d]*v[n][d];
-      stupid+=v[n][d];
 	}
   return t/N/D;
 }
@@ -451,6 +454,45 @@ void Isotherms(){
     Isotherm();
   }
 }
+
+/*isotherm file management / writing*/
+void VI_Curve(){
+  FILE *res;
+  char IsoName[100];
+
+  sprintf(IsoName,"VI_Curve%f_%i.dat",Tset,N);
+  res=fopen(IsoName,"w");
+  //double itot = 0;
+  //set voltages
+  for (int ivolt = 0;ivolt<20;ivolt++){
+	v_f = ivolt;
+        setVoltageSource();
+	for(int t = 0;t<10;t++)
+		{
+		//iterate(x,v,dt);
+		//for(int n = 0;n<N;n++){
+		//	itot += v[n][1];
+		//	}  
+		//itot = iq*itot/N/L;
+		iterate(x,v,dt);
+       	 	Events(1);
+        	DrawGraphs();
+		}
+	fprintf(res,"%e %i\n",getCurrent(v),ivolt);
+   }
+  
+  fclose(res);
+}
+/*isotherm routine*/
+void VI_Routine(){
+  //for (Tset=0.05; Tset<10; Tset+=0.05){
+    init();
+    VI_Curve();
+  //}
+}
+
+
+
 /**/
 int main(){
   struct timespec ts={0,1000000};
@@ -525,6 +567,7 @@ int main(){
   DefineDouble("downward gap V",&dd_v);
   DefineDouble("resistance",&resistance);
   DefineDouble("charge",&iq);
+  DefineFunction("VI Curve",VI_Curve);
   EndMenu();
   DefineGraph(curve2d_,"Measurements");
   DefineDouble("phi",&phi);
