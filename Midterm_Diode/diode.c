@@ -41,6 +41,9 @@ double volt_len = 5,res_len = 5,diode_len_p = 5,diode_len_n = 5;
 double volt_pos = 45,res_pos = 15,diode_pos_p = 22.5,diode_pos_n = 27.5;
 double resistance = 1000,vs_v = -10,ud_v = 0.2,dd_v = -5.9;
 double v_f,ud_f,dd_f;//forces for the different fields
+double v_start = 5.0,v_end = -5.0;
+double v_incr = -1.0;
+int v_sweep_delta = 2000;
 double  L=50; // size of box
 //changed code to always run setTemp() in iterate to keep T constant.
 
@@ -64,7 +67,7 @@ double getCurrent(double v[N][D]){
 	double sumV = 0;
 	for(int n = 0;n<N;n++){
 		sumV += v[n][1];
-		printf("v = %e\n",v[n][1]);
+		//printf("v = %e\n",v[n][1]);
 		}
 	return iq*sumV/L;
 }
@@ -462,23 +465,25 @@ void Isotherms(){
 void VI_Curve(){
   FILE *res;
   char IsoName[100];
+  double sumI = 0;
 
   sprintf(IsoName,"VI_Curve%f_%i.dat",Tset,N);
   res=fopen(IsoName,"w");
   //sweep the voltage
-  for (int ivolt = 5;ivolt>-5;ivolt--){
+  for (double ivolt = v_start;ivolt>v_end;ivolt = ivolt + v_incr){
 	//set the voltage
 	vs_v = ivolt;
         setVoltageSource();
 	//loop to waste some time to get the current to settle
-	for(int t = 0;t<2000;t++)
+	for(int t = 0;t<v_sweep_delta;t++)
 		{
 		iterate(x,v,dt);
        	 	Events(1);
         	DrawGraphs();
+		sumI += current_var;
 		}
 	//save the current and voltage data
-	fprintf(res,"%e %f\n",current_var,vs_v);
+	fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
    }
   
   fclose(res);
@@ -568,7 +573,13 @@ int main(){
   DefineDouble("resistance",&resistance);
   DefineDouble("charge",&iq);
   DefineDouble("avg current",&current_var);
+  StartMenu("Voltage Sweep",0);
   DefineFunction("VI Curve",VI_Curve);
+  DefineDouble("V start",&v_start);
+  DefineDouble("V end",&v_end);
+  DefineDouble("v_incr",&v_incr);
+  DefineInt("v_sweep_delta",&v_sweep_delta);
+  EndMenu();
   EndMenu();
   DefineGraph(curve2d_,"Measurements");
   DefineDouble("phi",&phi);
