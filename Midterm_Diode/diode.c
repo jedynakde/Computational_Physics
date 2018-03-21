@@ -52,7 +52,7 @@ double x[Nmax][D],v[Nmax][D]; // State of the system
 
 // parameters
 double scalefac=100;
-double x0[Nmax][D],v0[Nmax][D],dt=0.7,vv=0;
+double x0[Nmax][D],v0[Nmax][D],dt=0.1,vv=0;
 double rho[MeasMax],Tset=0,Tmeas[MeasMax], ppnid[MeasMax],pp[MeasMax],Etot[MeasMax],Epot[MeasMax],Ekin[MeasMax],Imeas[MeasMax],IImeas[MeasMax];
 
 int N=300,Measlen=MeasMax,iterations=0;
@@ -467,7 +467,7 @@ void VI_Curve(){
   char IsoName[100];
   double sumI = 0;
 
-  sprintf(IsoName,"VI_Curve%f_%i.dat",Tset,N);
+  sprintf(IsoName,"VI_Curve_Q_%f_N_%i_ud_v_%f_dd_v_%f.dat",iq,N,ud_v,dd_v);
   res=fopen(IsoName,"w");
   //sweep the voltage
   if(v_incr < 0 ){
