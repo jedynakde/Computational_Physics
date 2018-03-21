@@ -470,6 +470,7 @@ void VI_Curve(){
   sprintf(IsoName,"VI_Curve%f_%i.dat",Tset,N);
   res=fopen(IsoName,"w");
   //sweep the voltage
+  if(v_incr < 0 ){
   for (double ivolt = v_start;ivolt>v_end;ivolt = ivolt + v_incr){
 	//set the voltage
 	vs_v = ivolt;
@@ -485,6 +486,26 @@ void VI_Curve(){
 	//save the current and voltage data
 	fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
    }
+   }
+     else{
+  for (double ivolt = v_start;ivolt<v_end;ivolt = ivolt + v_incr){
+	//set the voltage
+	vs_v = ivolt;
+        setVoltageSource();
+	//loop to waste some time to get the current to settle
+	for(int t = 0;t<v_sweep_delta;t++)
+		{
+		iterate(x,v,dt);
+       	 	Events(1);
+        	DrawGraphs();
+		sumI += current_var;
+		}
+	//save the current and voltage data
+	fprintf(res,"%e %f\n",sumI/v_sweep_delta,vs_v);
+   }
+   }
+
+
   
   fclose(res);
 }
