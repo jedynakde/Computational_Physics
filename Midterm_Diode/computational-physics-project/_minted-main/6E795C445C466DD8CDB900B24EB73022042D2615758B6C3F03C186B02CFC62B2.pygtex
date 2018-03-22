@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{n}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;}\PYG{n}{n}\PYG{o}{++}\PYG{p}{)}
+      \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{d}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{d}\PYG{o}{\PYGZlt{}}\PYG{n}{D}\PYG{p}{;}\PYG{n}{d}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	\PYG{c+c1}{//begin conditions for diode, resistor, and voltage source regions}
+	\PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{ff}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{])}\PYG{o}{/}\PYG{n}{mass}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{*}\PYG{n}{dt}\PYG{p}{;}\PYG{c+c1}{// integrate to get velocity}
+
+	\PYG{k}{if} \PYG{p}{(}\PYG{n}{d} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}\PYG{c+c1}{// if the dimension is in the Y dimension... vertical}
+	\PYG{c+c1}{//check to see if the particle is in diode p, diode n, voltage, resistor regions, then apply the appropriate force}
+		\PYG{k}{if} \PYG{p}{((}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{p}{(}\PYG{n}{diode\PYGZus{}pos\PYGZus{}p}\PYG{o}{+}\PYG{n}{diode\PYGZus{}len\PYGZus{}p}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{diode\PYGZus{}pos\PYGZus{}p}\PYG{o}{\PYGZhy{}}\PYG{n}{diode\PYGZus{}len\PYGZus{}p}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))}\PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}\PYG{c+c1}{//upward diode field.. if the particle has \PYGZhy{}v then force particle upwards}
+			\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{n}{ud\PYGZus{}f} \PYG{o}{\PYGZhy{}} \PYG{n}{current\PYGZus{}var}\PYG{p}{;}\PYG{c+c1}{//simulate the forward diode band gap}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{k}{else} \PYG{k}{if}\PYG{p}{((}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{p}{(}\PYG{n}{diode\PYGZus{}pos\PYGZus{}n}\PYG{o}{+}\PYG{n}{diode\PYGZus{}len\PYGZus{}n}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{diode\PYGZus{}pos\PYGZus{}n}\PYG{o}{\PYGZhy{}}\PYG{n}{diode\PYGZus{}len\PYGZus{}n}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))}\PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{))\PYGZob{}}\PYG{c+c1}{//downward diode field... stops reverse bias current throgh the diode}
+			\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{n}{dd\PYGZus{}f} \PYG{o}{+} \PYG{n}{current\PYGZus{}var}\PYG{p}{;}\PYG{c+c1}{//simulate the reverse diode band gap}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{k}{else} \PYG{k}{if}\PYG{p}{((}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{p}{(}\PYG{n}{volt\PYGZus{}pos} \PYG{o}{+} \PYG{n}{volt\PYGZus{}len}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{volt\PYGZus{}pos} \PYG{o}{\PYGZhy{}} \PYG{n}{volt\PYGZus{}len}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)))\PYGZob{}}\PYG{c+c1}{//voltage source field... provides electromotive force to propel particles throgh diode}
+			\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{n}{v\PYGZus{}f}\PYG{p}{;}\PYG{c+c1}{//simualate voltage source}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{k}{else} \PYG{k}{if}\PYG{p}{((}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{p}{(}\PYG{n}{res\PYGZus{}pos} \PYG{o}{\PYGZhy{}} \PYG{n}{res\PYGZus{}len}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{p}{(}\PYG{n}{res\PYGZus{}pos} \PYG{o}{+} \PYG{n}{res\PYGZus{}len}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{))} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{abs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{])} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}\PYG{c+c1}{//resistor field... just a resistor for fun}
+			\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]}\PYG{o}{*}\PYG{n}{q}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{*}\PYG{n}{q}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{*}\PYG{n}{resistance}\PYG{o}{/}\PYG{p}{(}\PYG{n}{res\PYGZus{}len}\PYG{o}{*}\PYG{n}{res\PYGZus{}len}\PYG{p}{);}\PYG{c+c1}{// derived from V=IR, V=E*dl, E=N/C}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{k}{else}\PYG{p}{\PYGZob{}}
+			\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}	\PYG{c+c1}{//particle is not in a component, then no force.}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{n}{d}\PYG{p}{]}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{field\PYGZus{}force}\PYG{p}{)}\PYG{o}{/}\PYG{n}{mass}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{*}\PYG{n}{dt}\PYG{p}{;}\PYG{c+c1}{//integrate again to update velocity with the accelerations of the fields}
+
+	\PYG{p}{\PYGZcb{}}
+	\PYG{k}{else}\PYG{p}{\PYGZob{}}
+		\PYG{n}{field\PYGZus{}force} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+
+	\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

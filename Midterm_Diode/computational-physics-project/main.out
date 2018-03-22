@@ -1,10 +1,14 @@
 \BOOKMARK [1][-]{section.1}{Abstract}{}% 1
 \BOOKMARK [1][-]{section.2}{Introduction}{}% 2
 \BOOKMARK [1][-]{section.3}{Theory}{}% 3
-\BOOKMARK [1][-]{section.4}{Procedure}{}% 4
-\BOOKMARK [1][-]{section.5}{Algorithms and Code}{}% 5
-\BOOKMARK [1][-]{section.6}{Results}{}% 6
-\BOOKMARK [1][-]{section.7}{Conclusion}{}% 7
-\BOOKMARK [1][-]{section.8}{Individual Contribution}{}% 8
-\BOOKMARK [1][-]{section.9}{Code for Diode Simulation}{}% 9
-\BOOKMARK [1][-]{section.10}{References}{}% 10
+\BOOKMARK [1][-]{section.4}{Simulation Design}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Theory-Mathematics}{section.4}% 5
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Requirements}{subsection.4.1}% 6
+\BOOKMARK [2][-]{subsection.4.2}{Code Explained}{section.4}% 7
+\BOOKMARK [1][-]{section.5}{Procedure}{}% 8
+\BOOKMARK [1][-]{section.6}{Algorithms and Code}{}% 9
+\BOOKMARK [1][-]{section.7}{Results}{}% 10
+\BOOKMARK [1][-]{section.8}{Conclusion}{}% 11
+\BOOKMARK [1][-]{section.9}{Individual Contribution}{}% 12
+\BOOKMARK [1][-]{section.10}{Code for Diode Simulation}{}% 13
+\BOOKMARK [1][-]{section.11}{References}{}% 14

@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// functions defined for midterm}
+\PYG{k+kt}{double} \PYG{n+nf}{getCurrent}\PYG{p}{(}\PYG{k+kt}{double} \PYG{n}{v}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{n}{D}\PYG{p}{])\PYGZob{}}
+	\PYG{k+kt}{double} \PYG{n}{sumV} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+	\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{n}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;}\PYG{n}{n}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{sumV} \PYG{o}{+=} \PYG{n}{v}\PYG{p}{[}\PYG{n}{n}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{k}{return} \PYG{n}{iq}\PYG{o}{*}\PYG{n}{sumV}\PYG{o}{/}\PYG{n}{L}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

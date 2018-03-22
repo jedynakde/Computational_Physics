@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{c+c1}{//storing current values for graphing later}
+  \PYG{n}{memmove}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{IImeas}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{o}{\PYGZam{}}\PYG{n}{IImeas}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],(}\PYG{n}{MeasMax}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{k}{sizeof}\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{));}
+  \PYG{n}{IImeas}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{current\PYGZus{}var}\PYG{p}{;}
+\end{Verbatim}

@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{c+c1}{//menu code for diode midterm}
+  \PYG{n}{StartMenu}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Diode\PYGZdq{}}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Vs\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{vs\PYGZus{}v}\PYG{p}{);}
+  \PYG{n}{DefineFunction}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Update Diode Params\PYGZdq{}}\PYG{p}{,}\PYG{n}{setVoltageSource}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}forward gap V\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{ud\PYGZus{}v}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}downward gap V\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{dd\PYGZus{}v}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}resistance\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{resistance}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}charge\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{iq}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}avg current\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{current\PYGZus{}var}\PYG{p}{);}
+  \PYG{n}{StartMenu}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Voltage Sweep\PYGZdq{}}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+  \PYG{n}{DefineFunction}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}VI Curve\PYGZdq{}}\PYG{p}{,}\PYG{n}{VI\PYGZus{}Curve}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}V start\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v\PYGZus{}start}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}V end\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v\PYGZus{}end}\PYG{p}{);}
+  \PYG{n}{DefineDouble}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}v\PYGZus{}incr\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v\PYGZus{}incr}\PYG{p}{);}
+  \PYG{n}{DefineInt}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}v\PYGZus{}sweep\PYGZus{}delta\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v\PYGZus{}sweep\PYGZus{}delta}\PYG{p}{);}
+  \PYG{n}{EndMenu}\PYG{p}{();}
+\end{Verbatim}

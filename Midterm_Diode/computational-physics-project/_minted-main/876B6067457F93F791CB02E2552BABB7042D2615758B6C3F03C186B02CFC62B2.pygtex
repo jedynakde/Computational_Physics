@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{setVoltageSource}\PYG{p}{()\PYGZob{}}
+  \PYG{c+c1}{//calculate forces for the given voltages}
+  \PYG{n}{v\PYGZus{}f} \PYG{o}{=} \PYG{n}{iq}\PYG{o}{*}\PYG{n}{vs\PYGZus{}v}\PYG{o}{/}\PYG{n}{volt\PYGZus{}len}\PYG{p}{;}		\PYG{c+c1}{//calculate the field from the set voltage}
+  \PYG{n}{ud\PYGZus{}f} \PYG{o}{=} \PYG{n}{iq}\PYG{o}{*}\PYG{n}{ud\PYGZus{}v}\PYG{o}{/}\PYG{n}{diode\PYGZus{}len\PYGZus{}p}\PYG{p}{;}		\PYG{c+c1}{//calculate the field from the set upper diode voltage gap}
+  \PYG{n}{dd\PYGZus{}f} \PYG{o}{=} \PYG{n}{iq}\PYG{o}{*}\PYG{n}{dd\PYGZus{}v}\PYG{o}{/}\PYG{n}{diode\PYGZus{}len\PYGZus{}n}\PYG{p}{;}		\PYG{c+c1}{//calculate the field from the lower diode votlage gap}
+  \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{n}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;} \PYG{n}{n}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{d}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{d}\PYG{o}{\PYGZlt{}}\PYG{n}{D}\PYG{p}{;} \PYG{n}{d}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{q}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{=} \PYG{n}{iq}\PYG{p}{;}				\PYG{c+c1}{//set initial charge for each electron}
+    \PYG{p}{\PYGZcb{}\PYGZcb{}}
+
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

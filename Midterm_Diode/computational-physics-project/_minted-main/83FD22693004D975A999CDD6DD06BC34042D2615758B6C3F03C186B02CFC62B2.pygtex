@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{VI\PYGZus{}Curve}\PYG{p}{()\PYGZob{}}
+  \PYG{k+kt}{FILE} \PYG{o}{*}\PYG{n}{res}\PYG{p}{;}
+  \PYG{k+kt}{char} \PYG{n}{IsoName}\PYG{p}{[}\PYG{l+m+mi}{100}\PYG{p}{];}
+  \PYG{k+kt}{double} \PYG{n}{sumI} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+
+  \PYG{n}{sprintf}\PYG{p}{(}\PYG{n}{IsoName}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}VI\PYGZus{}Curve\PYGZus{}Q\PYGZus{}\PYGZpc{}f\PYGZus{}N\PYGZus{}\PYGZpc{}i\PYGZus{}ud\PYGZus{}v\PYGZus{}\PYGZpc{}f\PYGZus{}dd\PYGZus{}v\PYGZus{}\PYGZpc{}f.dat\PYGZdq{}}\PYG{p}{,}\PYG{n}{iq}\PYG{p}{,}\PYG{n}{N}\PYG{p}{,}\PYG{n}{ud\PYGZus{}v}\PYG{p}{,}\PYG{n}{dd\PYGZus{}v}\PYG{p}{);}\PYG{c+c1}{//put info in the filename to distinguish test params}
+  \PYG{n}{res}\PYG{o}{=}\PYG{n}{fopen}\PYG{p}{(}\PYG{n}{IsoName}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}w\PYGZdq{}}\PYG{p}{);}
+  \PYG{c+c1}{//sweep the voltage}
+  \PYG{k}{if}\PYG{p}{(}\PYG{n}{v\PYGZus{}incr} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0} \PYG{p}{)\PYGZob{}}
+	  \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{double} \PYG{n}{ivolt} \PYG{o}{=} \PYG{n}{v\PYGZus{}start}\PYG{p}{;}\PYG{n}{ivolt}\PYG{o}{\PYGZgt{}}\PYG{n}{v\PYGZus{}end}\PYG{p}{;}\PYG{n}{ivolt} \PYG{o}{=} \PYG{n}{ivolt} \PYG{o}{+} \PYG{n}{v\PYGZus{}incr}\PYG{p}{)\PYGZob{}}
+		\PYG{c+c1}{//set the voltage}
+		\PYG{n}{vs\PYGZus{}v} \PYG{o}{=} \PYG{n}{ivolt}\PYG{p}{;}
+		\PYG{n}{setVoltageSource}\PYG{p}{();}
+		\PYG{c+c1}{//loop to waste some time to get the current to settle}
+		\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{t} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{n}{v\PYGZus{}sweep\PYGZus{}delta}\PYG{p}{;}\PYG{n}{t}\PYG{o}{++}\PYG{p}{)}
+			\PYG{p}{\PYGZob{}}
+			\PYG{n}{iterate}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dt}\PYG{p}{);}
+	       	 	\PYG{n}{Events}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}
+			\PYG{n}{DrawGraphs}\PYG{p}{();}
+			\PYG{n}{sumI} \PYG{o}{+=} \PYG{n}{current\PYGZus{}var}\PYG{p}{;}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{c+c1}{//save the current and voltage data}
+		\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{res}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}\PYGZpc{}e \PYGZpc{}f}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{sumI}\PYG{o}{/}\PYG{n}{v\PYGZus{}sweep\PYGZus{}delta}\PYG{p}{,}\PYG{n}{vs\PYGZus{}v}\PYG{p}{);}
+	   \PYG{p}{\PYGZcb{}}
+   \PYG{p}{\PYGZcb{}}
+     \PYG{k}{else}\PYG{p}{\PYGZob{}}
+	  \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{double} \PYG{n}{ivolt} \PYG{o}{=} \PYG{n}{v\PYGZus{}start}\PYG{p}{;}\PYG{n}{ivolt}\PYG{o}{\PYGZlt{}}\PYG{n}{v\PYGZus{}end}\PYG{p}{;}\PYG{n}{ivolt} \PYG{o}{=} \PYG{n}{ivolt} \PYG{o}{+} \PYG{n}{v\PYGZus{}incr}\PYG{p}{)\PYGZob{}}
+		\PYG{c+c1}{//set the voltage}
+		\PYG{n}{vs\PYGZus{}v} \PYG{o}{=} \PYG{n}{ivolt}\PYG{p}{;}
+		\PYG{n}{setVoltageSource}\PYG{p}{();}
+		\PYG{c+c1}{//loop to waste some time to get the current to settle}
+		\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{t} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{n}{v\PYGZus{}sweep\PYGZus{}delta}\PYG{p}{;}\PYG{n}{t}\PYG{o}{++}\PYG{p}{)}
+			\PYG{p}{\PYGZob{}}
+			\PYG{n}{iterate}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dt}\PYG{p}{);}
+	       	 	\PYG{n}{Events}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}
+			\PYG{n}{DrawGraphs}\PYG{p}{();}
+			\PYG{n}{sumI} \PYG{o}{+=} \PYG{n}{current\PYGZus{}var}\PYG{p}{;}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{c+c1}{//save the current and voltage data}
+		\PYG{n}{fprintf}\PYG{p}{(}\PYG{n}{res}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}\PYGZpc{}e \PYGZpc{}f}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{sumI}\PYG{o}{/}\PYG{n}{v\PYGZus{}sweep\PYGZus{}delta}\PYG{p}{,}\PYG{n}{vs\PYGZus{}v}\PYG{p}{);}
+	   \PYG{p}{\PYGZcb{}}
+   \PYG{p}{\PYGZcb{}}
+
+  \PYG{n}{fclose}\PYG{p}{(}\PYG{n}{res}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
