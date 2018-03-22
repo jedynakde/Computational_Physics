@@ -74,27 +74,24 @@ In an ideal world with perfect conditions, the graph of Voltage vs Current (V vs
 \begin{enumerate}
 \item Open terminal and launch the Diode program with the following command
 \begin{minted}{bash}
-  $ ./Diode_Exec
+  $ ./diodeexec
 \end{minted}
 \item Click init, measure, Measurements and Diode. All of these should bring up a separate window. Arrange these on your desktop so you can see all of them.
-\item leave other settings to defaults
-\item in the Measurements window, click Average Current to open a graph of current over time. This should have a dynamic graph once cont is set to on.
-\item {\sout{ in the measure window, set T = 2, click "Set T"}}
-\item In the Diode window, click SetVoltageSource to initialize the voltage.
+\item leave other settings set to defaults
+\item in the Measurements window, click Average Current to open a line graph of current over time. This should have a dynamic graph once cont is set to on.
+\item In the Diode window, click Update Voltage Params to initialize the voltage.
 \item in the main window, set cont to on
-\item {\sout{ immediately click set T to keep the T at 2}}
-\item {\sout{ repeat step 8 until the T (temperature) on the Measurements graph settles to 2+-0.1.}}
-\item {\sout{ click the cont button in the main window to stop the simulation}}
-\item {\sout{ record the values of P (pressure) Pnid (ideal pressure) and T (temperature) to be plotted later}}
-\item {\sout{ change the value of rho in the measure window to 0.4 and click "set rho"}}
-\item {\sout{ click cont in the main window to resume the simulation}}
-\item {\sout{ repeat steps 6 to 13 with different rho values of [0.5, 0.6, 0.7 ,0.8 ,0.9 ,1.0 ,1.1 ,1.2 ,1.3 ,1.4 ]}}
-\item {\sout{ plot the values T, P, Pnid vs rho to see how these values changed with respect to changing density}}
-\item {\sout{ repeat steps 5 to 15 with a T value of 0.05 and rho values of [0.5 ,0.4     ,0.3   ,0.2   ,0.15   ,0.1    ,0.08   ,0.06   ,.04   ,0.02     ,   0.01]}}
+\item Click graph to see the simulation itself run
+\item To run a voltage sweep and collect data of V vs I, click Diode > Voltage Sweep. This will open another window.
+\item Set V start and V end to desired parameters.
+\item Click VI Curve to run the voltage sweep.
+\item *Note: To adjust the initial forward gap voltage of the diode, change the parameters in Diode > forward gap V. It defaults to 0.2
 \end{enumerate}
 \section{Algorithms and Code}
 \paragraph{}
 
+
+Being worked on by David
 
 \section{Results}
 \paragraph{}
@@ -102,9 +99,20 @@ In an ideal world with perfect conditions, the graph of Voltage vs Current (V vs
 \item Results for Forward-Biasing\\
 voltage sweep, -5V - 5V
 increments of 1v
+
+Test 1 @ 0.1V forward Gap
+
+Test 2 @ 0.2 forward gap
+
+Test 3 @ 0.3 forward gap
+
+Test 4 @ 1.0 forward gap
+
+
 \item Results for Reverse-Biasing
 voltage sweep -10V - 150V
 increments of 10v
+
 \end{enumerate}
  \textcolor{red}{Analyse the data your code is generating. 
     \\Do the results agree with your hypothesis? \\
