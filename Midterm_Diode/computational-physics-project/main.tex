@@ -272,7 +272,7 @@ DefineGraphN_R("Average Current",&IImeas[0],&Measlen,NULL);
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.2]{current_graph.png}
-\caption{\label{fig} Diagram of doping process}
+\caption{\label{fig} plot of the diode current vs time}
 \end{figure}
 
 
@@ -302,41 +302,59 @@ DefineGraphN_R("Average Current",&IImeas[0],&Measlen,NULL);
 
 \section{Procedure}
 \paragraph{}
-
-
-\section{Algorithms and Code}
-\paragraph{}
-
+\begin{enumerate}
+\item Open terminal and launch the Diode program with the following command
+\begin{minted}{bash}
+  $./diodeexec$
+\end{minted}
+\item Click init, measure, Measurements and Diode. All of these should bring up a separate window. Arrange these on your desktop so you can see all of them.
+\item leave other settings set to defaults
+\item in the Measurements window, click Average Current to open a line graph of current over time. This should have a dynamic graph once cont is set to on.
+\item In the Diode window, click Update Voltage Params to initialize the voltage.
+\item in the main window, set cont to on
+\item Click graph to see the simulation itself run
+\item To run a voltage sweep and collect data of V vs I, click Diode > Voltage Sweep. This will open another window.
+\item Set V start and V end to desired parameters.
+\item Click VI Curve to run the voltage sweep.
+\item *Note: To adjust the initial forward gap voltage of the diode, change the parameters in Diode > forward gap V. It defaults to 0.2
+\end{enumerate}
 
 \section{Results}
 \paragraph{}
-\begin{enumerate}
-\item Results for Forward-Biasing\\
-voltage sweep, -5V - 5V
-increments of 1v
-\item Results for Reverse-Biasing
-voltage sweep -10V - 150V
-increments of 10v
-\end{enumerate}
- \textcolor{red}{Analyse the data your code is generating. 
-    \\Do the results agree with your hypothesis? \\
-    How are the results different from your expectations?\\
-    What does that tell you about your project?}\\
-\textcolor{red}{INSERT SCREENSHOTS OF CODE WORKING, GRAPHS, ETC}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{vi_curves.jpg}
+\caption{\label{fig} plot of several vi curves with different forward diode voltages, we expected the curves to slope faster with lower diode voltage, but this wasn't always observed}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{diode_break.jpg}
+\caption{\label{fig} plot of several vi curves with different forward diode voltages}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{sim.png}
+\caption{\label{fig} Photograph of the simulation running, Red lines mark voltage source, blue is reverse diode field and green is forward diode field}
+\end{figure}
 
 
 \section{Conclusion}
 \paragraph{}
-\textcolor{red}{WHAT UNEXPECTED DIFFICULTIES DID YOU ENCOUNTER? HOW DID YOU ADDRESS THEM?}
+Over the course of the project, the group ran into many logic errors in the c code. In order to find these problems we added print statements, and eventually we started using a debugger. We did resolve these errors allowing us to complete the simulation code. The logic errors in the code originally caused the diode conditions not to work because the velocities of all the particles were zero. This caused issues because our Diode logic relied on know which direction the particles were heading. This issue was resolved by changing the order of the code in iterate so the velocities were computed before the diode code was executed. We also observed particles traveling very quickly. This could be due to an integration error. We were able to observe typical silicone diode Voltage Current Curves, however they were very linear for the forward and the reverse breakdown current section. The whole voltage current curve was non linear in that the diode does stop small reverse currents, but allows forward currents.
 
 \section{Individual Contribution}
 \paragraph{}
- \textcolor{red}{ADD BIT ABOUT HOW WORK WAS DIVIDED AMONG GROUP}\\
- \textcolor{red}{Each group member will fill out the section next to their name.\\
-Jacob Connelly:\\
-David Jedynak:\\
-Nick Zahler:\\}
+ The group had a wide variety of skill levels in different domains. The goal was to select tasks that each member could realistically complete while giving each person something challenging that they could learn from. We all used a mobile phone group chat to stay in contact.
+ 
+Jacob Connelly:Throughout the lifespan of this project, Jacob's main contribution was in the writing of the LaTeX document and background research on diode theory, including crystalline structure, the concept behind forward and reverse bias, and the points at which the diode behaves either as expected (under normal conditions) or breaks (under less ideal conditions). He was also responsible for running the simulations under test conditions to collect results.
+
+David Jedynak focused on writing the diode code logic, plotting code, simulation design, and writing the simulation design subsection in the latex paper. Also he showed his group members how to use an online code repository(Github).
+
+Nick Zahler:For the midterm, I helped David develop the region idea for the “force field” that we used in the program. We both tried to make it with our own way, and in the end decided to use David’s version of the code due to it behaving more consistently than my version. I also helped get the LaTex document in order for submission, and gathered the data from Jacob for the graphs of the VI curves and the diode breakdown. Once I had the data, I used Matlab to generate graphs that we include in our submission.  Using Matlab also helped us spot unusual behavior that we had with any of the simulations. Also, I reviewed the code being written and assisted David whenever he needed debugging. I also tried to get a resistance sweep function to work, however ran into lots of problems, and for the sake of compiling our code, we got rid of it. I attempted to smooth out some of the early renditions of the VI Curves code due to low voltage results having erratic behavior. In the end, we re-did some of the math and rearranged the code for it to run a little bit smoother. Overall, my group partners did superb in helping the group achieve their goal. 
+
 
 \section{Code for Diode Simulation}
 \paragraph{}
@@ -346,7 +364,18 @@ Nick Zahler:\\}
 \section{References}
 \paragraph{}
 https://www.ndsu.edu/pubweb/~carswagn/LectureNotes/370/index.html
+
+\begin{lstlisting}
+Figure 1: \\http://www.expertsmind.com/learning/p-type-semiconductor-basics-assignment-help-7342873147.aspx\\
+Figure 2 (left): \\https://www.electrical4u.com/diode-working-principle-and-types-of-diode/\\
+Figure 2 (right): \\http://www.electricalworld360.com/depletion-region/\\
+Figure 3 (left): \\http://www.learningaboutelectronics.com/Articles/Ideal-diode.php\\
+Figure 3 (right):\\https://learn.sparkfun.com/tutorials/diodes/real-diode-
+\end{lstlisting}
+
+
 \end{document}
+
 
 
 ++++++++++++
