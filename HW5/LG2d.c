@@ -16,80 +16,138 @@ int n[xdim][ydim][V];
 
 // Boundary variables
 #define LINKMAX 10000
-int x0=5,x1=25,y2=20,yy0 = 5,yy1 = 25;
+int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40;
 int linkcount=0,links[LINKMAX][3];
+//variables for measuring tube momentum
+int tot_vx=0,tot_vy=0;
+int x0y1 = 0;
 
 void FindLink(){
   for (int x=x0; x<x1; x++){
-    
+    x0y1 = 0;
     links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy0+2;
+    links[linkcount][1] = yy2;
     links[linkcount][2] = 0;
     linkcount++;
     links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy0+2;
+    links[linkcount][1] = yy2;
     links[linkcount][2] = 1;
     linkcount++;
     links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy0+2;
-    links[linkcount][2] = 2;
-    linkcount++;
-
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1-2;
-    links[linkcount][2] = 0;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1-2;
-    links[linkcount][2] = 1;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1-2;
+    links[linkcount][1] = yy2;
     links[linkcount][2] = 2;
     linkcount++;
   }
+    for (int x=x1; x<x2; x++){
+    x0y1 = 0;
+    links[linkcount][0] = x; //x-position
+    links[linkcount][1] = yy1;
+    links[linkcount][2] = 0;
+    linkcount++;
+    links[linkcount][0] = x; //x-position
+    links[linkcount][1] = yy1;
+    links[linkcount][2] = 1;
+    linkcount++;
+    links[linkcount][0] = x; //x-position
+    links[linkcount][1] = yy1;
+    links[linkcount][2] = 2;
+    linkcount++;
+  }
+    for (int x=x0; x<x2; x++){
+	    x0y1 = 0;
+	    links[linkcount][0] = x; //x-position
+	    links[linkcount][1] = yy0;
+	    links[linkcount][2] = 0;
+	    linkcount++;
+	    links[linkcount][0] = x; //x-position
+	    links[linkcount][1] = yy0;
+	    links[linkcount][2] = 1;
+	    linkcount++;
+	    links[linkcount][0] = x; //x-position
+	    links[linkcount][1] = yy0;
+	    links[linkcount][2] = 2;
+	    linkcount++;
+  }
 
   for (int y=yy0; y<yy1; y++){
-    links[linkcount][0] = x0+2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 0;
-    linkcount++;
-    links[linkcount][0] = x0+2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 3;
-    linkcount++;
-    links[linkcount][0] = x0+2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 6;
-    linkcount++;
-
-    links[linkcount][0] = x1-2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 0;
-    linkcount++;
-    links[linkcount][0] = x1-2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 3;
-    linkcount++;
-    links[linkcount][0] = x1-2; //x-position
-    links[linkcount][1] = y;
-    links[linkcount][2] = 6;
-    linkcount++;
+		x0y1 = 1;
+		links[linkcount][0] = x2; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 0;
+		linkcount++;
+		links[linkcount][0] = x2; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 3;
+		linkcount++;
+		links[linkcount][0] = x2; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 6;
+		linkcount++;
+  }
+  for (int y=yy1; y<yy2; y++){
+		x0y1 = 1;
+		links[linkcount][0] = x1; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 0;
+		linkcount++;
+		links[linkcount][0] = x1; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 3;
+		linkcount++;
+		links[linkcount][0] = x1; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 6;
+		linkcount++;
+  }
+  for (int y=yy0; y<yy2; y++){
+		x0y1 = 1;
+		links[linkcount][0] = x0; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 0;
+		linkcount++;
+		links[linkcount][0] = x0; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 3;
+		linkcount++;
+		links[linkcount][0] = x0; //x-position
+		links[linkcount][1] = y;
+		links[linkcount][2] = 6;
+		linkcount++;
   }
 
 }
 
 void bounceback(){
+  	tot_vx =0;
+	tot_vy =0;
   for (int lc=0; lc<linkcount; lc++){
     int x=links[lc][0];
     int y=links[lc][1];
     int v=links[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
-    int tmp= n[x+vx][y+vy][v];
-    n[x+vx][y+vy][v]= n[x][y][8-v];
-    n[x][y][8-v]=tmp;
+	//to find the total momentum of the system
+	tot_vy += n[x][y][1] - n[x][y][7];
+	tot_vx += n[x][y][3] - n[x][y][5];;
+	int tmp= n[x+vx][y+vy][v];
+	//if(x0y1 ==1 && x == y || y == yy2 && x == x1 || && v == 0 || v == 8){//if the link is a corner or intersect of 2 lines
+	if((
+	   (x == x0 && y ==yy0)||(x == x1 && y ==yy1)||(y == yy2 && x == x0 )||( y == yy2 && x == x1)||(x == x2 && y == yy0 )||(x == x2 && y == yy1)) &&
+	    v == 0 &&
+	    x0y1 == 1
+	    ){
+			//n[x+vx][y+vy][v]= 0 ;// n[x][y][8-v];
+			//n[x][y][8-v]= 0 ;//tmp;
+			printf("flag %i at (%i,%i) \n",v,x,y);
+		}
+	else{//else if not a corner
+		n[x+vx][y+vy][v]= n[x][y][8-v];
+		n[x][y][8-v]=tmp;
+		printf("swap %i with %i link %i \n",8 - v, v, lc);
+		}
+	
   }
+printf("done\n");
 }
 
 void setrho(){
@@ -341,10 +399,17 @@ void main(){
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
+  StartMenu("Measure",0);
+  DefineInt("tot_vx",&tot_vx);
+  DefineInt("tot_vy",&tot_vy);
+  EndMenu();
   StartMenu("Wall",0);
   DefineInt("x0", &x0);
   DefineInt("x1", &x1);
-  DefineInt("y2", &y2);
+  DefineInt("x2", &x2);
+  DefineInt("yy0", &yy0);
+  DefineInt("yy1", &yy1);
+  DefineInt("yy2", &yy2);
   DefineFunction("Add Wall",FindLink);
   DefineInt("link count",&linkcount);
   EndMenu();
