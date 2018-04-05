@@ -23,96 +23,105 @@ int tot_vx=0,tot_vy=0;
 int x0y1 = 0;
 
 void FindLink(){
-  for (int x=x0; x<x1; x++){
-    x0y1 = 0;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy2;
-    links[linkcount][2] = 0;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy2;
-    links[linkcount][2] = 1;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy2;
-    links[linkcount][2] = 2;
-    linkcount++;
+
+	links[linkcount][0] = x0; //x-position
+    	links[linkcount][1] = yy2;
+    	links[linkcount][2] = 0;
+    	linkcount++;
+	links[linkcount][0] = x2; //x-position
+    	links[linkcount][1] = yy0;
+    	links[linkcount][2] = 0;
+    	linkcount++;
+  for (int x=x0; x<x1+1; x++){
+    	x0y1 = 0;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy2;
+    	links[linkcount][2] = 0;
+    	linkcount++;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy2;
+    	links[linkcount][2] = 1;
+    	linkcount++;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy2;
+    	links[linkcount][2] = 2;
+    	linkcount++;
   }
-    for (int x=x1; x<x2; x++){
-    x0y1 = 0;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1;
-    links[linkcount][2] = 0;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1;
-    links[linkcount][2] = 1;
-    linkcount++;
-    links[linkcount][0] = x; //x-position
-    links[linkcount][1] = yy1;
-    links[linkcount][2] = 2;
-    linkcount++;
+    for (int x=x1; x<x2+1; x++){
+    	x0y1 = 0;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy1;
+    	links[linkcount][2] = 0;
+    	linkcount++;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy1;
+    	links[linkcount][2] = 1;
+    	linkcount++;
+    	links[linkcount][0] = x; //x-position
+    	links[linkcount][1] = yy1;
+    	links[linkcount][2] = 2;
+    	linkcount++;
   }
-    for (int x=x0; x<x2; x++){
-	    x0y1 = 0;
-	    links[linkcount][0] = x; //x-position
-	    links[linkcount][1] = yy0;
-	    links[linkcount][2] = 0;
-	    linkcount++;
-	    links[linkcount][0] = x; //x-position
-	    links[linkcount][1] = yy0;
-	    links[linkcount][2] = 1;
-	    linkcount++;
-	    links[linkcount][0] = x; //x-position
-	    links[linkcount][1] = yy0;
-	    links[linkcount][2] = 2;
-	    linkcount++;
+    for (int x=x0; x<x2+1; x++){
+	x0y1 = 0;
+	links[linkcount][0] = x; //x-position
+        links[linkcount][1] = yy0;
+        links[linkcount][2] = 0;
+        linkcount++;
+        links[linkcount][0] = x; //x-position
+        links[linkcount][1] = yy0;
+        links[linkcount][2] = 1;
+        linkcount++;
+        links[linkcount][0] = x; //x-position
+        links[linkcount][1] = yy0;
+        links[linkcount][2] = 2;
+        linkcount++;
   }
 
-  for (int y=yy0; y<yy1; y++){
-		x0y1 = 1;
-		links[linkcount][0] = x2; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 0;
-		linkcount++;
-		links[linkcount][0] = x2; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 3;
-		linkcount++;
-		links[linkcount][0] = x2; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 6;
-		linkcount++;
+  for (int y=yy0; y<yy1+1; y++){
+	x0y1 = 1;
+	links[linkcount][0] = x2; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 0;
+	linkcount++;
+	links[linkcount][0] = x2; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 3;
+	linkcount++;
+	links[linkcount][0] = x2; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 6;
+	linkcount++;
   }
-  for (int y=yy1; y<yy2; y++){
-		x0y1 = 1;
-		links[linkcount][0] = x1; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 0;
-		linkcount++;
-		links[linkcount][0] = x1; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 3;
-		linkcount++;
-		links[linkcount][0] = x1; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 6;
-		linkcount++;
+  for (int y=yy1; y<yy2+1; y++){
+	x0y1 = 1;
+	links[linkcount][0] = x1; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 0;
+	linkcount++;
+	links[linkcount][0] = x1; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 3;
+	linkcount++;
+	links[linkcount][0] = x1; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 6;
+	linkcount++;
   }
-  for (int y=yy0; y<yy2; y++){
-		x0y1 = 1;
-		links[linkcount][0] = x0; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 0;
-		linkcount++;
-		links[linkcount][0] = x0; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 3;
-		linkcount++;
-		links[linkcount][0] = x0; //x-position
-		links[linkcount][1] = y;
-		links[linkcount][2] = 6;
-		linkcount++;
+  for (int y=yy0; y<yy2+1; y++){
+	x0y1 = 1;
+	links[linkcount][0] = x0; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 0;
+	linkcount++;
+	links[linkcount][0] = x0; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 3;
+	linkcount++;
+	links[linkcount][0] = x0; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 6;
+	linkcount++;
   }
 
 }
@@ -132,9 +141,14 @@ void bounceback(){
 	int tmp= n[x+vx][y+vy][v];
 	//if(x0y1 ==1 && x == y || y == yy2 && x == x1 || && v == 0 || v == 8){//if the link is a corner or intersect of 2 lines
 	if((
-	   (x == x0 && y ==yy0)||(x == x1 && y ==yy1)||(y == yy2 && x == x0 )||( y == yy2 && x == x1)||(x == x2 && y == yy0 )||(x == x2 && y == yy1)) &&
-	    v == 0 &&
-	    x0y1 == 1
+	   (x == x0 && y ==yy0)||
+	   (x == x1 && y ==yy1)||
+	   (y == yy2 && x == x0 )||
+	   ( y == yy2 && x == x1)||
+	   (x == x2 && y == yy0 )||
+	   (x == x2 && y == yy1)) &&
+	    (v == 0) &&
+	    x0y1 == 5
 	    ){
 			//n[x+vx][y+vy][v]= 0 ;// n[x][y][8-v];
 			//n[x][y][8-v]= 0 ;//tmp;
@@ -143,7 +157,7 @@ void bounceback(){
 	else{//else if not a corner
 		n[x+vx][y+vy][v]= n[x][y][8-v];
 		n[x][y][8-v]=tmp;
-		printf("swap %i with %i link %i \n",8 - v, v, lc);
+		printf("swap %i with %i link %i at (%i,%i)\n",8 - v, v, lc,x,y);
 		}
 	
   }
