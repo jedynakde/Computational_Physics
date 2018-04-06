@@ -23,7 +23,6 @@ int tot_vx=0,tot_vy=0;
 int x0y1 = 0;
 
 void FindLink(){
-
 	links[linkcount][0] = x0; //x-position
     	links[linkcount][1] = yy2;
     	links[linkcount][2] = 0;
@@ -140,25 +139,25 @@ void bounceback(){
 	tot_vx += n[x][y][3] - n[x][y][5];;
 	int tmp= n[x+vx][y+vy][v];
 	//if(x0y1 ==1 && x == y || y == yy2 && x == x1 || && v == 0 || v == 8){//if the link is a corner or intersect of 2 lines
-	if((
-	   (x == x0 && y ==yy0)||
-	   (x == x1 && y ==yy1)||
-	   (y == yy2 && x == x0 )||
-	   ( y == yy2 && x == x1)||
-	   (x == x2 && y == yy0 )||
-	   (x == x2 && y == yy1)) &&
-	    (v == 0) &&
-	    x0y1 == 5
-	    ){
+	//if((
+	//   (x == x0 && y ==yy0)||
+	//   (x == x1 && y ==yy1)||
+	//   (y == yy2 && x == x0 )||
+	//   ( y == yy2 && x == x1)||
+	//   (x == x2 && y == yy0 )||
+	//   (x == x2 && y == yy1)) &&
+	//    (v == 0) &&
+	//    x0y1 == 5
+	//    ){
 			//n[x+vx][y+vy][v]= 0 ;// n[x][y][8-v];
 			//n[x][y][8-v]= 0 ;//tmp;
-			printf("flag %i at (%i,%i) \n",v,x,y);
-		}
-	else{//else if not a corner
+	//		printf("flag %i at (%i,%i) \n",v,x,y);
+	//	}
+	//else{//else if not a corner
 		n[x+vx][y+vy][v]= n[x][y][8-v];
 		n[x][y][8-v]=tmp;
-		printf("swap %i with %i link %i at (%i,%i)\n",8 - v, v, lc,x,y);
-		}
+	//	printf("swap %i with %i link %i at (%i,%i)\n",8 - v, v, lc,x,y);
+	//	}
 	
   }
 printf("done\n");
