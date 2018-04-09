@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\newcommand{\includecode}[2][c]{\lstinputlisting[caption=#2, escapechar=, language=#1]{#2}}
+\usepackage{minted}
+
+\begin{document}
+\lstset{language=C} 
+\title{Homework 5: Feynman problem}
+\author{David Jedynak}
+\maketitle
+\begin{abstract}
+ We show how an angled tube can be created in an integer lattice gas method simulation. This angled tube is used with particle sources to perform an experiment to provide insight on the Feynman problem. The momentum transferred from the particles to the tube will be estimated to understand the response of the tube to different densities. The influence of density ratios inside and outside the tube on the force will be observed.
+\end{abstract}
+
+\section{Introduction}
+The Feynman problem presents the question of what will occur when an angled tube attached to a pivot point has fluid pushed out or sucked into the tube. Will the tube rotate clockwise or counter clockwise? My prediction is that the tube will rotate clockwise when air is pushed out of the tube, if the experiment is set up as the figure below.
+
+
+
+The Lattice Gas simulation where this experiment will be executed has constraints that particle momentum and the number of particles must be conserved. The collisions and resulting velocities can be modeled using random processes that can lower the computation cost from prior simulations that would calculate interactions between every particle based on distance, charge, mass, and fields. This can be done because the prior simulations exhibit this random behavior.
+
+
+\section{Walls}
+The Feynman experiment will require 2 Dimensional walls to create a right angled tube. Particles must be reflected if they hit a wall. Particles cannot pass through walls. To accomplish this requirement, velocities in different directions can be swapped. The lattice gas simulation is composed of many cells. Each cell has 9(3 by 3 grid) different values to describe particles motion in a cell.
+
+
+Here are the indexes for each velocity. The value behind each index is the magnitude of the velocity in that direction
+\begin{center}
+Indexes ~
+\begin{tabular}{l c r}
+	\hline
+	0 & 1 & 2 \\ \hline
+	3 & 4 & 5 \\ \hline
+	6 & 7 & 8 \\ 
+	\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+Velocities corresponding to Indexes above ~
+\begin{tabular}{l c r}
+	\hline
+	$(-v_x,+v_y)$ & $(0,+v_y)$ & $(+v_x,+v_y)$ \\ \hline
+	$(-v_x,0)$ & $(0,0)$ & $(+v_x,0)$ \\ \hline
+	$(-v_x,-v_y)$ & $(0,-v_y)$ & $(+v_x,-v_y)$ \\ 
+	\hline
+\end{tabular}
+\end{center}
+
+\subsection{Walls as Links}
+A wall will be composed of links. The links will have an x and y coordinates that will be the same as the lattice cell they are interacting with. Additionally these links will also store the index of the velocity position they will be swapping. Horizontal walls will be switching [0,1,2] will be switched with [8,7,6] respectively. Vertical walls will be switching [0,3,6] will be switched with [8,5,2] respectively. Only one of these sets for each Vertical and Horizontal walls will need to be stored because both will be able to derive the second set's indexes from the first set. 
+
+Code defining Horizontal Walls 
+\begin{minted}{c}
+test
+\end{minted}
+
+Code Defining Vertical Walls
+\begin{minted}{c}
+test
+\end{minted}
+
+Additional code added to prevent the tube from leaking particles
+\begin{minted}{c}
+test
+\end{minted}
+
+Code Defining How particles reflect off of walls (Both horizontal and vertical)
+\begin{minted}{c}
+test
+\end{minted}
+
+\section{Calculating Momentum}
+ p = mass * velocity
+\section{Force as a Function of Density Ratios}
+
+\section{Results}
+\subsection{Wall}
+\subsection{Calculating Momentum}
+\subsection{Force as a Function of Density Ratios}
+
+
+
+These simulations show that particles reenter at the boundaries of the simulation and that no spurious effects are obvious at the periodic boundaries.
+
+\section{Conclusions}
+In this report we have shown how to implement periodic boundary conditions in a Molecular Dynamics simulation. We have verified that our algorithm is free from obvious errors by setting up a periodic system and observing that it shows no spurious edge effects.
+
+
+\appendix
+\section{Code}
+\lstinputlisting[language=C]{/home/david/Documents/Computational_Physics/HW5/LG2d.c}
+\end{document}
+  
