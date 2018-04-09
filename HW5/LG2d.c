@@ -160,14 +160,14 @@ void bounceback(){
     int v=links[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
-	//to find the total momentum of the system
-	//the tube momentum will be proportional to the 
-	//negatve sum of all the velocities of the particles.. 
-	//could add mass to make more accurate.. assume mass is 1 for now
-	tot_vy += -2*(n[x][y][1] - n[x][y][7] + n[x][y][2] - n[x][y][6]- n[x][y][8] + n[x][y][0]);
-	tot_vx += -2*(-n[x][y][3] + n[x][y][5] + n[x][y][2]- n[x][y][6] + n[x][y][8] - n[x][y][0]); 
+	//tot_vy += -2*(n[x][y][1] - n[x][y][7] + n[x][y][2] - n[x][y][6]- n[x][y][8] + n[x][y][0]);
+	//tot_vx += -2*(-n[x][y][3] + n[x][y][5] + n[x][y][2]- n[x][y][6] + n[x][y][8] - n[x][y][0]); 
 
 	int tmp= n[x+vx][y+vy][v];
+	
+	tot_vy += -2*vy*(n[x][y][8-v]-tmp);
+	tot_vx += -2*vx*(n[x][y][8-v]-tmp);
+
 	n[x+vx][y+vy][v]= n[x][y][8-v];
 	n[x][y][8-v]=tmp;
 		
