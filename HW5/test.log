@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.3.21)  8 APR 2018 22:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.1.30)  9 APR 2018 19:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
 **test.tex
 (./test.tex
 LaTeX2e <2017-04-15>
-Babel <3.12> and hyphenation patterns for 3 language(s) loaded.
+Babel <3.12> and hyphenation patterns for 84 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -320,8 +320,7 @@ runsystem(which pygmentize && touch test.aex)...executed.
 
 runsystem(rm test.aex)...executed.
 
-
-No file test.aux.
+ (./test.aux)
 \openout1 = `test.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -336,6 +335,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
+
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count138
@@ -463,37 +463,46 @@ File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 \openout3 = `test.pyg'.
 
-runsystem(pygmentize -S default -f latex -P commandprefix=PYG > _minted-test/de
-fault-pyg-prefix.pygstyle)...executed.
+
+(./_minted-test/default-pyg-prefix.pygstyle) (./_minted-test/default.pygstyle)
+(./_minted-test/518F1897ED6B154DF1E5846B0BD786537942C6C149965D507BEAA2D6AE633CC
+C.pygtex
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 3.
+ [2])
+\openout3 = `test.pyg'.
 
 
-(./_minted-test/default-pyg-prefix.pygstyle)
-runsystem(pygmentize -S default -f latex -P commandprefix=PYGdefault > _minted-
-test/default.pygstyle)...executed.
-
- (./_minted-test/default.pygstyle)
-runsystem(pygmentize -l c -f latex -P commandprefix=PYG -F tokenmerge -o _minte
-d-test/D8E8FCA2DC0F896FD7CB4CB0031BA2497942C6C149965D507BEAA2D6AE633CCC.pygtex 
-test.pyg)...executed.
+(./_minted-test/76E82CF6C489106AAC97A804448E092D7942C6C149965D507BEAA2D6AE633CC
+C.pygtex [3])
+\openout3 = `test.pyg'.
 
 
-(./_minted-test/D8E8FCA2DC0F896FD7CB4CB0031BA2497942C6C149965D507BEAA2D6AE633CC
+(./_minted-test/384BE8F193B25A1C07050E61B068BCB87942C6C149965D507BEAA2D6AE633CC
 C.pygtex)
 \openout3 = `test.pyg'.
 
 
-(./_minted-test/D8E8FCA2DC0F896FD7CB4CB0031BA2497942C6C149965D507BEAA2D6AE633CC
-C.pygtex)
+(./_minted-test/54CA4AD269EED662B85C0580695894537942C6C149965D507BEAA2D6AE633CC
+C.pygtex [4])
 \openout3 = `test.pyg'.
 
 
-(./_minted-test/D8E8FCA2DC0F896FD7CB4CB0031BA2497942C6C149965D507BEAA2D6AE633CC
+(./_minted-test/D6DF9D800603764D346CECC48A3A00DC7942C6C149965D507BEAA2D6AE633CC
 C.pygtex)
-\openout3 = `test.pyg'.
+<p1_noleakage.png, id=26, 1269.74374pt x 536.0025pt>
+File: p1_noleakage.png Graphic file (type png)
+<use p1_noleakage.png>
+Package pdftex.def Info: p1_noleakage.png  used on input line 218. on input lin
+e 218.
+Package pdftex.def Info: Requested size: 380.92606pt x 160.80199pt on input lin
+e 218.
 
+Overfull \hbox (35.92606pt too wide) in paragraph at lines 218--219
+ [][] 
+ []
 
-(./_minted-test/D8E8FCA2DC0F896FD7CB4CB0031BA2497942C6C149965D507BEAA2D6AE633CC
-C.pygtex) [2] (/home/david/Documents/Computational_Physics/HW5/LG2d.c
+[5] (/home/david/Documents/Computational_Physics/HW5/LG2d.c
 LaTeX Font Info:    Try loading font information for OML+cmr on input line 2.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omlcmr.fd
@@ -501,18 +510,22 @@ File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 2.
-
+ [6 <./p1_noleakage.png>]
 Overfull \hbox (93.00446pt too wide) in paragraph at lines 21--22
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 34.
+
+Overfull \hbox (45.00397pt too wide) in paragraph at lines 32--33
+[][][][][][][][][][][][] 
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 35.
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 34.
- [3]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 35.
 LaTeX Font Info:    Try loading font information for TS1+cmr on input line 48.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
@@ -522,113 +535,116 @@ Overfull \hbox (93.00446pt too wide) in paragraph at lines 48--49
 [][][][][][][][][][][][][][][] 
  []
 
-
-Overfull \hbox (327.00684pt too wide) in paragraph at lines 49--50
-[][][][][][][][][][][][][][][][][][][] 
- []
-
-
+[7]
 Overfull \hbox (93.00446pt too wide) in paragraph at lines 50--51
 [][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (327.00684pt too wide) in paragraph at lines 51--52
-[][][][][][][][][][][][][][][][][][][] 
+Overfull \hbox (153.00507pt too wide) in paragraph at lines 54--55
+[][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (105.00458pt too wide) in paragraph at lines 54--55
+Overfull \hbox (153.00507pt too wide) in paragraph at lines 56--57
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (105.00458pt too wide) in paragraph at lines 60--61
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[4] [5]
-Overfull \hbox (27.00378pt too wide) in paragraph at lines 165--166
-[][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (93.00446pt too wide) in paragraph at lines 166--167
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (243.00598pt too wide) in paragraph at lines 167--168
+[8] [9]
+Overfull \hbox (255.0061pt too wide) in paragraph at lines 169--170
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][] 
+][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (249.00604pt too wide) in paragraph at lines 168--170
+Overfull \hbox (261.00616pt too wide) in paragraph at lines 170--172
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
-][][][][][][][][][][][][][][][][][] 
+][][][][][][][][][][][][][][][][][][] 
  []
 
-[6] [7] [8]
-Overfull \hbox (57.00409pt too wide) in paragraph at lines 273--274
+[10] [11]
+Overfull \hbox (57.00409pt too wide) in paragraph at lines 279--280
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[9]
-Overfull \hbox (21.00372pt too wide) in paragraph at lines 347--348
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[10]
-Overfull \hbox (9.0036pt too wide) in paragraph at lines 360--361
+[12] [13]
+Overfull \hbox (21.00372pt too wide) in paragraph at lines 353--354
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (9.0036pt too wide) in paragraph at lines 380--381
+Overfull \hbox (9.0036pt too wide) in paragraph at lines 366--367
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[11]
-Overfull \hbox (9.0036pt too wide) in paragraph at lines 422--423
+[14]
+Overfull \hbox (9.0036pt too wide) in paragraph at lines 386--387
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[15]
+Overfull \hbox (9.0036pt too wide) in paragraph at lines 428--429
 [][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (63.00415pt too wide) in paragraph at lines 423--424
+Overfull \hbox (63.00415pt too wide) in paragraph at lines 429--430
 [][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (63.00415pt too wide) in paragraph at lines 424--425
+Overfull \hbox (63.00415pt too wide) in paragraph at lines 430--431
 [][][][][][][][][][][][][][][] 
  []
 
-[12]) [13] (./test.aux)
+
+Overfull \hbox (123.00476pt too wide) in paragraph at lines 431--432
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (123.00476pt too wide) in paragraph at lines 432--433
+[][][][][][][][][][][][][][][] 
+ []
+
+[16]) [17] (./test.aux)
 runsystem(rm test.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 7511 strings out of 494931
- 121979 string characters out of 6180851
- 269532 words of memory out of 5000000
- 10683 multiletter control sequences out of 15000+600000
- 10856 words of font info for 39 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
+ 7542 strings out of 492990
+ 123069 string characters out of 6135005
+ 273884 words of memory out of 5000000
+ 10953 multiletter control sequences out of 15000+600000
+ 11024 words of font info for 40 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
  37i,7n,49p,819b,1520s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/david/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/tcti1000.600
-pk> </home/david/.texlive2017/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.60
-0pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.
-pfb>
-Output written on test.pdf (13 pages, 168188 bytes).
+{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmitt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf/fonts/type1/public/cm-supe
+r/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb>
+Output written on test.pdf (17 pages, 242644 bytes).
 PDF statistics:
- 105 PDF objects out of 1000 (max. 8388607)
- 75 compressed objects within 1 object stream
+ 135 PDF objects out of 1000 (max. 8388607)
+ 95 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

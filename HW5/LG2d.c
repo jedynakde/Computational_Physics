@@ -25,30 +25,37 @@ int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
 //particle source parameters
 int src_x = 12,src_y = 30,src_len = 5,src_den = 15;
+int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 5;
 int var1 =10;
 
 //graphing
 double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
+double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
 int MeasLen = MeasMax/2;
-int range_val = 5;
+int range_val = 20;
 int val[] = {0,0};
 //added a running average to smooth out the graphs
 void average(int range){
 	val[0] = 0;
 	val[1] = 0;
 	for(int i = 0; i < range;i++){
-		val[0] += tot_vx + momentum_est_x[i];
-		val[1] += tot_vy + momentum_est_y[i];
+		val[0] += momentum_est_x[i];
+		val[1] += momentum_est_y[i];
 		}
 	val[0] = val[0]/range;
 	val[1] = val[1]/range;
 }
 void Measure(){
-  average(range_val);
   memmove(&momentum_est_x[1],&momentum_est_x[0],(MeasMax-1)*sizeof(int));
-  momentum_est_x[0]=val[0];//(tot_vx+momentum_est_x[1]+momentum_est_x[2]+momentum_est_x[3]+momentum_est_x[4])/5;
+  momentum_est_x[0]=tot_vx;
   memmove(&momentum_est_y[1],&momentum_est_y[0],(MeasMax-1)*sizeof(int));
-  momentum_est_y[0]=val[1];//(tot_vy+momentum_est_y[1]+momentum_est_y[2]+momentum_est_y[3]+momentum_est_y[4])/5;
+  momentum_est_y[0]=tot_vy;
+  //filtered data
+  average(range_val);
+  memmove(&momentum_est_x_filt[1],&momentum_est_x_filt[0],(MeasMax-1)*sizeof(int));
+  momentum_est_x_filt[0]= val[0];
+  memmove(&momentum_est_y_filt[1],&momentum_est_y_filt[0],(MeasMax-1)*sizeof(int));
+  momentum_est_y_filt[0]=val[1];
 }
 void FindLink(){
 	//2 links added to prevent leaking on the x0,yy2 and x2,yy0 squares 
@@ -152,27 +159,25 @@ if(close_tube == 1){
 }
 
 void bounceback(){
-  	tot_vx =0;
-	tot_vy =0;
+  tot_vx =0;
+  tot_vy =0;
   for (int lc=0; lc<linkcount; lc++){
+    //quantity of partices
     int x=links[lc][0];
     int y=links[lc][1];
+    //velocity
     int v=links[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
-	//tot_vy += -2*(n[x][y][1] - n[x][y][7] + n[x][y][2] - n[x][y][6]- n[x][y][8] + n[x][y][0]);
-	//tot_vx += -2*(-n[x][y][3] + n[x][y][5] + n[x][y][2]- n[x][y][6] + n[x][y][8] - n[x][y][0]); 
-
-	int tmp= n[x+vx][y+vy][v];
-	
-	tot_vy += -2*vy*(n[x][y][8-v]-tmp);
-	tot_vx += -2*vx*(n[x][y][8-v]-tmp);
-
-	n[x+vx][y+vy][v]= n[x][y][8-v];
-	n[x][y][8-v]=tmp;
-		
+    int tmp= n[x+vx][y+vy][v];
+    //summing all momemtums
+    tot_vx += -2*vx*(n[x][y][8-v]-tmp);
+    tot_vy += -2*vy*(n[x][y][8-v]-tmp);
+    //swapping the particles trying to enter and leave to have the effect of a wall
+    n[x+vx][y+vy][v]= n[x][y][8-v];
+    n[x][y][8-v]=tmp;		
   }
-  
+  //measure routine stores values for plotting
   Measure();
 }
 
@@ -189,6 +194,18 @@ void setrho(){
     n[x][y][7]=src_den;
     n[x][y][8]=src_den;
   }    
+  for (int x=src_x_2; x<src_x_2+src_len_2; x++){
+    int y=src_y_2;
+    n[x][y][0]=src_den_2;
+    n[x][y][1]=src_den_2;
+    n[x][y][2]=src_den_2;
+    n[x][y][3]=src_den_2;
+    n[x][y][4]=src_den_2;
+    n[x][y][5]=src_den_2;
+    n[x][y][6]=src_den_2;
+    n[x][y][7]=src_den_2;
+    n[x][y][8]=src_den_2;
+  }   
 }
 
 void init(){
@@ -422,10 +439,13 @@ void main(){
   DefineGraphNxN_RxR("NU",&NU[0][0][0],&XDIM,&YDIM,&NUreq);
   DefineGraphN_R("momentum_est_x",&momentum_est_x[0],&MeasLen,NULL);
   DefineGraphN_R("momentum_est_y",&momentum_est_y[0],&MeasLen,NULL);
+  DefineGraphN_R("momentum_est_x_filt",&momentum_est_x_filt[0],&MeasLen,NULL);
+  DefineGraphN_R("momentum_est_y_filt",&momentum_est_y_filt[0],&MeasLen,NULL);
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
   StartMenu("Measure",0);
+  DefineInt("range_val",&range_val);
   DefineGraph(curve2d_,"Measurements");
   DefineInt("tot_vx",&tot_vx);
   DefineInt("tot_vy",&tot_vy);
@@ -445,6 +465,9 @@ void main(){
   DefineInt("src_den",&src_den);
   DefineInt("src_x",&src_x);
   DefineInt("src_y",&src_y);
+  DefineInt("src_den_2",&src_den_2);
+  DefineInt("src_x_2",&src_x_2);
+  DefineInt("src_y_2",&src_y_2);
   EndMenu();
   DefineGraph(contour2d_,"Graph");
   DefineInt("C", &C);

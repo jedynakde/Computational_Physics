@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//horizontal walls}
+  \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{x0}\PYG{p}{;} \PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{x1}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;} \PYG{n}{x}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy2}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy2}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy2}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{x1}\PYG{p}{;} \PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{x2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;} \PYG{n}{x}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy1}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy1}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy1}\PYG{p}{;}
+    	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
+    	\PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{x0}\PYG{p}{;} \PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{x2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;} \PYG{n}{x}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	\PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy0}\PYG{p}{;}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy0}\PYG{p}{;}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x}\PYG{p}{;} \PYG{c+c1}{//x\PYGZhy{}position}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{=} \PYG{n}{yy0}\PYG{p}{;}
+        \PYG{n}{links}\PYG{p}{[}\PYG{n}{linkcount}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{n}{linkcount}\PYG{o}{++}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\end{Verbatim}
