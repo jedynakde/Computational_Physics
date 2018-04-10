@@ -5,6 +5,7 @@
 \newcommand{\includecode}[2][c]{\lstinputlisting[caption=#2, escapechar=, language=#1]{#2}}
 \usepackage{minted}
 
+
 \begin{document}
 \lstset{language=C} 
 \title{Homework 5: Feynman problem}
@@ -212,12 +213,55 @@ $
 \section{Force as a Function of Density Ratios}
 
 \section{Results}
-
+\vspace{5mm}
+Note: For figures 1 through 6, the Collisions parameter is set to 100.
+\vspace{5mm}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.3]{p1_noleakage.png}
-\caption{\label{fig} image of fully closed tube with source located inside. light color ~ high desity dark color ~low to zero density. The graph to the left shows the averaged x and y momentums centered around 0, so this is a good check that the box is sealed, beacuse otherwise there would be non zero net momentum.}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Image of fully closed tube with source located inside. light color ~ high desity dark color ~low to zero density. The graph to the left shows the averaged x and y momentums centered around 0, so this is a good check that the box is sealed, beacuse otherwise there would be non zero net momentum.}
 \end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_5_drain_0.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 5 and Drain density is 0. The tube momentum is in the positive y and negative x.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_4_drain_1.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 4 and Drain density is 1.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_3_drain_2.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 3 and Drain density is 2.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_2_drain_3.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 2 and Drain density is 3.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_1_drain_4.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 1 and Drain density is 5.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.25]{source_0_drain_5.png}
+\caption{\label{fig} $\rho_x$ is green and $\rho_y$ is red. Source density is 0 and Drain density is 5. The tube momentum is in the negative y and positive x.}
+\end{figure}
+
+
+
+
 
 
 \subsection{Wall}
@@ -229,7 +273,7 @@ $
 These simulations show that particles reenter at the boundaries of the simulation and that no spurious effects are obvious at the periodic boundaries.
 
 \section{Conclusions}
-In this report we have shown how to implement periodic boundary conditions in a Molecular Dynamics simulation. We have verified that our algorithm is free from obvious errors by setting up a periodic system and observing that it shows no spurious edge effects.
+
 
 
 \appendix
