@@ -12,22 +12,22 @@
 \author{David Jedynak}
 \maketitle
 \begin{abstract}
- We show how an angled tube can be created in an integer lattice gas method simulation. This angled tube is used with particle sources to perform an experiment to provide insight on the Feynman problem. The momentum transferred from the particles to the tube will be estimated to understand the response of the tube to different densities. The influence of density ratios inside and outside the tube on the force will be observed.
+ We show how an angled tube can be created in an integer lattice gas method simulation. This angled tube is used with particle sources to perform an experiment to provide insight on the Feynman problem. The momentum transferred from the particles to the tube will be estimated to understand the response of the tube to different densities. The influence of density ratios inside and outside the tube on the force will be observed. The influence of the tube geometry on momentum will also be tested.
 \end{abstract}
 
 \section{Introduction}
-The Feynman problem presents the question of what will occur when an angled tube attached to a pivot point has fluid pushed out or sucked into the tube. Will the tube rotate clockwise or counter clockwise? My prediction is that the tube will rotate clockwise when air is pushed out of the tube and counter clockwise when air is sucked in, if the experiment is set up as in the figures 1 - 6 below.
+The Feynman problem presents the question of what will occur when an angled tube attached to a pivot point has fluid pushed out or sucked into the tube. Will the tube rotate clockwise or counter clockwise? My prediction is that the tube will rotate clockwise when air is pushed out of the tube and counter clockwise when air is sucked in, if the experiment is set up as in the figures 1 - 6 below.\newline
 
 
 
-The Lattice Gas simulation where this experiment will be executed has constraints that particle momentum and the number of particles must be conserved. The collisions and resulting velocities can be modeled using random processes that can lower the computation cost from prior simulations that would calculate interactions between every particle based on distance, charge, mass, and fields. This can be done because the prior simulations exhibit this random behavior.
+The Lattice Gas simulation where this experiment will be executed has constraints that particle momentum and the number of particles must be conserved. The collisions and resulting velocities can be modeled using random processes that can lower the computation cost from prior simulations that would calculate interactions between every particle based on distance, charge, mass, and fields. This can be done because the prior simulations exhibit this random behavior.\newline
 
 
 \section{Walls}
-The Feynman experiment will require 2 Dimensional walls to create a right angled tube. Particles must be reflected if they hit a wall. Particles cannot pass through walls. To accomplish this requirement, velocities in different directions can be swapped. The lattice gas simulation is composed of many cells. Each cell has 9(3 by 3 grid) different values to describe particles motion in a cell.
+The Feynman experiment will require 2 Dimensional walls to create a right angled tube. Particles must be reflected if they hit a wall. Particles cannot pass through walls. To accomplish this requirement, velocities in different directions can be swapped. The lattice gas simulation is composed of many cells. Each cell has 9(3 by 3 grid) different values to describe particles motion in a cell.\newline
 
 
-Here are the indexes for each velocity. The value behind each index is the magnitude of the velocity in that direction
+Here are the indexes for each velocity. The value behind each index is the magnitude of the velocity in that direction\newline
 \begin{center}
 Indexes ~
 \begin{tabular}{l c r}
@@ -74,7 +74,7 @@ Note: The horizontal walls link 0, 1, and 2 with 8, 7, and 6 respectively.
   }
 \end{minted}
 \vspace{5mm}
-Code Defining Vertical Walls. This wall in particular is also the opening for the tube that can be disabled or enabled.
+Code Defining Vertical Walls:\newline This wall in particular is also the opening for the tube that can be disabled or enabled.
 Note: The vertical walls link 0, 3, and 6 with 8, 5, and 2 respectively.
 \vspace{5mm}
 \begin{minted}{c}
@@ -140,7 +140,7 @@ void bounceback(){
 \end{minted}
 
 \section{Calculating Momentum}
- The momentum of the tube can be calculated by relating  the quantity and velocity of the particles being reflected by the tube. The momentum can be described using 2 dimensions x and y. The tube momentum in either direction will be proportional to 2 times the opposite momentum of the difference of the particles attempting to leave or enter the tube/wall. To find the total momentum, the sum of all these particle momenums will be taken over every single "link" or way particles can travel from one lattice cell to another.
+ The momentum of the tube can be calculated by relating  the quantity and velocity of the particles being reflected by the tube. The momentum can be described using 2 dimensions x and y. The tube momentum in either direction will be proportional to 2 times the opposite momentum of the difference of the particles attempting to leave or enter the tube/wall. To find the total momentum, the sum of all these particle momentum will be taken over every single "link" or way particles can travel from one lattice cell to another.
  
 \vspace{5mm}
 $
@@ -151,16 +151,17 @@ $
  Accomplishing this in the program requires a calculating in the bounce back routine previously discussed in section 2.1 to iterate through all links and sum this calculation.
  
  \begin{minted}{c}
+    int tmp= n[x+vx][y+vy][v];
     //summing all momemtums
     tot_vx += -2*vx*(n[x][y][8-v]-tmp);
     tot_vy += -2*vy*(n[x][y][8-v]-tmp);
 \end{minted}
  
 \section{Force as a Function of Density Ratios}
-
+As the difference in the source and drain densities increase, the magnitude of the force and momentum should increase. The particles are going to try and find the route of least resistance from source to drain. On this path they will probably collide with the tube and exert force on the tube. This is measured by observing the tube momentum as described in section3. 
 \section{Results}
 \vspace{5mm}
-Note: For figures 1 through 6, the Collisions parameter is set to 100, the source is placed inside the bent tube and the drain is placed at the coordinates (x,y) = (50,50). Both source and drain are the same size.
+Note: For figures 1 through 7, the Collisions parameter is set to 100, the source is placed inside the bent tube and the drain is placed at the coordinates (x,y) = (50,50). Both source and drain are the same size.
 \vspace{5mm}
 \begin{figure}[H]
 \centering
@@ -231,8 +232,10 @@ Observing changes in momentum due to changing outlet dimensions. Collisions are 
 
 
 \section{Conclusions}
-By observing the figures 2 through 5, it can be seen that as the source and drain densities switch, the resulting momentum change for x and y do not appear to be equivalent. One notable change is that when source=50 and drain=0 the y momentum was around 150 and the y momentum was around -90. When the source=0 and the drain=50, the y momentum was around -120 and the x momentum was around 20.\newline
-As the outlet size increased, the momentum in both x and y dimensions decreased. This can be observed in figures 8 through 10. 
+Figure 1 shows a tube fully sealed with no leaking, this is an important step because if there were leaks in the tube, this would cause error in the Feynman experiment momentum measurements.\newline
+By observing the figures 2 through 7, it can be seen that as the source and drain densities switch, the resulting momentum change for x and y do not appear to be equivalent. One notable change is that when source=50 and drain=0 the y momentum was around 150 and the y momentum was around -90. When the source=0 and the drain=50, the y momentum was around -120 and the x momentum was around 20. Additionally, in figure 3 and 4 where source and drain switch from being 30 and 20 to 20 and 30, they are extremely different in appearance. Perhaps this test required more time to reach steady state, but this was also observed using source and drain densities of 3 and 2 to 2 and 3.\newline
+As the outlet size increased, the momentum in both x and y dimensions decreased. This can be observed in figures 8 through 10. Y momentum changes from 50 to 20, X did not change very much -20 to -10. This hypothesized characteristic might be due to noise and potentially invalid. Figure 10 shows the y going back up to 40.
+Running the simulation will low source densities around 0 to 5 yielded very noisy data. The data from the 0 to 50 source densities yielded much more distinct changes in x and y momentum.
 
 
 \appendix
