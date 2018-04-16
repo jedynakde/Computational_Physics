@@ -19,7 +19,7 @@ int wall_shift = 0;
 
 // Boundary variables
 #define LINKMAX 10000
-int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
+int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 0;
 int linkcount=0,links[LINKMAX][3];
 //variables for measuring tube momentum
 int tot_vx=0,tot_vy=0;
@@ -28,6 +28,7 @@ int tot_vx_list[10],tot_vy_list[10];
 int src_x = 12,src_y = 30,src_len = 5,src_den = 15;
 int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 5;
 int var1 =10;
+int link_start = 0,link_end = 0,link_flag = 0;
 
 //graphing
 double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
@@ -35,6 +36,7 @@ double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
 int MeasLen = MeasMax/2;
 int range_val = 20;
 int val[] = {0,0};
+int wall_flag = 0;
 //added a running average to smooth out the graphs
 void average(int range){
 	val[0] = 0;
@@ -57,6 +59,48 @@ void Measure(){
   momentum_est_x_filt[0]= val[0];
   memmove(&momentum_est_y_filt[1],&momentum_est_y_filt[0],(MeasMax-1)*sizeof(int));
   momentum_est_y_filt[0]=val[1];
+}
+void FindLink_Dynamic(){
+
+if(close_tube == 1){
+  if(link_flag == 1){
+        linkcount = link_start;
+	}
+else{
+link_start = linkcount;
+}
+        link_flag = 1;
+  for (int y=yy0; y<yy1+1; y++){
+	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 0;
+	linkcount++;
+	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 3;
+	linkcount++;
+	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][1] = y;
+	links[linkcount][2] = 6;
+	linkcount++;
+  }
+ link_end = linkcount;
+}
+if(wall_shift < 0){
+wall_flag = 1;
+}
+else if(wall_shift > 40){
+wall_flag = 0;
+}
+if(wall_flag == 0){
+wall_shift -= 1;
+}
+else if(wall_flag == 1)
+{
+wall_shift += 1;
+}
+printf("wall_shift = %i \n",wall_shift);
+
 }
 void FindLink(){
 	//2 links added to prevent leaking on the x0,yy2 and x2,yy0 squares 
@@ -112,7 +156,7 @@ void FindLink(){
         linkcount++;
   }
   //vertical walls
-
+/*
 if(close_tube == 1){
   for (int y=yy0; y<yy1+1; y++){
 	links[linkcount][0] = x2+wall_shift; //x-position
@@ -128,7 +172,7 @@ if(close_tube == 1){
 	links[linkcount][2] = 6;
 	linkcount++;
   }
-}
+}*/
   for (int y=yy1; y<yy2+1; y++){
 	links[linkcount][0] = x1; //x-position
 	links[linkcount][1] = y;
@@ -399,6 +443,7 @@ void iterate(){
       for (int x=0; x<xdim; x++) n[x][ydim-1][c+6]=ntmp[x];
     }
   }
+  FindLink_Dynamic();
   bounceback();
 }
 
