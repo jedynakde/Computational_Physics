@@ -15,12 +15,14 @@ int C=100;
 double N[xdim][ydim],NU[xdim][ydim][2];
 int Nreq=0,NUreq=0;
 int n[xdim][ydim][V];
-int wall_shift = 0;
+int wall_shift = -15;
 
 // Boundary variables
 #define LINKMAX 10000
-int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 0;
+#define DYNAMIC_LINKMAX 10000
+int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
 int linkcount=0,links[LINKMAX][3];
+int linkcount_dynamic = 0,links_dynamic[DYNAMIC_LINKMAX][3],dynamic_walls_on = 1,auto_move = 0,wall_dx = 0;
 //variables for measuring tube momentum
 int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
@@ -62,43 +64,66 @@ void Measure(){
 }
 void FindLink_Dynamic(){
 
-if(close_tube == 1){
+if(close_tube == 1 && wall_dx != 0){
   if(link_flag == 1){
-        linkcount = link_start;
+        linkcount_dynamic = link_start;
 	}
 else{
-link_start = linkcount;
+link_start = linkcount_dynamic;
 }
         link_flag = 1;
   for (int y=yy0; y<yy1+1; y++){
-	links[linkcount][0] = x2+wall_shift; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 0;
-	linkcount++;
-	links[linkcount][0] = x2+wall_shift; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 3;
-	linkcount++;
-	links[linkcount][0] = x2+wall_shift; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 6;
-	linkcount++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 0;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 3;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 6;
+	linkcount_dynamic++;
+        //additional 3 links if the wall is moving
+	if(wall_dx != 0){
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 1;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 4;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 7;
+	linkcount_dynamic++;
+	}
   }
- link_end = linkcount;
+ link_end = linkcount_dynamic;
 }
-if(wall_shift < 0){
-wall_flag = 1;
+
+if(wall_shift < -20){
+//wall_flag = 1;
+wall_dx = -wall_dx;
 }
-else if(wall_shift > 40){
-wall_flag = 0;
+else if(wall_shift > -10){
+//wall_flag = 0;
+wall_dx = -wall_dx;
 }
+
+wall_shift += wall_dx;
+/*
 if(wall_flag == 0){
-wall_shift -= 1;
+wall_shift -= 1*wall_dx;
 }
 else if(wall_flag == 1)
 {
-wall_shift += 1;
+wall_shift += 1*wall_dx;
 }
+*/
+
 printf("wall_shift = %i \n",wall_shift);
 
 }
@@ -157,7 +182,7 @@ void FindLink(){
   }
   //vertical walls
 /*
-if(close_tube == 1){
+if(close_tube == 1 && wall_dx == 0){
   for (int y=yy0; y<yy1+1; y++){
 	links[linkcount][0] = x2+wall_shift; //x-position
 	links[linkcount][1] = y;
@@ -203,7 +228,7 @@ if(close_tube == 1){
   }
 
 }
-
+//for static walls
 void bounceback(){
   tot_vx =0;
   tot_vy =0;
@@ -213,19 +238,58 @@ void bounceback(){
     int y=links[lc][1];
     //velocity
     int v=links[lc][2];
-    int vx=v%3-1;
-    int vy=1-v/3;
+    int vx=v%3-1;//might need to change?
+    int vy=1-v/3;//might need to change?
     int tmp= n[x+vx][y+vy][v];
     //summing all momemtums
     tot_vx += -2*vx*(n[x][y][8-v]-tmp);
     tot_vy += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
-    n[x][y][8-v]=tmp;		
+    n[x][y][v+1]=tmp;		
   }
   //measure routine stores values for plotting
   Measure();
 }
+
+//bounceback for dynamic walls
+void bounceback_dynamic(){
+  tot_vx =0;
+  tot_vy =0;
+  for (int lc=0; lc<linkcount_dynamic; lc++){
+    //quantity of partices
+    int x=links_dynamic[lc][0];
+    int y=links_dynamic[lc][1];
+    //velocity
+    int v=links_dynamic[lc][2];
+    int vx=v%3-1;//might need to change?
+    int vy=1-v/3;//might need to change?
+    int tmp= n[x+vx][y+vy][v];		
+  
+//if a wall is not moving treat it like a static wall
+  if(wall_dx == 0){
+    //summing all momemtums
+    tot_vx += -2*vx*(n[x][y][8-v]-tmp);
+    tot_vy += -2*vy*(n[x][y][8-v]-tmp);
+    //swapping the particles trying to enter and leave to have the effect of a wall
+    n[x+vx][y+vy][v]= n[x][y][8-v];
+    n[x][y][v+1]=tmp;
+
+}
+//else if the wall is moving
+else if(wall_dx > 0){
+    //summing all momemtums
+    tot_vx += -2*vx*(n[x][y][v+1]-tmp);
+    tot_vy += -2*vy*(n[x][y][v+1]-tmp);
+    //swapping the particles trying to enter and leave to have the effect of a wall
+    n[x+vx][y+vy][v]= n[x][y][v+1];
+    n[x][y][v+1]=tmp;
+}
+}
+  //measure routine stores values for plotting
+  Measure();
+}
+
 
 void setrho(){
   for (int x=src_x; x<src_x+src_len; x++){
@@ -443,8 +507,12 @@ void iterate(){
       for (int x=0; x<xdim; x++) n[x][ydim-1][c+6]=ntmp[x];
     }
   }
-  FindLink_Dynamic();
   bounceback();
+if(dynamic_walls_on == 1)
+{
+FindLink_Dynamic();
+bounceback_dynamic();
+}
 }
 
 void getdata(){
@@ -508,6 +576,8 @@ void main(){
   DefineInt("close_tube",&close_tube);
   DefineFunction("Add Wall",FindLink);
   DefineInt("link count",&linkcount);
+  DefineInt("dynamic walls",&dynamic_walls_on);
+  DefineInt("wall dx",&wall_dx);
   EndMenu();
   StartMenu("Particle Source",0);
   DefineInt("src_den",&src_den);
