@@ -64,7 +64,7 @@ void Measure(){
 }
 void FindLink_Dynamic(){
 
-if(close_tube == 1 && wall_dx != 0){
+if(dynamic_walls_on == 1 && wall_dx != 0){
   if(link_flag == 1){
         linkcount_dynamic = link_start;
 	}
@@ -72,7 +72,7 @@ else{
 link_start = linkcount_dynamic;
 }
         link_flag = 1;
-  for (int y=yy0; y<yy1+1; y++){
+  for (int y=yy0+2; y<yy1-1; y++){
 	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
 	links_dynamic[linkcount_dynamic][1] = y;
 	links_dynamic[linkcount_dynamic][2] = 0;
@@ -98,6 +98,19 @@ link_start = linkcount_dynamic;
 	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
 	links_dynamic[linkcount_dynamic][1] = y;
 	links_dynamic[linkcount_dynamic][2] = 7;
+	linkcount_dynamic++;
+	//added more links
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 2;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 5;
+	linkcount_dynamic++;
+	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
+	links_dynamic[linkcount_dynamic][1] = y;
+	links_dynamic[linkcount_dynamic][2] = 8;
 	linkcount_dynamic++;
 	}
   }
@@ -181,23 +194,23 @@ void FindLink(){
         linkcount++;
   }
   //vertical walls
-/*
-if(close_tube == 1 && wall_dx == 0){
+
+if(close_tube == 1){
   for (int y=yy0; y<yy1+1; y++){
-	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][0] = x2; //x-position
 	links[linkcount][1] = y;
 	links[linkcount][2] = 0;
 	linkcount++;
-	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][0] = x2; //x-position
 	links[linkcount][1] = y;
 	links[linkcount][2] = 3;
 	linkcount++;
-	links[linkcount][0] = x2+wall_shift; //x-position
+	links[linkcount][0] = x2; //x-position
 	links[linkcount][1] = y;
 	links[linkcount][2] = 6;
 	linkcount++;
   }
-}*/
+}
   for (int y=yy1; y<yy2+1; y++){
 	links[linkcount][0] = x1; //x-position
 	links[linkcount][1] = y;
@@ -246,7 +259,7 @@ void bounceback(){
     tot_vy += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
-    n[x][y][v+1]=tmp;		
+    n[x][y][8-v]=tmp;		
   }
   //measure routine stores values for plotting
   Measure();
@@ -265,25 +278,40 @@ void bounceback_dynamic(){
     int vx=v%3-1;//might need to change?
     int vy=1-v/3;//might need to change?
     int tmp= n[x+vx][y+vy][v];		
-  
-//if a wall is not moving treat it like a static wall
-  if(wall_dx == 0){
     //summing all momemtums
-    tot_vx += -2*vx*(n[x][y][8-v]-tmp);
-    tot_vy += -2*vy*(n[x][y][8-v]-tmp);
+    tot_vx += -2*vx*(n[x][y][v+1]-tmp);
+    tot_vy += -2*vy*(n[x][y][v+1]-tmp);
+//if a wall is not moving treat it like a static wall
+  if(wall_dx == 0 && v == 0 || v == 3 || v == 6){
+
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
     n[x][y][v+1]=tmp;
 
 }
-//else if the wall is moving
+//else if the wall is moving right
+else if(wall_dx < 0){
+    if(v == 0 || v == 3 || v ==6){
+	n[x+vx][y+vy][v] += n[x][y][v+1];	
+	}
+    else if(v == 1 || v == 4 || v == 7){
+	n[x+vx][y+vy][v] = n[x][y][v+1];	
+	}
+    else{
+	n[x+vx][y+vy][v] = 0;
+	}
+}
+//else if the wall is moving left
 else if(wall_dx > 0){
-    //summing all momemtums
-    tot_vx += -2*vx*(n[x][y][v+1]-tmp);
-    tot_vy += -2*vy*(n[x][y][v+1]-tmp);
-    //swapping the particles trying to enter and leave to have the effect of a wall
-    n[x+vx][y+vy][v]= n[x][y][v+1];
-    n[x][y][v+1]=tmp;
+    if(v == 2 || v == 5 || v == 8){
+	n[x+vx][y+vy][v] += n[x][y][v-1];	
+	}
+    else if(v == 1 || v == 4 || v == 7){
+	n[x+vx][y+vy][v] = n[x][y][v-1];	
+	}
+    else{
+	n[x+vx][y+vy][v] = 0;
+	}
 }
 }
   //measure routine stores values for plotting
