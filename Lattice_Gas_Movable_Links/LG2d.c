@@ -28,7 +28,7 @@ int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
 //particle source parameters
 int src_x = 12,src_y = 30,src_len = 5,src_den = 15;
-int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 5;
+int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 0;
 int var1 =10;
 int link_start = 0,link_end = 0,link_flag = 0;
 
@@ -72,7 +72,7 @@ else{
 link_start = linkcount_dynamic;
 }
         link_flag = 1;
-  for (int y=yy0+2; y<yy1-1; y++){
+  for (int y=yy0+2; y<yy1; y++){
 	links_dynamic[linkcount_dynamic][0] = x2+wall_shift; //x-position
 	links_dynamic[linkcount_dynamic][1] = y;
 	links_dynamic[linkcount_dynamic][2] = 0;
@@ -279,15 +279,14 @@ void bounceback_dynamic(){
     int vy=1-v/3;//might need to change?
     int tmp= n[x+vx][y+vy][v];		
     //summing all momemtums
-    tot_vx += -2*vx*(n[x][y][v+1]-tmp);
-    tot_vy += -2*vy*(n[x][y][v+1]-tmp);
 //if a wall is not moving treat it like a static wall
-  if(wall_dx == 0 && v == 0 || v == 3 || v == 6){
+    if(wall_dx == 0 && v == 0 || v == 3 || v == 6){
 
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
-    n[x][y][v+1]=tmp;
-
+    n[x][y][8-v]=tmp;
+    tot_vx += -2*vx*(n[x][y][8-v]-tmp);
+    tot_vy += -2*vy*(n[x][y][8-v]-tmp);
 }
 //else if the wall is moving right
 else if(wall_dx < 0){
@@ -538,7 +537,7 @@ void iterate(){
   bounceback();
 if(dynamic_walls_on == 1)
 {
-FindLink_Dynamic();
+if(wall_dx != 0)FindLink_Dynamic();
 bounceback_dynamic();
 }
 }
