@@ -23,14 +23,14 @@ int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
 int linkcount=0,links[LINKMAX][3];
 //varaibles for dynamic walls
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];
-int x3 = 10,yy3 = 10,yy4 = 20;
+int x3 = 50,yy3 = 0,yy4 = 100;
 int move_period = 10,move_count = 0,dynamic_walls_on = 1,y_shift = 0,flow = 0;
 //variables for measuring tube momentum
 int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
 //particle source parameters
-int src_x = 12,src_y = 30,src_len = 5,src_den = 15;
-int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 5;
+int src_x = 12,src_y = 30,src_len = 5,src_den = 0;
+int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 0;
 int var1 =10;
 
 //graphing
@@ -67,7 +67,7 @@ void FindLink_Dynamic(){
 	
 	if(0 == 0){
 		//delete all old walls
-		//linkcount_dynamic = 0;
+		linkcount_dynamic = 0;
 		//draw vertical walls	
 		for(int y = yy3; y<yy4+1;y++){
 			links_dynamic[linkcount_dynamic][0] = x3; //x-position
@@ -215,10 +215,10 @@ void bounceback(){
 
  for (int lc=0; lc<linkcount_dynamic; lc++){
     //quantity of partices
-    int x=links[lc][0];
-    int y=links[lc][1];
+    int x=links_dynamic[lc][0];
+    int y=links_dynamic[lc][1];
     //velocity
-    int v=links[lc][2];
+    int v=links_dynamic[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
 	//determining values for forward and backward particle flow
@@ -231,15 +231,21 @@ void bounceback(){
 	else{
 		max_random = tmp;
 		}
-	
+	if(max_random > 0){
+	flow = rand()%max_random;
+	}
+	else{
+	flow = 0;
+	}
+//printf("max random = %i %i %i\n",max_random,tmp,n[x][y][8-v]);
     //summing all momemtums
     //tot_vx += -2*vx*(n[x][y][8-v]-tmp);
     //tot_vy += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
-	flow = rand()%10;//%max_random;
+	//flow = rand()%10;//%max_random;
 	//printf("flow: %i",flow);
-    n[x+vx][y+vy][v]= n[x][y][8-v]*(1 - flow);
-    n[x][y][8-v]=tmp*(1 + flow);		
+    n[x+vx][y+vy][v]= n[x][y][8-v]- flow;
+    n[x][y][8-v]=tmp + flow;		
   }
   //measure routine stores values for plotting
   Measure();
@@ -269,35 +275,24 @@ void setrho(){
     n[x][y][6]=src_den_2;
     n[x][y][7]=src_den_2;
     n[x][y][8]=src_den_2;
-  }   
+  }  
 }
 
 void init(){
   for (int x=0; x<xdim; x++){
     for (int y=0; y<ydim; y++){
-      if ((abs(xdim/2-x)<25)&&(abs(ydim/2-y)<25)){
-	n[x][y][0]=0;
-	n[x][y][1]=0;
-	n[x][y][2]=0;
-	n[x][y][3]=0;
-	n[x][y][4]=0;
-	n[x][y][5]=0;
-	n[x][y][6]=0;
-	n[x][y][7]=0;
-	n[x][y][8]=0;
-      }
-      else
-	{
-	  n[x][y][0]=0;
-	  n[x][y][1]=0;
-	  n[x][y][2]=0;
-	  n[x][y][3]=0;
-	  n[x][y][4]=0;
-	  n[x][y][5]=0;
-	  n[x][y][6]=0;
-	  n[x][y][7]=0;
-	  n[x][y][8]=0;
-	}
+      //if ((abs(xdim/2-x)<25)&&(abs(ydim/2-y)<25)){
+	n[x][y][0]=10;
+	n[x][y][1]=10;
+	n[x][y][2]=10;
+	n[x][y][3]=10;
+	n[x][y][4]=10;
+	n[x][y][5]=10;
+	n[x][y][6]=10;
+	n[x][y][7]=10;
+	n[x][y][8]=10;
+      
+
     }
   }
 }
@@ -521,7 +516,7 @@ void main(){
   DefineInt("x0", &x0);
   DefineInt("x1", &x1);
   DefineInt("x2", &x2);
-  DefineInt("x3", &x2);
+  DefineInt("x3", &x3);
   DefineInt("yy0", &yy0);
   DefineInt("yy1", &yy1);
   DefineInt("yy2", &yy2);
@@ -561,7 +556,7 @@ void main(){
 
       for (int i=0; i<repeat; i++) {
 	iterate();
-	setrho();
+	//setrho();
       }
     } else sleep(1);
   }
