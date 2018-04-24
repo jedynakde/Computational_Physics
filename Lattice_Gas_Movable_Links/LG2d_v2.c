@@ -23,8 +23,8 @@ int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
 int linkcount=0,links[LINKMAX][3];
 //varaibles for dynamic walls
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];
-int x3 = 50,yy3 = 0,yy4 = 100;
-int move_period = 10,move_count = 0,dynamic_walls_on = 1,y_shift = 0,flow = 0;
+int x3 = 100,yy3 = 0,yy4 = 100;
+int move_period = 1,vx_dir = 1,move_count = 1,dynamic_walls_on = 1,y_shift = 0,x_shift = 30,flow = 0,tmp_x_shift = 0;
 //variables for measuring tube momentum
 int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
@@ -33,7 +33,11 @@ int src_x = 12,src_y = 30,src_len = 5,src_den = 0;
 int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 0;
 int var1 =10;
 
+//variables for measuring values
+int vx_m = 0,vy_m = 0;
+
 //graphing
+double vx_est[MeasMax],vy_est[MeasMax];
 double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
 double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
 int MeasLen = MeasMax/2;
@@ -50,6 +54,20 @@ void average(int range){
 	val[0] = val[0]/range;
 	val[1] = val[1]/range;
 }
+
+void measure_function(){
+	vx_m = 0;
+	vy_m = 0;
+	for(int i = 0; i < YDIM -1;i++){
+		vx_m += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
+		vy_m += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
+		}
+
+
+}
+
+
+
 void Measure(){
   memmove(&momentum_est_x[1],&momentum_est_x[0],(MeasMax-1)*sizeof(int));
   momentum_est_x[0]=tot_vx;
@@ -61,37 +79,53 @@ void Measure(){
   momentum_est_x_filt[0]= val[0];
   memmove(&momentum_est_y_filt[1],&momentum_est_y_filt[0],(MeasMax-1)*sizeof(int));
   momentum_est_y_filt[0]=val[1];
+  measure_function();
+  memmove(&vx_est[1],&vx_est[0],(MeasMax-1)*sizeof(int));
+  vx_est[0]=vx_m;
+  memmove(&vy_est[1],&vy_est[0],(MeasMax-1)*sizeof(int));
+  vy_est[0]=vy_m;
 }
 //re draws walls
 void FindLink_Dynamic(){
-	
-	if(0 == 0){
+	//printf("%i  \n",move_count%move_period);
+	if(0 == move_count%move_period){
+		//increment move count
+		move_count += 1;
 		//delete all old walls
 		linkcount_dynamic = 0;
 		//draw vertical walls	
 		for(int y = yy3; y<yy4+1;y++){
-			links_dynamic[linkcount_dynamic][0] = x3; //x-position
+			if(x_shift < 1){
+				x_shift = 98;		
+				}
+			else{
+				tmp_x_shift = 1 + x_shift%(XDIM -2);
+				}
+			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 0;
 			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = x3; //x-position
+			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 3;
 			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = x3; //x-position
+			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 6;
 			linkcount_dynamic++;	
 			}
+		x_shift += vx_dir;
+		//printf("x shift %i \n",tmp_x_shift);
 		}
 	else{
 		move_count += 1;
+		//printf("move count %i \n",move_count);
 		}
 
 
 }
+
 void FindLink(){
-	FindLink_Dynamic();
 	//2 links added to prevent leaking on the x0,yy2 and x2,yy0 squares 
 	links[linkcount][0] = x0; //x-position
     	links[linkcount][1] = yy2;
@@ -232,7 +266,7 @@ void bounceback(){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-	flow = rand()%max_random;
+		flow = (rand()%max_random)*(1/move_period)*vx_dir;
 	}
 	else{
 	flow = 0;
@@ -244,8 +278,8 @@ void bounceback(){
     //swapping the particles trying to enter and leave to have the effect of a wall
 	//flow = rand()%10;//%max_random;
 	//printf("flow: %i",flow);
-    n[x+vx][y+vy][v]= n[x][y][8-v]- flow;
-    n[x][y][8-v]=tmp + flow;		
+    n[x+vx][y+vy][v] = n[x][y][8-v] - flow;
+    n[x][y][8-v] = tmp + flow;		
   }
   //measure routine stores values for plotting
   Measure();
@@ -503,6 +537,8 @@ void main(){
   DefineGraphN_R("momentum_est_y",&momentum_est_y[0],&MeasLen,NULL);
   DefineGraphN_R("momentum_est_x_filt",&momentum_est_x_filt[0],&MeasLen,NULL);
   DefineGraphN_R("momentum_est_y_filt",&momentum_est_y_filt[0],&MeasLen,NULL);
+  DefineGraphN_R("vx_est",&vx_est[0],&MeasLen,NULL);
+  DefineGraphN_R("vy_est",&vy_est[0],&MeasLen,NULL);
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
@@ -517,6 +553,7 @@ void main(){
   DefineInt("x1", &x1);
   DefineInt("x2", &x2);
   DefineInt("x3", &x3);
+  DefineInt("vx_dir", &vx_dir);
   DefineInt("yy0", &yy0);
   DefineInt("yy1", &yy1);
   DefineInt("yy2", &yy2);
