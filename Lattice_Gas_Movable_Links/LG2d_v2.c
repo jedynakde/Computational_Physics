@@ -221,7 +221,7 @@ if(close_tube == 1){
 }
 
 void bounceback(){
-  /*tot_vx =0;
+  tot_vx =0;
   tot_vy =0;
   for (int lc=0; lc<linkcount; lc++){
     //quantity of partices
@@ -238,9 +238,8 @@ void bounceback(){
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
     n[x][y][8-v]=tmp;		
-  }*/
+  }
 //dynamic walls
-
  for (int lc=0; lc<linkcount_dynamic; lc++){
     //quantity of partices
     int x=links_dynamic[lc][0];
@@ -249,34 +248,32 @@ void bounceback(){
     int v=links_dynamic[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
+    int tmp_0 = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
     int tmp = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v];
-    printf("switch : %i with %i \n",(((vx+x)%XDIM)+XDIM)%XDIM,x);
-    printf("tmp: %i \n",tmp);
+    //printf("switch : %i with %i \n",(((vx+x)%XDIM)+XDIM)%XDIM,x);
+    //printf("tmp: %i \n",tmp);
 	//find the smaller value to be the max for the random function to avoid having negative densisties
     //determining values for forward and backward particle flow
 	int max_random = 1;
-	if(tmp > n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v]){
-		max_random = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
+	if(tmp > tmp_0){
+		max_random = tmp_0;
 		}
 	else{
 		max_random = tmp;
 		}
 	if(max_random > 0){
 		flow = (rand()%max_random)*(1/move_period)*vx_dir;
-	}
+		}
 	else{
-	flow = 0;
-	}
+		flow = 0;
+		}
 //printf("max random = %i %i %i\n",max_random,tmp,n[x][y][8-v]);
     //summing all momemtums
     tot_vx += -2*vx*(n[x][y][8-v]-tmp+flow);
     tot_vy += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
-	//flow = rand()%10;//%max_random;
-	//printf("flow: %i",flow);
-    //n[(x+vx+XDIM)%XDIM][(y+vy+YDIM)%YDIM][v] = n[x][y][8-v] - flow;
-    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v] - flow;
-    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;		
+    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] - flow;
+    n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;		
   }
   //measure routine stores values for plotting
   Measure();
