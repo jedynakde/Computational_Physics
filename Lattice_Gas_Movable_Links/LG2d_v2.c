@@ -24,7 +24,7 @@ int linkcount=0,links[LINKMAX][3];
 //varaibles for dynamic walls
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
 double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
-double dt = 1.0,vx0 = 0.1;
+double dt = 1.0,vx0 = 0.0;
 int x3 = 100,yy3 = 0,yy4 = 100;
 int move_period = 1,vx_dir = 1,move_count = 1,dynamic_walls_on = 1,y_shift = 0,flow = 0;
 //variables for measuring tube momentum
@@ -34,7 +34,7 @@ int tot_vx_list[10],tot_vy_list[10];
 int src_x = 12,src_y = 30,src_len = 5,src_den = 0;
 int src_x_2 = 50,src_y_2 = 50,src_len_2 = 5,src_den_2 = 0;
 int var1 =10;
-
+double wall_mass = 10.1;
 //variables for measuring values
 int vx_m = 0,vy_m = 0;
 
@@ -120,6 +120,7 @@ void FindLink_Dynamic(){
 			}
 		//x_shift += vx_dir;
 		x_shift += vx0*dt;
+		vx0 = momentum_est_x[0]/wall_mass;
 }
 
 void FindLink(){
@@ -247,7 +248,7 @@ void bounceback(){
     //quantity of partices
     int x=links_dynamic[lc][0];
     int y=links_dynamic[lc][1];
-    //velocity
+    //particle velocity
     int v=links_dynamic[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
@@ -265,7 +266,7 @@ void bounceback(){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-		flow = (rand()%max_random)*(1/move_period)*vx_dir;
+		flow = (rand()%max_random)*(1/move_period)*links_dynamic_velocity[lc][0];
 		}
 	else{
 		flow = 0;
@@ -313,15 +314,15 @@ void init(){
   for (int x=0; x<xdim; x++){
     for (int y=0; y<ydim; y++){
       //if ((abs(xdim/2-x)<25)&&(abs(ydim/2-y)<25)){
-	n[x][y][0]=10;
-	n[x][y][1]=10;
-	n[x][y][2]=10;
-	n[x][y][3]=10;
-	n[x][y][4]=10;
-	n[x][y][5]=10;
-	n[x][y][6]=10;
-	n[x][y][7]=10;
-	n[x][y][8]=10;
+	n[x][y][0]=0;
+	n[x][y][1]=0;
+	n[x][y][2]=0;
+	n[x][y][3]=0;
+	n[x][y][4]=0;
+	n[x][y][5]=0;
+	n[x][y][6]=0;
+	n[x][y][7]=0;
+	n[x][y][8]=0;
       
 
     }
@@ -331,26 +332,26 @@ void initShear(){
   for (int x=0; x<xdim; x++){
     for (int y=0; y<ydim; y++){
       if (x<xdim/2){
-	n[x][y][0]=20;
-	n[x][y][1]=30;
-	n[x][y][2]=20;
-	n[x][y][3]=20;
-	n[x][y][4]=10;
-	n[x][y][5]=20;
+	n[x][y][0]=0;
+	n[x][y][1]=0;
+	n[x][y][2]=0;
+	n[x][y][3]=0;
+	n[x][y][4]=0;
+	n[x][y][5]=0;
 	n[x][y][6]=0;
-	n[x][y][7]=10;
+	n[x][y][7]=0;
 	n[x][y][8]=0;
       }
       else {
 	n[x][y][0]=0;
-	n[x][y][1]=10;
-	n[x][y][2]=00;
-	n[x][y][3]=20;
-	n[x][y][4]=10;
-	n[x][y][5]=20;
-	n[x][y][6]=20;
-	n[x][y][7]=30;
-	n[x][y][8]=20;
+	n[x][y][1]=0;
+	n[x][y][2]=0;
+	n[x][y][3]=0;
+	n[x][y][4]=0;
+	n[x][y][5]=0;
+	n[x][y][6]=0;
+	n[x][y][7]=0;
+	n[x][y][8]=0;
 	}
     }
   }
@@ -552,6 +553,7 @@ void main(){
   DefineInt("x3", &x3);
   DefineInt("vx_dir", &vx_dir);
   DefineDouble("vx0", &vx0);
+  DefineDouble("wall_mass", &wall_mass);
   DefineInt("yy0", &yy0);
   DefineInt("yy1", &yy1);
   DefineInt("yy2", &yy2);
@@ -591,7 +593,7 @@ void main(){
 
       for (int i=0; i<repeat; i++) {
 	iterate();
-	//setrho();
+	setrho();
       }
     } else sleep(1);
   }
