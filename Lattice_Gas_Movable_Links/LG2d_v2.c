@@ -22,9 +22,11 @@ int n[xdim][ydim][V];
 int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
 int linkcount=0,links[LINKMAX][3];
 //varaibles for dynamic walls
-int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];
+int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
+double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
+double dt = 1.0,vx0 = 0.1;
 int x3 = 100,yy3 = 0,yy4 = 100;
-int move_period = 1,vx_dir = 1,move_count = 1,dynamic_walls_on = 1,y_shift = 0,x_shift = 30,flow = 0,tmp_x_shift = 0;
+int move_period = 1,vx_dir = 1,move_count = 1,dynamic_walls_on = 1,y_shift = 0,flow = 0;
 //variables for measuring tube momentum
 int tot_vx=0,tot_vy=0;
 int tot_vx_list[10],tot_vy_list[10];
@@ -37,6 +39,7 @@ int var1 =10;
 int vx_m = 0,vy_m = 0;
 
 //graphing
+double x_shift = 30;
 double vx_est[MeasMax],vy_est[MeasMax];
 double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
 double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
@@ -87,36 +90,36 @@ void Measure(){
 }
 //re draws walls
 void FindLink_Dynamic(){
-	//printf("%i  \n",move_count%move_period);
-	if(0 == move_count%move_period){
-		//increment move count
-		move_count += 1;
-		//delete all old walls
+	int tmp_x_shift = 0;
+	
+
 		linkcount_dynamic = 0;
 		//draw vertical walls	
 		for(int y = yy3; y<yy4+1;y++){
 
-			tmp_x_shift = ((x_shift%XDIM)+XDIM)%XDIM;	
+			tmp_x_shift = x_shift;
+			tmp_x_shift = ((tmp_x_shift%XDIM)+XDIM)%XDIM;	
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 0;
+			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 3;
+			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 6;
+			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;	
 			}
-		x_shift += vx_dir;
-		}
-	else{
-		move_count += 1;
-		}
-
-
+		//x_shift += vx_dir;
+		x_shift += vx0*dt;
 }
 
 void FindLink(){
@@ -548,6 +551,7 @@ void main(){
   DefineInt("x2", &x2);
   DefineInt("x3", &x3);
   DefineInt("vx_dir", &vx_dir);
+  DefineDouble("vx0", &vx0);
   DefineInt("yy0", &yy0);
   DefineInt("yy1", &yy1);
   DefineInt("yy2", &yy2);
