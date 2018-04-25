@@ -95,12 +95,8 @@ void FindLink_Dynamic(){
 		linkcount_dynamic = 0;
 		//draw vertical walls	
 		for(int y = yy3; y<yy4+1;y++){
-			if(x_shift < 1){
-				x_shift = 98;		
-				}
-			else{
-				tmp_x_shift = 1 + x_shift%(XDIM -2);
-				}
+
+			tmp_x_shift = ((x_shift%XDIM)+XDIM)%XDIM;	
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 0;
@@ -115,11 +111,9 @@ void FindLink_Dynamic(){
 			linkcount_dynamic++;	
 			}
 		x_shift += vx_dir;
-		//printf("x shift %i \n",tmp_x_shift);
 		}
 	else{
 		move_count += 1;
-		//printf("move count %i \n",move_count);
 		}
 
 
@@ -227,7 +221,7 @@ if(close_tube == 1){
 }
 
 void bounceback(){
-  tot_vx =0;
+  /*tot_vx =0;
   tot_vy =0;
   for (int lc=0; lc<linkcount; lc++){
     //quantity of partices
@@ -244,7 +238,7 @@ void bounceback(){
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[x+vx][y+vy][v]= n[x][y][8-v];
     n[x][y][8-v]=tmp;		
-  }
+  }*/
 //dynamic walls
 
  for (int lc=0; lc<linkcount_dynamic; lc++){
@@ -255,12 +249,14 @@ void bounceback(){
     int v=links_dynamic[lc][2];
     int vx=v%3-1;
     int vy=1-v/3;
-	//determining values for forward and backward particle flow
-    int tmp = n[x+vx][y+vy][v];
+    int tmp = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v];
+    printf("switch : %i with %i \n",(((vx+x)%XDIM)+XDIM)%XDIM,x);
+    printf("tmp: %i \n",tmp);
 	//find the smaller value to be the max for the random function to avoid having negative densisties
+    //determining values for forward and backward particle flow
 	int max_random = 1;
-	if(tmp > n[x][y][8-v]){
-		max_random = n[x][y][8-v];
+	if(tmp > n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v]){
+		max_random = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
 		}
 	else{
 		max_random = tmp;
@@ -273,13 +269,14 @@ void bounceback(){
 	}
 //printf("max random = %i %i %i\n",max_random,tmp,n[x][y][8-v]);
     //summing all momemtums
-    //tot_vx += -2*vx*(n[x][y][8-v]-tmp);
-    //tot_vy += -2*vy*(n[x][y][8-v]-tmp);
+    tot_vx += -2*vx*(n[x][y][8-v]-tmp+flow);
+    tot_vy += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
 	//flow = rand()%10;//%max_random;
 	//printf("flow: %i",flow);
-    n[x+vx][y+vy][v] = n[x][y][8-v] - flow;
-    n[x][y][8-v] = tmp + flow;		
+    //n[(x+vx+XDIM)%XDIM][(y+vy+YDIM)%YDIM][v] = n[x][y][8-v] - flow;
+    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v] - flow;
+    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;		
   }
   //measure routine stores values for plotting
   Measure();
