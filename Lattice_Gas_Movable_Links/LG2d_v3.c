@@ -19,12 +19,16 @@ int n[xdim][ydim][V];
 // Boundary variables
 #define LINKMAX 10000
 #define LINKMAX_DYNAMIC 10000
+#define WALLMAX 10
 int x0=10,x1=20,x2 = 40,y2=20,yy0 = 10,yy1 = 20, yy2 = 40,close_tube = 1;
 int linkcount=0,links[LINKMAX][3];
 //varaibles for dynamic walls
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
+int wallcount=0;
+int shape[WALLMAX][4];// shape has walls each with a 2d start and end coordinate
+double shape_velocity[WALLMAX][LINKMAX_DYNAMIC][2];
 double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
-double dt = 1.0,vx0 = 0.0;
+double dt = 1.0,vx0 = 0.0, vy0 =0.0;
 int x3 = 100,yy3 = 0,yy4 = 100;
 int move_period = 1,vx_dir = 1,move_count = 1,dynamic_walls_on = 1,y_shift = 0,flow = 0;
 //variables for measuring tube momentum
@@ -91,36 +95,106 @@ void Measure(){
 //re draws walls
 void FindLink_Dynamic(){
 	int tmp_x_shift = 0;
-	
+	int tmp_y_shift = 0;
+	linkcount_dynamic = 0;//clear old shape walls
 
-		linkcount_dynamic = 0;
-		//draw vertical walls	
-		for(int y = yy3; y<yy4+1;y++){
+	for(int wall = 0; wall < wallcount; wall++){//iterate through all walls in the shape
 
-			tmp_x_shift = x_shift;
-			tmp_x_shift = ((tmp_x_shift%XDIM)+XDIM)%XDIM;	
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 0;
-			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 3;
-			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 6;
-			links_dynamic_velocity[linkcount_dynamic][0] = vx0;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;	
+		double ab_dx = abs(shape[wall][1]-shape[wall][0]);
+		double ab_dy = abs(shape[wall][3]-shape[wall][2]);
+
+		//determine which point to start from to allow for only positive increments
+		if(shape[wall][3] > shape[wall][2]){
+			double start_y = shape[wall][2];
+			double end_y = shape[wall][3];
 			}
-		//x_shift += vx_dir;
-		x_shift += vx0*dt;
-		vx0 = momentum_est_x[0]/wall_mass;
+		else{
+			double start_y = shape[wall][3];
+			double end_y = shape[wall][2];
+			}
+		if(shape[wall][1] > shape[wall][0]){
+			double start_x = shape[wall][0];
+			double end_x = shape[wall][1];
+			}
+		else{
+			double start_x = shape[wall][1];
+			double end_x = shape[wall][0];
+			}
+		//calculate length of the line
+		double line_length = sqrt((shape[wall][1]-shape[wall][0])*(shape[wall][1]-shape[wall][0])+(shape[wall][3]-shape[wall][2])*(shape[wall][3]+shape[wall][2]));
+		//iterate through all links that make up that line
+		for(double l = 0; l < line_length;l = l + 1){
+			for(double y_pos = start_y;y_pos < (start_y+ab_dy);y_pos++){
+				tmp_x_shift = ((start_x%XDIM)+XDIM)%XDIM;
+				tmp_y_shift = ((y_pos%YDIM)+YDIM)%YDIM;
+				//make vertical lines
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 0;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 3;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 6;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+			}
+			//make horizontal lines
+			for(double x_pos = start_x;x_pos < (start_x+ab_dx);x_pos++){
+				tmp_x_shift = ((x_pos%XDIM)+XDIM)%XDIM;
+				tmp_y_shift = ((start_y%YDIM)+YDIM)%YDIM;
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 0;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 1;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+				shape[linkcount_dynamic][0] = tmp_x_shift; //x-position
+				shape[linkcount_dynamic][1] = tmp_y_shift;
+				shape[linkcount_dynamic][2] = 2;
+				shape_velocity[linkcount_dynamic][0] = vx0;//set x velocity
+				shape_velocity[linkcount_dynamic][1] = vy0;//set y velocity
+				linkcount_dynamic++;
+			}
+			//increment the x and y positions for the links
+			if(ab_dx == 0){//vertical wall
+				start_y = l;
+				}
+			else if(ab_dy == 0){//horizontal wall
+				start_x = l;
+				}
+			else{
+				start_x += ab_dx;
+				start_y += ab_dy;
+				} 
+			}
+		
+
+	}
+	//update link positions based on velocity anf velocity based on collision momentum
+	for(int w = 0; w < wallcount; w++){
+		for(int lc = 0; lc < linkcount_dynamic;lc++){
+			shape[linkcount_dynamic][0] += shape_velocity[linkcount_dynamic][0]*dt; //x-position
+			shape[linkcount_dynamic][1] += shape_velocity[linkcount_dynamic][1]*dt;
+			shape_velocity[linkcount_dynamic][0] = momentum_est_x[0]/wall_mass;
+			shape_velocity[linkcount_dynamic][1] = momentum_est_y[0]/wall_mass;
+			}
+		}
+
 }
 
 void FindLink(){
@@ -266,7 +340,7 @@ void bounceback(){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-		flow = (rand()%max_random)*(1/move_period)*links_dynamic_velocity[lc][0];
+		flow = (rand()%max_random)*links_dynamic_velocity[lc][0];
 		}
 	else{
 		flow = 0;
