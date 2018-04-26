@@ -39,7 +39,7 @@ double wall_mass = 10.1;
 int vx_m = 0,vy_m = 0;
 
 //graphing
-double x_shift = 30;
+double x_shift = 50;
 double vx_est[MeasMax],vy_est[MeasMax];
 double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
 double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
@@ -313,17 +313,29 @@ void setrho(){
 void init(){
   for (int x=0; x<xdim; x++){
     for (int y=0; y<ydim; y++){
-      //if ((abs(xdim/2-x)<25)&&(abs(ydim/2-y)<25)){
-	n[x][y][0]=0;
-	n[x][y][1]=0;
-	n[x][y][2]=0;
-	n[x][y][3]=0;
-	n[x][y][4]=0;
-	n[x][y][5]=0;
-	n[x][y][6]=0;
-	n[x][y][7]=0;
-	n[x][y][8]=0;
-      
+      if (x > 60){
+	n[x][y][0]=10;
+	n[x][y][1]=10;
+	n[x][y][2]=10;
+	n[x][y][3]=10;
+	n[x][y][4]=10;
+	n[x][y][5]=10;
+	n[x][y][6]=10;
+	n[x][y][7]=10;
+	n[x][y][8]=10;
+      }
+      if (x < 40){
+	n[x][y][0]=50;
+	n[x][y][1]=50;
+	n[x][y][2]=50;
+	n[x][y][3]=50;
+	n[x][y][4]=50;
+	n[x][y][5]=50;
+	n[x][y][6]=50;
+	n[x][y][7]=50;
+	n[x][y][8]=50;
+      }
+	
 
     }
   }
@@ -593,7 +605,7 @@ void main(){
 
       for (int i=0; i<repeat; i++) {
 	iterate();
-	setrho();
+	//setrho();
       }
     } else sleep(1);
   }
