@@ -605,7 +605,7 @@ void main(){
 
       for (int i=0; i<repeat; i++) {
 	iterate();
-	//setrho();
+	setrho();
       }
     } else sleep(1);
   }
