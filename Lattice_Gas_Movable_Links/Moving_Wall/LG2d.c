@@ -47,7 +47,7 @@ int vx_m = 0,vy_m = 0;
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
 double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
 double wall_mass = 10000000000.1;
-int yy3 = 25,yy4 = 75,flow = 0,dynamic_walls_on = 1;
+int yy3 = 26,yy4 = 75,flow = 0,dynamic_walls_on = 1;
 //dynamic wall
 // position
 //double x_shift = 50;
@@ -348,7 +348,7 @@ if(dynamic_walls_on == 1){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-		flow = (rand()%max_random)*links_dynamic_velocity[lc][0];
+		flow = (rand()%max_random)*links_dynamic_velocity[lc][0]*links_dynamic_velocity[lc][0];
 		}
 	else{
 		flow = 0;
@@ -401,26 +401,26 @@ void init(){
 
       dynamic_wall_position_x = 50;
       if(x > 25 && x < 50 && y < 75 && y > 25){
-	n[x][y][0]=5;
-	n[x][y][1]=5;
-	n[x][y][2]=5;
-	n[x][y][3]=5;
-	n[x][y][4]=5;
-	n[x][y][5]=5;
-	n[x][y][6]=5;
-	n[x][y][7]=5;
-	n[x][y][8]=5;
+	n[x][y][0]=50;
+	n[x][y][1]=50;
+	n[x][y][2]=50;
+	n[x][y][3]=50;
+	n[x][y][4]=50;
+	n[x][y][5]=50;
+	n[x][y][6]=50;
+	n[x][y][7]=50;
+	n[x][y][8]=50;
 	}
       else if(x > 50 && x < 75 && y < 75 && y > 25){
-	n[x][y][0]=6;
-	n[x][y][1]=6;
-	n[x][y][2]=6;
-	n[x][y][3]=6;
-	n[x][y][4]=6;
-	n[x][y][5]=6;
-	n[x][y][6]=6;
-	n[x][y][7]=6;
-	n[x][y][8]=6;
+	n[x][y][0]=60;
+	n[x][y][1]=60;
+	n[x][y][2]=60;
+	n[x][y][3]=60;
+	n[x][y][4]=60;
+	n[x][y][5]=60;
+	n[x][y][6]=60;
+	n[x][y][7]=60;
+	n[x][y][8]=60;
 	}
 	else if(x < 25 || x > 75 && y > 75 || y < 25){
 	n[x][y][0]=0;
