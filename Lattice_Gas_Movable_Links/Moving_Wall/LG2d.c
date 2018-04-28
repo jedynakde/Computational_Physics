@@ -24,7 +24,8 @@ int n[xdim][ydim][V];
 
 double dt = 1.0;
 
-
+int x_link_var = -1;
+int y_link_var = 0;
 
 //variables for measuring tube momentum
 
@@ -36,7 +37,7 @@ int src_x_2 = 15,src_y_2 = 15,src_len_2 = 5,src_den_2 = 10;
 int var1 =10;
 //variables for measuring values
 //particle velocity
-int particle_vx = 0,particle_vy;
+int particle_vx = 0,particle_vy,particle_leakage = 0;
 double measure_particle_vx[MeasMax],measure_particle_vy[MeasMax];
 double measure_particle_vx_filt[MeasMax],measure_particle_vy_filt[MeasMax];
 int vx_m = 0,vy_m = 0;
@@ -46,8 +47,9 @@ int vx_m = 0,vy_m = 0;
 //link variables
 int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
 double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
-double wall_mass = 10000000000.1;
-int yy3 = 26,yy4 = 75,flow = 0,dynamic_walls_on = 1;
+double wall_mass = 75000.1;
+int yy3 = 26,yy4 = 75,dynamic_walls_on = 1,dynamic_wall_control_on = 0;
+double flow = 0;
 //dynamic wall
 // position
 //double x_shift = 50;
@@ -71,6 +73,10 @@ double measure_dynamic_wall_momentum_x[MeasMax],measure_dynamic_wall_momentum_y[
 //filtered
 double measure_dynamic_wall_momentum_x_filt[MeasMax],measure_dynamic_wall_momentum_y_filt[MeasMax];
 
+//
+double measure_particle_leakage[MeasMax];
+double measure_particle_leakage_filt[MeasMax];
+
 //static wall variables
 int linkcount=0,links[LINKMAX][3];
 
@@ -89,15 +95,15 @@ double measure_static_wall_momentum_x_filt[MeasMax],measure_static_wall_momentum
 int MeasLen = MeasMax/2;
 int range_val = 20;
 int val[] = {0,0};
-int filt_data[] ={0,0,0,0,0,0,0,0,0,0}; //dynamic walls -> x,y,px,py,vx,vy  static walls -> px py particles -> vx vy
+int filt_data[] ={0,0,0,0,0,0,0,0,0,0,0}; //dynamic walls -> x,y,px,py,vx,vy  static walls -> px py particles -> vx vy leakage
 
 
 //added a running average to smooth out the graphs
 void average(int range){
-	val[0] = 0;
-	val[1] = 0;
+	//val[0] = 0;
+	//val[1] = 0;
 	//clear previous filtered data
-	for(int i = 0; i < 10;i++){
+	for(int i = 0; i < 11;i++){
 		filt_data[i] = 0;
 		}
 	//update with new data
@@ -112,9 +118,10 @@ void average(int range){
 		filt_data[7] += measure_static_wall_momentum_y[i];
 		filt_data[8] += measure_particle_vx[i];
 		filt_data[9] += measure_particle_vy[i];
+		filt_data[10] += measure_particle_leakage[i];
 		}
 	//average values
-	for(int i = 0; i < 10;i++){
+	for(int i = 0; i < 11;i++){
 		filt_data[i] = filt_data[i]/range;
 		}
 }
@@ -124,17 +131,44 @@ void measure_function(){
 	particle_vy = 0;
 	for(int i = 0; i < YDIM -1;i++){
 		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
-		//particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
+		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
 		}
+	particle_vx = particle_vx/100.0;
+	particle_vy = particle_vy/100.0;
+
+
+
+	//measure the number of particles leaking
+	  
+	  particle_leakage = 0;
+	  for (int x=x0; x<dynamic_wall_position_x; x++){
+    		for (int y=yy3; y<yy4; y++){
+			for(int v = 0; v < 9; v++)
+				{
+				particle_leakage += n[x][y][v];
+				}
+		}
+	}
+	for (int x=dynamic_wall_position_x; x<x1; x++){
+    		for (int y=yy3; y<yy4; y++){
+			for(int v = 0; v < 9; v++)
+				{
+				particle_leakage -= n[x][y][v];
+				}
+		}
+	}
+
 
 
 }
 
 
-
+//take measurements for plotting data
 void Measure(){
   //store dynamic wall data
   //position
+  measure_function();
+
   memmove(&measure_dynamic_wall_position_x[1],&measure_dynamic_wall_position_x[0],(MeasMax-1)*sizeof(int));
   measure_dynamic_wall_position_x[0]=dynamic_wall_position_x;
   memmove(&measure_dynamic_wall_position_y[1],&measure_dynamic_wall_position_y[0],(MeasMax-1)*sizeof(int));
@@ -162,7 +196,10 @@ void Measure(){
   memmove(&measure_particle_vy[1],&measure_particle_vy[0],(MeasMax-1)*sizeof(int));
   measure_particle_vy[0]=particle_vy;
 
-  //filter data
+  memmove(&measure_particle_leakage[1],&measure_particle_leakage[0],(MeasMax-1)*sizeof(int));
+  measure_particle_leakage[0]=particle_leakage;
+
+  //filter data by taking the average of the data points over the range_val
   average(range_val);
 
    //position
@@ -187,11 +224,13 @@ void Measure(){
   memmove(&measure_static_wall_momentum_y_filt[1],&measure_static_wall_momentum_y_filt[0],(MeasMax-1)*sizeof(int));
   measure_static_wall_momentum_y_filt[0]=filt_data[7];
 
-  //store particle data
   memmove(&measure_particle_vx_filt[1],&measure_particle_vx_filt[0],(MeasMax-1)*sizeof(int));
   measure_particle_vx_filt[0]=filt_data[8];
   memmove(&measure_particle_vy_filt[1],&measure_particle_vy_filt[0],(MeasMax-1)*sizeof(int));
-  measure_particle_vy_filt[0]=filt_data[9];;
+  measure_particle_vy_filt[0]=filt_data[9];
+
+  memmove(&measure_particle_leakage_filt[1],&measure_particle_leakage_filt[0],(MeasMax-1)*sizeof(int));
+  measure_particle_leakage_filt[0]=filt_data[10];
 }
 //re draws walls
 void FindLink_Dynamic(){
@@ -207,7 +246,8 @@ void FindLink_Dynamic(){
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
 			links_dynamic[linkcount_dynamic][1] = y;
 			links_dynamic[linkcount_dynamic][2] = 0;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocit4
+
 			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
@@ -221,11 +261,30 @@ void FindLink_Dynamic(){
 			links_dynamic[linkcount_dynamic][2] = 6;
 			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
 			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;	
+			linkcount_dynamic++;
+
+
+	
+			
 			}
+
+			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
+			links_dynamic[linkcount_dynamic][1] = yy1;
+			links_dynamic[linkcount_dynamic][2] = 0;
+			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
+			linkcount_dynamic++;
+			
+			links_dynamic[linkcount_dynamic][0] = tmp_x_shift+x_link_var; //x-position
+			links_dynamic[linkcount_dynamic][1] = yy0+y_link_var;
+			links_dynamic[linkcount_dynamic][2] = 2;
+			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
+			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
+			linkcount_dynamic++;
+			
+
 		
 		dynamic_wall_position_x += dynamic_wall_vx*dt;
-		//dynamic_wall_vx = momentum_est_x[0]/wall_mass;
 }
 
 void FindLink(){
@@ -348,7 +407,7 @@ if(dynamic_walls_on == 1){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-		flow = (rand()%max_random)*links_dynamic_velocity[lc][0]*links_dynamic_velocity[lc][0];
+		flow = (rand()%max_random)*links_dynamic_velocity[lc][0];
 		}
 	else{
 		flow = 0;
@@ -361,8 +420,11 @@ if(dynamic_walls_on == 1){
     n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] - flow;
     n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;		
   }
-    dynamic_wall_vx = dynamic_wall_momentum_x/wall_mass;
-    dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;
+
+	if(dynamic_wall_control_on == 0){
+    		dynamic_wall_vx = dynamic_wall_momentum_x/wall_mass;
+    		dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;
+	}
 }
   //measure routine stores values for plotting
   Measure();
@@ -412,17 +474,17 @@ void init(){
 	n[x][y][8]=50;
 	}
       else if(x > 50 && x < 75 && y < 75 && y > 25){
-	n[x][y][0]=60;
-	n[x][y][1]=60;
-	n[x][y][2]=60;
-	n[x][y][3]=60;
-	n[x][y][4]=60;
-	n[x][y][5]=60;
-	n[x][y][6]=60;
-	n[x][y][7]=60;
-	n[x][y][8]=60;
+	n[x][y][0]=40;
+	n[x][y][1]=40;
+	n[x][y][2]=40;
+	n[x][y][3]=40;
+	n[x][y][4]=40;
+	n[x][y][5]=40;
+	n[x][y][6]=40;
+	n[x][y][7]=40;
+	n[x][y][8]=40;
 	}
-	else if(x < 25 || x > 75 && y > 75 || y < 25){
+	else if(x <= 25 || x >= 75 || y >= 75 || y <= 25){
 	n[x][y][0]=0;
 	n[x][y][1]=0;
 	n[x][y][2]=0;
@@ -440,24 +502,24 @@ void initShear(){
   for (int x=0; x<xdim; x++){
     for (int y=0; y<ydim; y++){
       if (x<xdim/2){
-	n[x][y][0]=0;
-	n[x][y][1]=0;
-	n[x][y][2]=0;
-	n[x][y][3]=0;
-	n[x][y][4]=0;
-	n[x][y][5]=0;
-	n[x][y][6]=0;
-	n[x][y][7]=0;
-	n[x][y][8]=0;
+	n[x][y][0]=1;
+	n[x][y][1]=2;
+	n[x][y][2]=3;
+	n[x][y][3]=4;
+	n[x][y][4]=5;
+	n[x][y][5]=6;
+	n[x][y][6]=7;
+	n[x][y][7]=8;
+	n[x][y][8]=9;
       }
       else {
-	n[x][y][0]=0;
-	n[x][y][1]=0;
-	n[x][y][2]=0;
-	n[x][y][3]=0;
-	n[x][y][4]=0;
-	n[x][y][5]=0;
-	n[x][y][6]=0;
+	n[x][y][0]=8;
+	n[x][y][1]=7;
+	n[x][y][2]=6;
+	n[x][y][3]=5;
+	n[x][y][4]=4;
+	n[x][y][5]=3;
+	n[x][y][6]=2;
 	n[x][y][7]=0;
 	n[x][y][8]=0;
 	}
@@ -649,6 +711,7 @@ void main(){
   DefineGraphN_R("static wall momentum y",&measure_static_wall_momentum_y[0],&MeasLen,NULL);
   DefineGraphN_R("particle vx",&measure_particle_vx[0],&MeasLen,NULL);
   DefineGraphN_R("particle vy",&measure_particle_vy[0],&MeasLen,NULL);
+  DefineGraphN_R("particle leakage",&measure_particle_leakage[0],&MeasLen,NULL);
   //filtered graphs
   DefineGraphN_R("dynamic wall position x filt",&measure_dynamic_wall_position_x_filt[0],&MeasLen,NULL);
   DefineGraphN_R("dynamic wall position y filt",&measure_dynamic_wall_position_y_filt[0],&MeasLen,NULL);
@@ -660,6 +723,7 @@ void main(){
   DefineGraphN_R("static wall momentum y filt",&measure_static_wall_momentum_y_filt[0],&MeasLen,NULL);
   DefineGraphN_R("particle vx filt",&measure_particle_vx_filt[0],&MeasLen,NULL);
   DefineGraphN_R("particle vy filt",&measure_particle_vy_filt[0],&MeasLen,NULL);
+  DefineGraphN_R("particle leakage filt",&measure_particle_leakage_filt[0],&MeasLen,NULL);
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
@@ -677,11 +741,14 @@ void main(){
   DefineInt("yy1", &yy1);
   DefineInt("yy3", &yy3);
   DefineInt("yy4", &yy4);
+  DefineInt("y link var", &y_link_var);
+  DefineInt("x link var", &x_link_var);
   DefineFunction("Add Wall",FindLink);
   DefineInt("link count",&linkcount);
   DefineInt("dynamic link count",&linkcount_dynamic);
   DefineInt("dynamic walls on",&dynamic_walls_on);
-  DefineInt("flow",&flow);
+  DefineInt("dynamic wall control on",&dynamic_wall_control_on);
+  DefineDouble("flow",&flow);
   EndMenu();
   StartMenu("Particle Source",0);
   DefineInt("src_den",&src_den);
