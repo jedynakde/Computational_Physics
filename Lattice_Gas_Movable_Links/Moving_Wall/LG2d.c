@@ -154,11 +154,11 @@ void measure_function(){
 
 	particle_leakage = particle_leakage/((dynamic_wall_position_x-x0)*(yy4-yy3));
 
-	for (int x=dynamic_wall_position_x; x<x1; x++){
+	for (int x=(1+dynamic_wall_position_x); x<x1; x++){
     		for (int y=yy3; y<yy4; y++){
 			for(int v = 0; v < 9; v++)
 				{
-				temp -= n[x][y][v];
+				temp += n[x][y][v];
 				}
 		}
 	}
