@@ -41,6 +41,7 @@ int particle_vx = 0,particle_vy,particle_leakage = 0;
 double measure_particle_vx[MeasMax],measure_particle_vy[MeasMax];
 double measure_particle_vx_filt[MeasMax],measure_particle_vy_filt[MeasMax];
 int vx_m = 0,vy_m = 0;
+int d1 = 40,d2 = 50;
 
 
 
@@ -129,6 +130,7 @@ void average(int range){
 void measure_function(){
 	particle_vx = 0;
 	particle_vy = 0;
+	int temp = 0; 
 	for(int i = 0; i < YDIM -1;i++){
 		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
 		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
@@ -149,16 +151,21 @@ void measure_function(){
 				}
 		}
 	}
+
+	particle_leakage = particle_leakage/((dynamic_wall_position_x-x0)*(yy4-yy3));
+
 	for (int x=dynamic_wall_position_x; x<x1; x++){
     		for (int y=yy3; y<yy4; y++){
 			for(int v = 0; v < 9; v++)
 				{
-				particle_leakage -= n[x][y][v];
+				temp -= n[x][y][v];
 				}
 		}
 	}
 
+	temp = temp/((x1-dynamic_wall_position_x)*(yy4-yy3));
 
+	particle_leakage = particle_leakage - temp;
 
 }
 
@@ -230,7 +237,7 @@ void Measure(){
   measure_particle_vy_filt[0]=filt_data[9];
 
   memmove(&measure_particle_leakage_filt[1],&measure_particle_leakage_filt[0],(MeasMax-1)*sizeof(int));
-  measure_particle_leakage_filt[0]=filt_data[10];
+  measure_particle_leakage_filt[0]=particle_leakage;//filt_data[10];
 }
 //re draws walls
 void FindLink_Dynamic(){
@@ -369,6 +376,7 @@ void bounceback(){
   
   for (int lc=0; lc<linkcount; lc++){
     //quantity of partices
+   
     int x=links[lc][0];
     int y=links[lc][1];
     //velocity
@@ -407,18 +415,21 @@ if(dynamic_walls_on == 1){
 		max_random = tmp;
 		}
 	if(max_random > 0){
-		flow = (rand()%max_random)*links_dynamic_velocity[lc][0];
+		flow = (rand()%max_random)*dynamic_wall_vx;
 		}
 	else{
 		flow = 0;
 		}
-//printf("max random = %i %i %i\n",max_random,tmp,n[x][y][8-v]);
+
+
     //summing all momemtums
     dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp+flow);
     dynamic_wall_momentum_y += -2*vy*(n[x][y][8-v]-tmp);
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] - flow;
-    n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;		
+    n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;	
+	printf("%f \n",flow);
+  Measure();	
   }
 
 	if(dynamic_wall_control_on == 0){
@@ -426,8 +437,7 @@ if(dynamic_walls_on == 1){
     		dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;
 	}
 }
-  //measure routine stores values for plotting
-  Measure();
+
 }
 
 void setrho(){
@@ -463,26 +473,26 @@ void init(){
 
       dynamic_wall_position_x = 50;
       if(x > 25 && x < 50 && y < 75 && y > 25){
-	n[x][y][0]=50;
-	n[x][y][1]=50;
-	n[x][y][2]=50;
-	n[x][y][3]=50;
-	n[x][y][4]=50;
-	n[x][y][5]=50;
-	n[x][y][6]=50;
-	n[x][y][7]=50;
-	n[x][y][8]=50;
+	n[x][y][0]=d1;
+	n[x][y][1]=d1;
+	n[x][y][2]=d1;
+	n[x][y][3]=d1;
+	n[x][y][4]=d1;
+	n[x][y][5]=d1;
+	n[x][y][6]=d1;
+	n[x][y][7]=d1;
+	n[x][y][8]=d1;
 	}
       else if(x > 50 && x < 75 && y < 75 && y > 25){
-	n[x][y][0]=40;
-	n[x][y][1]=40;
-	n[x][y][2]=40;
-	n[x][y][3]=40;
-	n[x][y][4]=40;
-	n[x][y][5]=40;
-	n[x][y][6]=40;
-	n[x][y][7]=40;
-	n[x][y][8]=40;
+	n[x][y][0]=d2;
+	n[x][y][1]=d2;
+	n[x][y][2]=d2;
+	n[x][y][3]=d2;
+	n[x][y][4]=d2;
+	n[x][y][5]=d2;
+	n[x][y][6]=d2;
+	n[x][y][7]=d2;
+	n[x][y][8]=d2;
 	}
 	else if(x <= 25 || x >= 75 || y >= 75 || y <= 25){
 	n[x][y][0]=0;
@@ -748,7 +758,6 @@ void main(){
   DefineInt("dynamic link count",&linkcount_dynamic);
   DefineInt("dynamic walls on",&dynamic_walls_on);
   DefineInt("dynamic wall control on",&dynamic_wall_control_on);
-  DefineDouble("flow",&flow);
   EndMenu();
   StartMenu("Particle Source",0);
   DefineInt("src_den",&src_den);
@@ -757,6 +766,8 @@ void main(){
   DefineInt("src_den_2",&src_den_2);
   DefineInt("src_x_2",&src_x_2);
   DefineInt("src_y_2",&src_y_2);
+  DefineInt("d1",&d1);
+  DefineInt("d2",&d2);
   EndMenu();
   DefineGraph(contour2d_,"Graph");
   DefineInt("C", &C);
