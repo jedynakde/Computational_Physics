@@ -428,8 +428,7 @@ if(dynamic_walls_on == 1){
     //swapping the particles trying to enter and leave to have the effect of a wall
     n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] - flow;
     n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;	
-	printf("%f \n",flow);
-  Measure();	
+	printf("%f \n",flow);	
   }
 
 	if(dynamic_wall_control_on == 0){
@@ -787,6 +786,7 @@ void main(){
 
       for (int i=0; i<repeat; i++) {
 	iterate();
+	Measure();
 	//setrho();
       }
     } else sleep(1);
