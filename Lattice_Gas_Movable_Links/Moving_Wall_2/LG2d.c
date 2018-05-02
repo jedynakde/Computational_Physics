@@ -41,15 +41,16 @@ int particle_vx = 0,particle_vy,particle_leakage = 0;
 double measure_particle_vx[MeasMax],measure_particle_vy[MeasMax];
 double measure_particle_vx_filt[MeasMax],measure_particle_vy_filt[MeasMax];
 int vx_m = 0,vy_m = 0;
-int d1 = 40,d2 = 50;
+int d1 = 0,d2 = 50;
 
 
 
 //link variables
-int linkcount_dynamic = 0,links_dynamic[LINKMAX_DYNAMIC][3];//link x y and v(for particles)
+int linkcount_dynamic = 0,links_dynamic[2][LINKMAX_DYNAMIC][3];//link x y and v(for particles) added other index for right and left walls
+double links_dynamic_pool[2][LINKMAX_DYNAMIC];
 double links_dynamic_velocity[LINKMAX_DYNAMIC][2];//link velocities
 double wall_mass = 75000.1;
-int yy3 = 26,yy4 = 75,dynamic_walls_on = 1,dynamic_wall_control_on = 0;
+int yy3 = 26,yy4 = 75,dynamic_walls_on = 1,dynamic_wall_control_on = 1;
 double flow = 0;
 //dynamic wall
 // position
@@ -257,56 +258,43 @@ void Measure(){
 void FindLink_Dynamic(){
 	int tmp_x_shift = 0;
 	
-
 		linkcount_dynamic = 0;
-		//draw vertical walls	
+		//draw vertical walls
+		for(int dir = 0; dir < 2;dir++){
 		for(int y = yy3; y<yy4+1;y++){
 
 			tmp_x_shift = dynamic_wall_position_x;
 			tmp_x_shift = ((tmp_x_shift%XDIM)+XDIM)%XDIM;	
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 0;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocit4
-
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
+			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
+			links_dynamic[dir][linkcount_dynamic][1] = y;
+			links_dynamic[dir][linkcount_dynamic][2] = 0;
 			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 3;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
+			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
+			links_dynamic[dir][linkcount_dynamic][1] = y;
+			links_dynamic[dir][linkcount_dynamic][2] = 3;
 			linkcount_dynamic++;
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = y;
-			links_dynamic[linkcount_dynamic][2] = 6;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
+			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
+			links_dynamic[dir][linkcount_dynamic][1] = y;
+			links_dynamic[dir][linkcount_dynamic][2] = 6;
 			linkcount_dynamic++;
-
-
-	
-			
+		
 			}
 
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[linkcount_dynamic][1] = yy1;
-			links_dynamic[linkcount_dynamic][2] = 0;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;
-			
-			links_dynamic[linkcount_dynamic][0] = tmp_x_shift+x_link_var; //x-position
-			links_dynamic[linkcount_dynamic][1] = yy0+y_link_var;
-			links_dynamic[linkcount_dynamic][2] = 2;
-			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
-			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
-			linkcount_dynamic++;
-			
 
-		
+			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
+			links_dynamic[dir][linkcount_dynamic][1] = yy1;
+			links_dynamic[dir][linkcount_dynamic][2] = 0;
+			linkcount_dynamic++;
+			
+			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift+x_link_var; //x-position
+			links_dynamic[dir][linkcount_dynamic][1] = yy0+y_link_var;
+			links_dynamic[dir][linkcount_dynamic][2] = 2;
+			linkcount_dynamic++;
+		}
+
 		dynamic_wall_position_x += dynamic_wall_vx*dt;
 }
+
 
 void FindLink(){
 	//2 links added to prevent leaking on the x0,yy2 and x2,yy0 squares 
@@ -407,49 +395,56 @@ void bounceback(){
   }
 //dynamic walls
 if(dynamic_walls_on == 1){
+ int wall_pos = dynamic_wall_position_x;
+ double dx = abs(wall_pos - dynamic_wall_position_x);
  for (int lc=0; lc<linkcount_dynamic; lc++){
-    //quantity of partices
-    int x=links_dynamic[lc][0];
-    int y=links_dynamic[lc][1];
-    //particle velocity
-    int v=links_dynamic[lc][2];
-    int vx=v%3-1;
-    int vy=1-v/3;
-    int tmp_0 = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
-    int tmp = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v];
-    //printf("switch : %i with %i \n",(((vx+x)%XDIM)+XDIM)%XDIM,x);
-    //printf("tmp: %i \n",tmp);
-	//find the smaller value to be the max for the random function to avoid having negative densisties
-    //determining values for forward and backward particle flow
-	int max_random = 1;
-	if(tmp > tmp_0){
-		max_random = tmp_0;
-		}
-	else{
-		max_random = tmp;
-		}
-	if(max_random > 0){
-		flow = (rand()%max_random)*dynamic_wall_vx;
-		}
-	else{
-		flow = 0;
-		}
+	for(int dir = 0; dir < 1; dir++){
+		//printf("%i \n",dir);
+    		//quantity of partices
+    		int x=links_dynamic[dir][lc][0];
+    		int y=links_dynamic[dir][lc][1];
+    		//particle velocity
+    		int v=links_dynamic[dir][lc][2];
+		int x_b = (((x)%XDIM)+XDIM)%XDIM;
+                int y_b = (((y)%YDIM)+YDIM)%YDIM;
+    		int vx=v%3-1;
+    		int vy=1-v/3;
+		int x_v_b = (((vx+x)%XDIM)+XDIM)%XDIM;
+		int y_v_b = (((vy+y)%YDIM)+YDIM)%YDIM;
+		int tmp_0 = 0;
+		int tmp_1 = 0;
+		int tmp = (1-(dynamic_wall_position_x - x_b))*n[x_v_b][y_v_b][v];
+		int i_flow = 0;
+		double d_flow = links_dynamic_pool[dir][lc];
+		
+		//pool of particles to be moved
+		d_flow += dynamic_wall_vx*n[x_b][y_b][v];
+		i_flow = d_flow;
+
+		//when the particles get big enough to be moved, move them
+		n[x_b+1][y_b][v] += i_flow;
+		n[x_b][y_b][v] -= i_flow;
+		//remove the amount from the pool
+		d_flow -= i_flow;
+		printf("%i %f %i %i\n",i_flow, d_flow,n[x_b][y_b][v],x);
+		links_dynamic_pool[dir][lc] = d_flow;
 
 
-    //summing all momemtums
-    dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp+flow);
-    dynamic_wall_momentum_y += -2*vy*(n[x][y][8-v]-tmp);
-    //swapping the particles trying to enter and leave to have the effect of a wall
-    n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v] = n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] - flow;
-    n[(((x)%XDIM)+XDIM)%XDIM][((y)%YDIM+YDIM)%YDIM][8-v] = tmp + flow;	
-	printf("%f \n",flow);	
-  }
 
+    		//summing all momemtums
+    		dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp);//+flow);
+    		dynamic_wall_momentum_y += -2*vy*(n[x][y][8-v]-tmp);
+
+    		//swapping the particles trying to enter and leave to have the effect of a wall
+    		n[x_v_b][y_v_b][v] = (1-(dynamic_wall_position_x - x_b))*n[x_b][y_b][8-v];
+    		n[x_b][y_b][8-v] = tmp;// + flow;	
+		n[x_b][y_b][v] += (dynamic_wall_position_x - x_b)*n[x_v_b][y_v_b][v];
+ 		 }
+	}
 	if(dynamic_wall_control_on == 0){
     		dynamic_wall_vx = dynamic_wall_momentum_x/wall_mass;
-    		dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;
+    		dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;}
 	}
-}
 
 }
 
@@ -485,7 +480,7 @@ void init(){
     for (int y=0; y<ydim; y++){
 
       dynamic_wall_position_x = 50;
-      if(x > 25 && x < 50 && y < 75 && y > 25){
+      if(x > 25 && x <= 50 && y < 75 && y > 25){
 	n[x][y][0]=d1;
 	n[x][y][1]=d1;
 	n[x][y][2]=d1;
@@ -754,7 +749,7 @@ void main(){
   DefineInt("range_val",&range_val);
   DefineGraph(curve2d_,"Measurements");
   EndMenu();
-  StartMenu("Wall",0);
+  StartMenu("Wall",1);
   DefineInt("x0", &x0);
   DefineInt("x1", &x1);
   DefineDouble("dynamic_wall_vx", &dynamic_wall_vx);
@@ -772,7 +767,7 @@ void main(){
   DefineInt("dynamic walls on",&dynamic_walls_on);
   DefineInt("dynamic wall control on",&dynamic_wall_control_on);
   EndMenu();
-  StartMenu("Particle Source",0);
+  StartMenu("Particle Source",1);
   DefineInt("src_den",&src_den);
   DefineInt("src_x",&src_x);
   DefineInt("src_y",&src_y);
