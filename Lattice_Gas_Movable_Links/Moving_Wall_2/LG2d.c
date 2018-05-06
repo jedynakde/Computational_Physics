@@ -1,4 +1,7 @@
 // Lattice gas code in 1d.
+//add flipping to diagonal velocities
+//parameterize amount of particles being flipped
+//solve the divergent behavior
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -140,6 +143,13 @@ void measure_function(){
 	for(int i = 0; i < YDIM -1;i++){
 		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
 		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
+
+		for(int x0 = 0;x0<xdim;x0++){
+			//sum up velocities to get velocity front
+		measure_particle_velocity_front[i] += n[x0][i][5] - n[x0][i][3];
+
+	}
+
 		}
 	particle_vx = particle_vx/100.0;
 	particle_vy = particle_vy/100.0;
@@ -297,7 +307,16 @@ void FindLink_Dynamic(){
 
 		dynamic_wall_position_x += dynamic_wall_vx*dt;
 }
-
+void moveParticles(){
+for(int x = 0;x<xdim;x++){
+	for(int y = 0;y<ydim;y++){
+		//additional code for flipping some horizontal particles
+		double flip_parts = ((double)rand()/(double)RAND_MAX)*n[x][y][5];
+		n[x][y][3] += flip_parts;
+		n[x][y][5] -= flip_parts;
+		}
+	}
+}
 
 void FindLink(){
 
@@ -349,7 +368,6 @@ void FindLink(){
 	links[linkcount][2] = 6;
 	linkcount++;
   }
-
   for (int y=yy0; y<yy1+1; y++){
 	links[linkcount][0] = x1; //x-position
 	links[linkcount][1] = y;
@@ -649,21 +667,6 @@ void iterate(){
 	  n[x][y][c*3+2]=n[x-1][y][c*3+2];
 
 
-	//additional code for flipping some horizontal particles
-	double flip_parts = ((double)rand()/(double)RAND_MAX)*n[x][y][5];
-	
-	//printf("pflip = %f \n",flip_parts);
-
-	n[x][y][3] += flip_parts;
-	n[x][y][5] -= flip_parts;
-
-
-	for(int x0 = 0;x0<xdim;x0++){
-		//sum up velocities to get velocity front
-	measure_particle_velocity_front[y] += n[x][y][5] - n[x][y][3];
-
-	}
-
 	}
       }
 	
@@ -702,6 +705,7 @@ void iterate(){
   //if(dynamic_walls_on == 1){
   //	FindLink_Dynamic();	
   //	}
+  moveParticles();
   bounceback();
 }
 
