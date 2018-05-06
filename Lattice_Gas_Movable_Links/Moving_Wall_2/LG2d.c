@@ -25,6 +25,9 @@ int n[xdim][ydim][V];
 
 
 
+double partical_flip_w = 0.1;
+
+
 double dt = 1.0;
 
 int x_link_var = 0;
@@ -159,7 +162,14 @@ void measure_function(){
 	//measure the number of particles leaking
 	  
 	  particle_leakage = 0;
-	
+		for(int x = 0; x < xdim; x++){
+			for(int y = 0;y < ydim;y++){
+				for(int v = 0; v < 9;v++){
+					particle_leakage += n[x][y][v];
+					}
+				}
+			}
+	/*
 		for (int y=yy3; y<yy4; y++){
 		
 			for(int v = 0; v < 9; v++)
@@ -195,6 +205,7 @@ void measure_function(){
 	particle_leakage = particle_leakage + particle_wall*(dynamic_wall_position_x - int_wall_pos);
 
 	particle_leakage = particle_leakage - particles_left;
+*/
 }
 
 
@@ -311,9 +322,21 @@ void moveParticles(){
 for(int x = 0;x<xdim;x++){
 	for(int y = 0;y<ydim;y++){
 		//additional code for flipping some horizontal particles
-		double flip_parts = ((double)rand()/(double)RAND_MAX)*n[x][y][5];
-		n[x][y][3] += flip_parts;
-		n[x][y][5] -= flip_parts;
+		int flip_parts = partical_flip_w*((double)rand()/RAND_MAX)*n[x][y][5];//partical_flip_w*(rand()/RAND_MAX)*n[x][y][5];
+		n[x][y][3] = n[x][y][3] + flip_parts;
+		n[x][y][5] = n[x][y][5] - flip_parts;
+		flip_parts = partical_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][8];
+		//printf("flip = %f \n",flip_parts);
+		//printf("b = %i \n",n[x][y][8]);
+		n[x][y][6] += flip_parts;
+		n[x][y][8] -= flip_parts;
+		//printf("a = %i \n" ,n[x][y][8]);
+		flip_parts = partical_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][2];
+		n[x][y][0] += flip_parts;
+		n[x][y][2] -= flip_parts;
+		//int dif = n[x][y][3] - flip_parts  - ;
+		//printf("dif = %f \n" ,dif);
+
 		}
 	}
 }
@@ -773,7 +796,7 @@ void main(){
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
-  StartMenu("Measure",0);
+  StartMenu("Measure",1);
   DefineInt("range_val",&range_val);
   DefineGraph(curve2d_,"Measurements");
   EndMenu();
@@ -783,6 +806,7 @@ void main(){
   DefineDouble("dynamic_wall_vx", &dynamic_wall_vx);
   DefineDouble("dynamic_wall_position_x", &dynamic_wall_position_x);
   DefineDouble("wall_mass", &wall_mass);
+  DefineDouble("particle flip w", &partical_flip_w);
   DefineInt("yy0", &yy0);
   DefineInt("yy1", &yy1);
   DefineInt("yy3", &yy3);
