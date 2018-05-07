@@ -25,8 +25,8 @@ int n[xdim][ydim][V];
 
 
 
-double partical_flip_w = 0.1;
-
+double partical_flip_w = 0.032;
+double viscocity = 0;
 
 double dt = 1.0;
 
@@ -86,8 +86,9 @@ double measure_dynamic_wall_momentum_x_filt[MeasMax],measure_dynamic_wall_moment
 double measure_particle_leakage[MeasMax];
 double measure_particle_leakage_filt[MeasMax];
 double measure_particle_velocity_front[MeasMax];
-
-
+double measure_particle_velocity_front_last[MeasMax];
+double measure_particle_force_front[MeasMax];
+double theoretical_particle_force_front[MeasMax];
 //static wall variables
 int linkcount=0,links[LINKMAX][3];
 
@@ -143,14 +144,19 @@ void measure_function(){
 	int particle_wall = 0;
 	int int_wall_pos = dynamic_wall_position_x;
 	int particles_left = 0; 
+	int tmp = 0;
+
 	for(int i = 0; i < YDIM -1;i++){
 		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
-		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8];
+		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8]; 
+
+
+		measure_particle_velocity_front_last[i] = measure_particle_velocity_front[i];
 
 		for(int x0 = 0;x0<xdim;x0++){
 			//sum up velocities to get velocity front
-		measure_particle_velocity_front[i] += n[x0][i][5] - n[x0][i][3];
-
+		measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] - n[x0][i][3]-n[x0][i][0]-n[x0][i][6];
+		measure_particle_force_front[i] = (measure_particle_velocity_front[i] - measure_particle_velocity_front_last[i]);
 	}
 
 		}
@@ -158,6 +164,10 @@ void measure_function(){
 	particle_vy = particle_vy/100.0;
 
 
+	//calculate theoretical force front values
+	for(int i = 0;i < MeasMax;i++){
+		theoretical_particle_force_front[i] = (50.0/6.0)*(i-25)*(i-75);
+		}
 
 	//measure the number of particles leaking
 	  
@@ -277,6 +287,8 @@ void Measure(){
 
   memmove(&measure_particle_leakage_filt[1],&measure_particle_leakage_filt[0],(MeasMax-1)*sizeof(int));
   measure_particle_leakage_filt[0]=particle_leakage;//filt_data[10];
+
+
 }
 //re draws walls
 void FindLink_Dynamic(){
@@ -781,6 +793,8 @@ void main(){
   DefineGraphN_R("particle vy",&measure_particle_vy[0],&MeasLen,NULL);
   DefineGraphN_R("particle leakage",&measure_particle_leakage[0],&MeasLen,NULL);
   DefineGraphN_R("particle vx front",&measure_particle_velocity_front[0],&MeasLen,NULL);
+  DefineGraphN_R("particle force x front",&measure_particle_force_front[0],&MeasLen,NULL);
+  DefineGraphN_R("particle force x front theoretical",&theoretical_particle_force_front[0],&MeasLen,NULL);
   //filtered graphs
   DefineGraphN_R("dynamic wall position x filt",&measure_dynamic_wall_position_x_filt[0],&MeasLen,NULL);
   DefineGraphN_R("dynamic wall position y filt",&measure_dynamic_wall_position_y_filt[0],&MeasLen,NULL);
