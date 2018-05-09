@@ -1,7 +1,9 @@
 // Lattice gas code in 1d.
-//add flipping to diagonal velocities
-//parameterize amount of particles being flipped
-//solve the divergent behavior
+//change the initial zero point for the Ux ~ mean particle velocity
+
+//what about dividing by total number of particles for the theoretical?
+//zero points seem to be really small
+//why cant we just change the probability of collisions to make the parabola fit
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -35,7 +37,8 @@ int y_link_var = 1;
 int type_link = 0;
 
 //variables for measuring tube momentum
-
+double last_1 = 0;
+double last_2 = 0;
 
 
 //particle source parameters
@@ -49,8 +52,9 @@ double measure_particle_vx[MeasMax],measure_particle_vy[MeasMax];
 double measure_particle_vx_filt[MeasMax],measure_particle_vy_filt[MeasMax];
 int vx_m = 0,vy_m = 0;
 int d1 = 0,d2 = 50;
-
-
+int ux_zero_flag = 0;
+double ux_zero_point[ydim];
+//int ux_zero_curve_1[ydim];
 
 //link variables
 int linkcount_dynamic = 0,links_dynamic[2][LINKMAX_DYNAMIC][3];//link x y and v(for particles) added other index for right and left walls
@@ -88,12 +92,12 @@ double measure_particle_leakage_filt[MeasMax];
 double measure_particle_velocity_front[MeasMax];
 double measure_particle_velocity_front_last[MeasMax];
 double measure_particle_force_front[MeasMax];
-double theoretical_particle_force_front[MeasMax];
+double theoretical_particle_vx_front[MeasMax];
 //static wall variables
 int linkcount=0,links[LINKMAX][3];
 
 //points for drawing walls
-int x0=0,x1=100,yy0 = 25,yy1 = 75;
+int x0=0,x1=100,yy0 = 25,yy1 = 74;
 
 //static wall momentum
 double static_wall_momentum_x = 0,static_wall_momentum_y = 0;
@@ -141,32 +145,50 @@ void average(int range){
 void measure_function(){
 	particle_vx = 0;
 	particle_vy = 0;
-	int particle_wall = 0;
-	int int_wall_pos = dynamic_wall_position_x;
-	int particles_left = 0; 
-	int tmp = 0;
+	//int total_particles = 0;
 
 	for(int i = 0; i < YDIM -1;i++){
+
 		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
 		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8]; 
 
-
-		measure_particle_velocity_front_last[i] = measure_particle_velocity_front[i];
-
+		int total_particles = 0;
 		for(int x0 = 0;x0<xdim;x0++){
-			//sum up velocities to get velocity front
-		measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] - n[x0][i][3]-n[x0][i][0]-n[x0][i][6];
-		measure_particle_force_front[i] = (measure_particle_velocity_front[i] - measure_particle_velocity_front_last[i]);
-	}
-
+			measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] - n[x0][i][3]-n[x0][i][0]-n[x0][i][6];			for(int v = 0;v<9;v++) total_particles += n[x0][i][v];	
+			}
+		//find average particle velocity
+		if(total_particles > 0){
+			measure_particle_velocity_front[i] = (double)measure_particle_velocity_front[i]/total_particles;
+			}
+		else{
+			measure_particle_velocity_front[i] = 0;
+			}
+			//setting zero point for ux
+			if(ux_zero_flag == 0){
+				ux_zero_point[i] += measure_particle_velocity_front[i];
+				}
+			else if(ux_zero_flag == 1){
+				ux_zero_point[i] = (measure_particle_velocity_front[i] + ux_zero_point[i])/2; 
+				}
+			
+		measure_particle_force_front[i] = (measure_particle_velocity_front[i] - measure_particle_velocity_front_last[i]);		measure_particle_velocity_front_last[i] = measure_particle_force_front[i];
 		}
+		//set flags after ux at iteration 0 and 1 have been recorded
+		if(ux_zero_flag == 1){
+			ux_zero_flag = 2;
+			}
+		else if(ux_zero_flag == 0){
+			ux_zero_flag = 1;
+			}
+
+
 	particle_vx = particle_vx/100.0;
 	particle_vy = particle_vy/100.0;
 
 
 	//calculate theoretical force front values
 	for(int i = 0;i < MeasMax;i++){
-		theoretical_particle_force_front[i] = (50.0/6.0)*(i-25)*(i-75);
+		theoretical_particle_vx_front[i] = (50.0/6.0)*(i-25)*(i-75);
 		}
 
 	//measure the number of particles leaking
@@ -179,50 +201,12 @@ void measure_function(){
 					}
 				}
 			}
-	/*
-		for (int y=yy3; y<yy4; y++){
-		
-			for(int v = 0; v < 9; v++)
-				{
-				particle_wall += n[int_wall_pos][y][v];
-				}
-		}
-
-	  for (int x=x0; x<dynamic_wall_position_x; x++){
-    		
-		for (int y=yy3; y<yy4; y++){
-		
-			for(int v = 0; v < 9; v++)
-				{
-				particle_leakage += n[x][y][v];
-				}
-		}
-	}
-
-	particle_leakage = particle_leakage;///((dynamic_wall_position_x-x0)*(yy4-yy3));
-
-	for (int x=(1+dynamic_wall_position_x); x<x1; x++){
-    		for (int y=yy3; y<yy4; y++){
-			for(int v = 0; v < 9; v++)
-				{
-				particles_left += n[x][y][v];
-				}
-		}
-	}
-
-	particles_left = particles_left + particle_wall*(1 - (dynamic_wall_position_x - int_wall_pos));
-
-	particle_leakage = particle_leakage + particle_wall*(dynamic_wall_position_x - int_wall_pos);
-
-	particle_leakage = particle_leakage - particles_left;
-*/
 }
 
 
 //take measurements for plotting data
 void Measure(){
-  //store dynamic wall data
-  //position
+ //measure the force on the particles in the tube.
   measure_function();
 
   memmove(&measure_dynamic_wall_position_x[1],&measure_dynamic_wall_position_x[0],(MeasMax-1)*sizeof(int));
@@ -297,7 +281,7 @@ void FindLink_Dynamic(){
 		linkcount_dynamic = 0;
 		//draw vertical walls
 		for(int dir = 0; dir < 2;dir++){
-		for(int y = yy3; y<yy4+1;y++){
+		for(int y = yy3; y<yy4;y++){
 
 			tmp_x_shift = dynamic_wall_position_x;
 			tmp_x_shift = ((tmp_x_shift%XDIM)+XDIM)%XDIM;	
@@ -387,36 +371,7 @@ void FindLink(){
     	links[linkcount][2] = 2;
     	linkcount++;
   }
-  /*
-  //vertical walls
-  for (int y=yy0; y<yy1+1; y++){
-	links[linkcount][0] = x0; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 0;
-	linkcount++;
-	links[linkcount][0] = x0; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 3;
-	linkcount++;
-	links[linkcount][0] = x0; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 6;
-	linkcount++;
-  }
-  for (int y=yy0; y<yy1+1; y++){
-	links[linkcount][0] = x1; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 0;
-	linkcount++;
-	links[linkcount][0] = x1; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 3;
-	linkcount++;
-	links[linkcount][0] = x1; //x-position
-	links[linkcount][1] = y;
-	links[linkcount][2] = 6;
-	linkcount++;
-  }*/
+
 }
 
 void bounceback(){
@@ -793,8 +748,10 @@ void main(){
   DefineGraphN_R("particle vy",&measure_particle_vy[0],&MeasLen,NULL);
   DefineGraphN_R("particle leakage",&measure_particle_leakage[0],&MeasLen,NULL);
   DefineGraphN_R("particle vx front",&measure_particle_velocity_front[0],&MeasLen,NULL);
+  DefineGraphN_R("UX ZERO POINT",&ux_zero_point[0],&MeasLen,NULL);
+
   DefineGraphN_R("particle force x front",&measure_particle_force_front[0],&MeasLen,NULL);
-  DefineGraphN_R("particle force x front theoretical",&theoretical_particle_force_front[0],&MeasLen,NULL);
+  DefineGraphN_R("particle force x front theoretical",&theoretical_particle_vx_front[0],&MeasLen,NULL);
   //filtered graphs
   DefineGraphN_R("dynamic wall position x filt",&measure_dynamic_wall_position_x_filt[0],&MeasLen,NULL);
   DefineGraphN_R("dynamic wall position y filt",&measure_dynamic_wall_position_y_filt[0],&MeasLen,NULL);
