@@ -16,7 +16,7 @@
 #define V 9      //number of velocities
 #define MeasMax 200
 int XDIM=xdim,YDIM=ydim;
-int C=100;
+int C=300;//chaneged to 300 for viscocity...
 double N[xdim][ydim],NU[xdim][ydim][2];
 int Nreq=0,NUreq=0;
 int n[xdim][ydim][V];
@@ -27,7 +27,8 @@ int n[xdim][ydim][V];
 
 
 
-double partical_flip_w = 0.032;
+double particle_flip_w = 0.032;
+
 double viscocity = 0;
 
 double dt = 1.0;
@@ -86,9 +87,7 @@ double measure_dynamic_wall_momentum_x[MeasMax],measure_dynamic_wall_momentum_y[
 //filtered
 double measure_dynamic_wall_momentum_x_filt[MeasMax],measure_dynamic_wall_momentum_y_filt[MeasMax];
 
-//
-double measure_particle_leakage[MeasMax];
-double measure_particle_leakage_filt[MeasMax];
+
 double measure_particle_velocity_front[MeasMax];
 double measure_particle_velocity_front_last[MeasMax];
 double measure_particle_force_front[MeasMax];
@@ -146,51 +145,49 @@ void measure_function(){
 	particle_vx = 0;
 	particle_vy = 0;
 	//int total_particles = 0;
-
+	int total_particles = 0;
+	double shift[ydim];
 	for(int i = 0; i < YDIM -1;i++){
-
-		particle_vx += n[50][i][2]+n[50][i][5]+n[50][i][8]-n[50][i][0]-n[50][i][3]-n[50][i][6];
-		particle_vy += n[i][50][0]+n[i][50][1]+n[i][50][2]-n[i][50][6]-n[i][50][7]-n[i][50][8]; 
-
-		int total_particles = 0;
+		total_particles = 0;
+		measure_particle_velocity_front[i] = 0;
 		for(int x0 = 0;x0<xdim;x0++){
 			measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] - n[x0][i][3]-n[x0][i][0]-n[x0][i][6];			for(int v = 0;v<9;v++) total_particles += n[x0][i][v];	
 			}
 		//find average particle velocity
 		if(total_particles > 0){
-			measure_particle_velocity_front[i] = (double)measure_particle_velocity_front[i]/total_particles;
+			measure_particle_velocity_front[i] = (double)(measure_particle_velocity_front[i]/total_particles);//+shift[i];
+			theoretical_particle_vx_front[i] = (double)(particle_flip_w*6.0/9.)*(i-25)*(i-75);
+
 			}
 		else{
 			measure_particle_velocity_front[i] = 0;
+			theoretical_particle_vx_front[i] = 0;
 			}
-			//setting zero point for ux
-			if(ux_zero_flag == 0){
-				ux_zero_point[i] += measure_particle_velocity_front[i];
-				}
-			else if(ux_zero_flag == 1){
-				ux_zero_point[i] = (measure_particle_velocity_front[i] + ux_zero_point[i])/2; 
-				}
+		//setting zero point for ux
+		if(ux_zero_flag == 0)ux_zero_point[i] += measure_particle_velocity_front[i];
+		if(ux_zero_flag == 1)ux_zero_point[i] = (measure_particle_velocity_front[i] + ux_zero_point[i])/2; 
+		printf("zp = %f \n",ux_zero_point[i]);
 			
 		measure_particle_force_front[i] = (measure_particle_velocity_front[i] - measure_particle_velocity_front_last[i]);		measure_particle_velocity_front_last[i] = measure_particle_force_front[i];
+		
 		}
+
+
 		//set flags after ux at iteration 0 and 1 have been recorded
-		if(ux_zero_flag == 1){
-			ux_zero_flag = 2;
+		printf("flag = %i \n",ux_zero_flag);
+		if(ux_zero_flag == 1) 
+			{ux_zero_flag = 2;
+			//partical_flip_w = f_partical_flip_w;
+			for(int i = 0;i<ydim;i++)shift[i]=ux_zero_point[i];
 			}
-		else if(ux_zero_flag == 0){
-			ux_zero_flag = 1;
-			}
+		if(ux_zero_flag == 0)ux_zero_flag = 1;
 
 
 	particle_vx = particle_vx/100.0;
 	particle_vy = particle_vy/100.0;
 
 
-	//calculate theoretical force front values
-	for(int i = 0;i < MeasMax;i++){
-		theoretical_particle_vx_front[i] = (50.0/6.0)*(i-25)*(i-75);
-		}
-
+	
 	//measure the number of particles leaking
 	  
 	  particle_leakage = 0;
@@ -208,130 +205,24 @@ void measure_function(){
 void Measure(){
  //measure the force on the particles in the tube.
   measure_function();
-
-  memmove(&measure_dynamic_wall_position_x[1],&measure_dynamic_wall_position_x[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_position_x[0]=dynamic_wall_position_x;
-  memmove(&measure_dynamic_wall_position_y[1],&measure_dynamic_wall_position_y[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_position_y[0]=dynamic_wall_position_y;
-  //momentum
-  memmove(&measure_dynamic_wall_momentum_x[1],&measure_dynamic_wall_momentum_x[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_momentum_x[0]=dynamic_wall_momentum_x;
-  memmove(&measure_dynamic_wall_momentum_y[1],&measure_dynamic_wall_momentum_y[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_momentum_y[0]=dynamic_wall_momentum_y;
-  //velocity
-  memmove(&measure_dynamic_wall_vx[1],&measure_dynamic_wall_vx[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_vx[0]=dynamic_wall_vx;
-  memmove(&measure_dynamic_wall_vy[1],&measure_dynamic_wall_vy[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_vy[0]=dynamic_wall_vy;
-  
-  //store static wall data
-  memmove(&measure_static_wall_momentum_x[1],&measure_static_wall_momentum_x[0],(MeasMax-1)*sizeof(int));
-  measure_static_wall_momentum_x[0]=static_wall_momentum_x;
-  memmove(&measure_static_wall_momentum_y[1],&measure_static_wall_momentum_y[0],(MeasMax-1)*sizeof(int));
-  measure_static_wall_momentum_y[0]=static_wall_momentum_y;
-
-  //store particle data
-  memmove(&measure_particle_vx[1],&measure_particle_vx[0],(MeasMax-1)*sizeof(int));
-  measure_particle_vx[0]=particle_vx;
-  memmove(&measure_particle_vy[1],&measure_particle_vy[0],(MeasMax-1)*sizeof(int));
-  measure_particle_vy[0]=particle_vy;
-
-  memmove(&measure_particle_leakage[1],&measure_particle_leakage[0],(MeasMax-1)*sizeof(int));
-  measure_particle_leakage[0]=particle_leakage;
-
-  //filter data by taking the average of the data points over the range_val
-  average(range_val);
-
-   //position
-  memmove(&measure_dynamic_wall_position_x_filt[1],&measure_dynamic_wall_position_x_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_position_x_filt[0]=filt_data[0];
-  memmove(&measure_dynamic_wall_position_y_filt[1],&measure_dynamic_wall_position_y_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_position_y_filt[0]=filt_data[1];
-  //momentum
-  memmove(&measure_dynamic_wall_momentum_x_filt[1],&measure_dynamic_wall_momentum_x_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_momentum_x_filt[0]=filt_data[2];
-  memmove(&measure_dynamic_wall_momentum_y_filt[1],&measure_dynamic_wall_momentum_y_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_momentum_y_filt[0]=filt_data[3];
-  //velocity
-  memmove(&measure_dynamic_wall_vx_filt[1],&measure_dynamic_wall_vx_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_vx_filt[0]=filt_data[4];
-  memmove(&measure_dynamic_wall_vy_filt[1],&measure_dynamic_wall_vy_filt[0],(MeasMax-1)*sizeof(int));
-  measure_dynamic_wall_vy_filt[0]=filt_data[5];
-  
-  //store static wall data
-  memmove(&measure_static_wall_momentum_x_filt[1],&measure_static_wall_momentum_x_filt[0],(MeasMax-1)*sizeof(int));
-  measure_static_wall_momentum_x_filt[0]=filt_data[6];
-  memmove(&measure_static_wall_momentum_y_filt[1],&measure_static_wall_momentum_y_filt[0],(MeasMax-1)*sizeof(int));
-  measure_static_wall_momentum_y_filt[0]=filt_data[7];
-
-  memmove(&measure_particle_vx_filt[1],&measure_particle_vx_filt[0],(MeasMax-1)*sizeof(int));
-  measure_particle_vx_filt[0]=filt_data[8];
-  memmove(&measure_particle_vy_filt[1],&measure_particle_vy_filt[0],(MeasMax-1)*sizeof(int));
-  measure_particle_vy_filt[0]=filt_data[9];
-
-  memmove(&measure_particle_leakage_filt[1],&measure_particle_leakage_filt[0],(MeasMax-1)*sizeof(int));
-  measure_particle_leakage_filt[0]=particle_leakage;//filt_data[10];
-
-
 }
-//re draws walls
-void FindLink_Dynamic(){
-	int tmp_x_shift = 0;
-	
-		linkcount_dynamic = 0;
-		//draw vertical walls
-		for(int dir = 0; dir < 2;dir++){
-		for(int y = yy3; y<yy4;y++){
 
-			tmp_x_shift = dynamic_wall_position_x;
-			tmp_x_shift = ((tmp_x_shift%XDIM)+XDIM)%XDIM;	
-			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[dir][linkcount_dynamic][1] = y;
-			links_dynamic[dir][linkcount_dynamic][2] = 0;
-			linkcount_dynamic++;
-			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[dir][linkcount_dynamic][1] = y;
-			links_dynamic[dir][linkcount_dynamic][2] = 3;
-			linkcount_dynamic++;
-			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[dir][linkcount_dynamic][1] = y;
-			links_dynamic[dir][linkcount_dynamic][2] = 6;
-			linkcount_dynamic++;
-		
-			}
-
-
-			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift; //x-position
-			links_dynamic[dir][linkcount_dynamic][1] = yy1;
-			links_dynamic[dir][linkcount_dynamic][2] = 0;
-			linkcount_dynamic++;
-			
-			links_dynamic[dir][linkcount_dynamic][0] = tmp_x_shift+x_link_var; //x-position
-			links_dynamic[dir][linkcount_dynamic][1] = yy0+y_link_var;
-			links_dynamic[dir][linkcount_dynamic][2] = 2;
-			linkcount_dynamic++;
-		}
-
-		dynamic_wall_position_x += dynamic_wall_vx*dt;
-}
 void moveParticles(){
 for(int x = 0;x<xdim;x++){
 	for(int y = 0;y<ydim;y++){
 		//additional code for flipping some horizontal particles
-		int flip_parts = partical_flip_w*((double)rand()/RAND_MAX)*n[x][y][5];//partical_flip_w*(rand()/RAND_MAX)*n[x][y][5];
-		n[x][y][3] = n[x][y][3] + flip_parts;
-		n[x][y][5] = n[x][y][5] - flip_parts;
-		flip_parts = partical_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][8];
-		//printf("flip = %f \n",flip_parts);
-		//printf("b = %i \n",n[x][y][8]);
+		int flip_parts = particle_flip_w*((double)rand()/RAND_MAX)*n[x][y][5];
+		n[x][y][3] += flip_parts;//n[x][y][3] + flip_parts;
+		n[x][y][5] -= flip_parts;//n[x][y][5] - flip_parts;
+		flip_parts = particle_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][8];
+	
 		n[x][y][6] += flip_parts;
 		n[x][y][8] -= flip_parts;
-		//printf("a = %i \n" ,n[x][y][8]);
-		flip_parts = partical_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][2];
+	
+		flip_parts = particle_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][2];
 		n[x][y][0] += flip_parts;
 		n[x][y][2] -= flip_parts;
-		//int dif = n[x][y][3] - flip_parts  - ;
-		//printf("dif = %f \n" ,dif);
+		
 
 		}
 	}
@@ -403,54 +294,6 @@ void bounceback(){
     n[x_v_b][y_v_b][v] = n[x_b][y_b][8-v];
     n[x_b][y_b][8-v] = tmp;		
   }
-//dynamic walls
-if(dynamic_walls_on == 1){
- int wall_pos = dynamic_wall_position_x;
- double dx = abs(wall_pos - dynamic_wall_position_x);
- for (int lc=0; lc<linkcount_dynamic; lc++){
-	for(int dir = 0; dir < 1; dir++){
-		//printf("%i \n",dir);
-    		//quantity of partices
-    		int x=links_dynamic[dir][lc][0];
-    		int y=links_dynamic[dir][lc][1];
-    		//particle velocity
-    		int v=links_dynamic[dir][lc][2];
-		int x_b = (((x)%XDIM)+XDIM)%XDIM;
-                int y_b = (((y)%YDIM)+YDIM)%YDIM;
-    		int vx=v%3-1;
-    		int vy=1-v/3;
-		int x_v_b = (((vx+x)%XDIM)+XDIM)%XDIM;
-		int y_v_b = (((vy+y)%YDIM)+YDIM)%YDIM;
-
-		int tmp = n[x_v_b][y_v_b][v];
-		int iwp = dynamic_wall_position_x;//integer wall position
-		int flow = 0;//particles to be moved
-		
-		double pr = dynamic_wall_vx/(1-(dynamic_wall_position_x - iwp));//probability that p*pr particles will be moved
-		if(rand()%1000 <= 1000*pr){
-			flow = pr*n[x_b][y_b][v];
-			n[x_b+1][y_b][v] +=flow;
-			n[x_b][y_b][v] -=flow;
-		}
-		printf("flow = %d pr = %f \n",flow,pr);
-
-
-
-    		//summing all momemtums
-    		dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp);//+flow);
-    		dynamic_wall_momentum_y += -2*vy*(n[x][y][8-v]-tmp);
-
-    		//swapping the particles trying to enter and leave to have the effect of a wall
-    		n[x_v_b][y_v_b][v] = n[x_b][y_b][8-v];
-    		n[x_b][y_b][8-v] = tmp;// + flow;	
-		//n[x_b][y_b][v] += n[x_v_b][y_v_b][v];
- 		 }
-	}
-	if(dynamic_wall_control_on == 0){
-    		dynamic_wall_vx = dynamic_wall_momentum_x/wall_mass;
-    		dynamic_wall_vy = dynamic_wall_momentum_y/wall_mass;}
-	}
-
 }
 
 void setrho(){
@@ -692,9 +535,6 @@ void iterate(){
       for (int x=0; x<xdim; x++) n[x][ydim-1][c+6]=ntmp[x];
     }
   }
-  //if(dynamic_walls_on == 1){
-  //	FindLink_Dynamic();	
-  //	}
   moveParticles();
   bounceback();
 }
@@ -736,70 +576,25 @@ void main(){
   Measure();
   DefineGraphNxN_R("N",&N[0][0],&XDIM,&YDIM,&Nreq);
   DefineGraphNxN_RxR("NU",&NU[0][0][0],&XDIM,&YDIM,&NUreq);
-  DefineGraphN_R("dynamic wall position x",&measure_dynamic_wall_position_x[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall position y",&measure_dynamic_wall_position_y[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall momentum x",&measure_dynamic_wall_momentum_x[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall momentum y",&measure_dynamic_wall_momentum_y[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall vx ",&measure_dynamic_wall_vx[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall vx",&measure_dynamic_wall_vy[0],&MeasLen,NULL);
-  DefineGraphN_R("static wall momentum x",&measure_static_wall_momentum_x[0],&MeasLen,NULL);
-  DefineGraphN_R("static wall momentum y",&measure_static_wall_momentum_y[0],&MeasLen,NULL);
-  DefineGraphN_R("particle vx",&measure_particle_vx[0],&MeasLen,NULL);
-  DefineGraphN_R("particle vy",&measure_particle_vy[0],&MeasLen,NULL);
-  DefineGraphN_R("particle leakage",&measure_particle_leakage[0],&MeasLen,NULL);
+
   DefineGraphN_R("particle vx front",&measure_particle_velocity_front[0],&MeasLen,NULL);
   DefineGraphN_R("UX ZERO POINT",&ux_zero_point[0],&MeasLen,NULL);
 
   DefineGraphN_R("particle force x front",&measure_particle_force_front[0],&MeasLen,NULL);
   DefineGraphN_R("particle force x front theoretical",&theoretical_particle_vx_front[0],&MeasLen,NULL);
-  //filtered graphs
-  DefineGraphN_R("dynamic wall position x filt",&measure_dynamic_wall_position_x_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall position y filt",&measure_dynamic_wall_position_y_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall momentum x filt",&measure_dynamic_wall_momentum_x_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall momentum y filt",&measure_dynamic_wall_momentum_y_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall vx filt",&measure_dynamic_wall_vx_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("dynamic wall vx filt",&measure_dynamic_wall_vy_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("static wall momentum x filt",&measure_static_wall_momentum_x_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("static wall momentum y filt",&measure_static_wall_momentum_y_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("particle vx filt",&measure_particle_vx_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("particle vy filt",&measure_particle_vy_filt[0],&MeasLen,NULL);
-  DefineGraphN_R("particle leakage filt",&measure_particle_leakage_filt[0],&MeasLen,NULL);
+
   StartMenu("LG",1);
   DefineFunction("init",init);
   DefineFunction("init shear",initShear);
   StartMenu("Measure",1);
   DefineInt("range_val",&range_val);
+  DefineInt("ux zero point flag",&ux_zero_flag);
   DefineGraph(curve2d_,"Measurements");
   EndMenu();
   StartMenu("Wall",1);
-  DefineInt("x0", &x0);
-  DefineInt("x1", &x1);
-  DefineDouble("dynamic_wall_vx", &dynamic_wall_vx);
-  DefineDouble("dynamic_wall_position_x", &dynamic_wall_position_x);
-  DefineDouble("wall_mass", &wall_mass);
-  DefineDouble("particle flip w", &partical_flip_w);
-  DefineInt("yy0", &yy0);
-  DefineInt("yy1", &yy1);
-  DefineInt("yy3", &yy3);
-  DefineInt("yy4", &yy4);
-  DefineInt("type_link", &type_link);
-  DefineInt("y link var", &y_link_var);
-  DefineInt("x link var", &x_link_var);
+  DefineDouble("particle flip w", &particle_flip_w);
   DefineFunction("Add Wall",FindLink);
   DefineInt("link count",&linkcount);
-  DefineInt("dynamic link count",&linkcount_dynamic);
-  DefineInt("dynamic walls on",&dynamic_walls_on);
-  DefineInt("dynamic wall control on",&dynamic_wall_control_on);
-  EndMenu();
-  StartMenu("Particle Source",1);
-  DefineInt("src_den",&src_den);
-  DefineInt("src_x",&src_x);
-  DefineInt("src_y",&src_y);
-  DefineInt("src_den_2",&src_den_2);
-  DefineInt("src_x_2",&src_x_2);
-  DefineInt("src_y_2",&src_y_2);
-  DefineInt("d1",&d1);
-  DefineInt("d2",&d2);
   EndMenu();
   DefineGraph(contour2d_,"Graph");
   DefineInt("C", &C);
