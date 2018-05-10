@@ -133,7 +133,7 @@ void average(int range){
 		filt_data[7] += measure_static_wall_momentum_y[i];
 		filt_data[8] += measure_particle_vx[i];
 		filt_data[9] += measure_particle_vy[i];
-		filt_data[10] += measure_particle_leakage[i];
+		//filt_data[10] += measure_particle_leakage[i];
 		}
 	//average values
 	for(int i = 0; i < 11;i++){
@@ -581,7 +581,7 @@ void main(){
   DefineGraphN_R("UX ZERO POINT",&ux_zero_point[0],&MeasLen,NULL);
 
   DefineGraphN_R("particle force x front",&measure_particle_force_front[0],&MeasLen,NULL);
-  DefineGraphN_R("particle force x front theoretical",&theoretical_particle_vx_front[0],&MeasLen,NULL);
+  DefineGraphN_R("particle vx front theoretical",&theoretical_particle_vx_front[0],&MeasLen,NULL);
 
   StartMenu("LG",1);
   DefineFunction("init",init);

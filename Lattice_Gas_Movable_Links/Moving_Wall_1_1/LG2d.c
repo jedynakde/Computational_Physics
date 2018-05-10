@@ -9,7 +9,7 @@
 #define xdim 100
 #define ydim 100
 #define V 9      //number of velocities
-#define MeasMax 200
+#define MeasMax 3000
 int XDIM=xdim,YDIM=ydim;
 int C=100;
 double N[xdim][ydim],NU[xdim][ydim][2];
@@ -425,7 +425,7 @@ if(dynamic_walls_on == 1){
 			n[x_b+1][y_b][v] +=flow;
 			n[x_b][y_b][v] -=flow;
 		}
-		printf("flow = %d pr = %f \n",flow,pr);
+		//printf("flow = %d pr = %f \n",flow,pr);
 
 
 
@@ -475,8 +475,6 @@ void setrho(){
 
 void init(){
 
-  linkcount = 0;
-  //FindLink();
 
 
   for (int x=0; x<xdim; x++){

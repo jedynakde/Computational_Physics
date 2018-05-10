@@ -2,8 +2,8 @@ This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**test3.tex
-(./test3.tex
+**pres2.tex
+(./pres2.tex
 LaTeX2e <2017-04-15>
 Babel <3.12> and hyphenation patterns for 3 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/beamer/beamer.cls
@@ -684,66 +684,8 @@ File: uni-global.def 2013/05/13 UCS: Unicode global data
 \uc@combtoks=\toks45
 \uc@combtoksb=\toks46
 \uc@temptokena=\toks47
-) (./test3.aux
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-
-LaTeX Warning: Label `fig' multiply defined.
-
-)
-\openout1 = `test3.aux'.
+) (./pres2.aux)
+\openout1 = `pres2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
 LaTeX Font Info:    ... okay on input line 25.
@@ -839,8 +781,10 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 25.
 LaTeX Info: Redefining \pageref on input line 25.
 LaTeX Info: Redefining \nameref on input line 25.
+
+(./pres2.out) (./pres2.out)
 \@outlinefile=\write5
-\openout5 = `test3.out'.
+\openout5 = `pres2.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 25.
@@ -911,8 +855,7 @@ Dictionary: translator-theorem-dictionary, Language: English
 )
 (/usr/share/texlive/texmf-dist/tex/latex/ucs/ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
-)
-No file test3.nav.
+) (./pres2.nav)
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
@@ -927,66 +870,141 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 47.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [2
 
-] [3
+]
+Overfull \hbox (39.9217pt too wide) in paragraph at lines 61--61
+[][]  
+ []
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.61 \end{frame}
+                
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+! LaTeX Error: \begin{document} ended by \end{beamer@framepauses}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.61 \end{frame}
+                
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.61 \end{frame}
+                
+Things are pretty mixed up, but I think the worst is over.
+
+! Too many }'s.
+\endbeamer@frameslide ...amer@framepauses}\egroup 
+                                                  \ifx \beamer@frametitle \@...
+l.61 \end{frame}
+                
+You've closed more groups than you opened.
+Such booboos are generally harmless, so keep going.
+
+! Undefined control sequence.
+\endbeamer@frameslide ...box \else \beamer@zoomer 
+                                                  \fi \beamer@undolabels \be...
+l.61 \end{frame}
+                
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{beamer@frameslide}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.61 \end{frame}
+                
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Extra \endgroup.
+<recently read> \endgroup 
+                          
+l.61 \end{frame}
+                
+Things are pretty mixed up, but I think the worst is over.
+
+[3
 
 ] [4
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `alignment tab' on input line 69.
+(hyperref)                removing `alignment tab' on input line 72.
 
 [5
 
 ]
-<A1p1.png, id=50, 955.57pt x 919.435pt>
+<A1p1.png, id=77, 955.57pt x 919.435pt>
 File: A1p1.png Graphic file (type png)
 <use A1p1.png>
-Package pdftex.def Info: A1p1.png  used on input line 86. on input line 86.
+Package pdftex.def Info: A1p1.png  used on input line 89. on input line 89.
 Package pdftex.def Info: Requested size: 191.11061pt x 183.88374pt on input lin
-e 86.
+e 89.
  [6
 
  <./A1p1.png>]
-<A1p3.png, id=56, 953.5625pt x 917.4275pt>
+<A1p3.png, id=83, 953.5625pt x 917.4275pt>
 File: A1p3.png Graphic file (type png)
 <use A1p3.png>
-Package pdftex.def Info: A1p3.png  used on input line 95. on input line 95.
+Package pdftex.def Info: A1p3.png  used on input line 98. on input line 98.
 Package pdftex.def Info: Requested size: 190.70912pt x 183.48225pt on input lin
-e 95.
+e 98.
  [7
 
  <./A1p3.png>]
-<A1p4.png, id=63, 1104.125pt x 953.5625pt>
+<A1p4.png, id=90, 1104.125pt x 953.5625pt>
 File: A1p4.png Graphic file (type png)
 <use A1p4.png>
-Package pdftex.def Info: A1p4.png  used on input line 104. on input line 104.
+Package pdftex.def Info: A1p4.png  used on input line 107. on input line 107.
 Package pdftex.def Info: Requested size: 220.82109pt x 190.70912pt on input lin
-e 104.
+e 107.
 
-Overfull \vbox (0.76518pt too high) detected at line 104
+Overfull \vbox (0.76518pt too high) detected at line 107
  []
 
 [8
 
  <./A1p4.png>]
-<A1p2.png, id=69, 696.6025pt x 592.2125pt>
+<A1p2.png, id=96, 696.6025pt x 592.2125pt>
 File: A1p2.png Graphic file (type png)
 <use A1p2.png>
-Package pdftex.def Info: A1p2.png  used on input line 113. on input line 113.
+Package pdftex.def Info: A1p2.png  used on input line 116. on input line 116.
 Package pdftex.def Info: Requested size: 139.31802pt x 118.4404pt on input line
- 113.
+ 116.
  [9
 
  <./A1p2.png>]
-<A1p5.png, id=75, 1106.1325pt x 953.5625pt>
+<A1p5.png, id=102, 1106.1325pt x 953.5625pt>
 File: A1p5.png Graphic file (type png)
 <use A1p5.png>
-Package pdftex.def Info: A1p5.png  used on input line 122. on input line 122.
+Package pdftex.def Info: A1p5.png  used on input line 125. on input line 125.
 Package pdftex.def Info: Requested size: 221.22258pt x 190.70912pt on input lin
-e 122.
+e 125.
 
-Overfull \vbox (0.76518pt too high) detected at line 122
+Overfull \vbox (0.76518pt too high) detected at line 125
  []
 
 [10
@@ -994,122 +1012,112 @@ Overfull \vbox (0.76518pt too high) detected at line 122
  <./A1p5.png>] [11
 
 ]
-<A11p2.png, id=87, 1326.9575pt x 879.285pt>
+<A11p2.png, id=113, 1326.9575pt x 879.285pt>
 File: A11p2.png Graphic file (type png)
 <use A11p2.png>
-Package pdftex.def Info: A11p2.png  used on input line 137. on input line 137.
+Package pdftex.def Info: A11p2.png  used on input line 140. on input line 140.
 Package pdftex.def Info: Requested size: 265.3868pt x 175.85388pt on input line
- 137.
+ 140.
  [12
 
  <./A11p2.png>]
-<A11p5.png, id=94, 807.015pt x 821.0675pt>
+<A11p5.png, id=119, 807.015pt x 821.0675pt>
 File: A11p5.png Graphic file (type png)
 <use A11p5.png>
-Package pdftex.def Info: A11p5.png  used on input line 146. on input line 146.
+Package pdftex.def Info: A11p5.png  used on input line 149. on input line 149.
 Package pdftex.def Info: Requested size: 161.40013pt x 164.21059pt on input lin
-e 146.
+e 149.
  [13
 
  <./A11p5.png>]
-<A11p3.png, id=101, 849.1725pt x 638.385pt>
+<A11p3.png, id=126, 849.1725pt x 638.385pt>
 File: A11p3.png Graphic file (type png)
 <use A11p3.png>
-Package pdftex.def Info: A11p3.png  used on input line 155. on input line 155.
+Package pdftex.def Info: A11p3.png  used on input line 158. on input line 158.
 Package pdftex.def Info: Requested size: 169.83148pt x 127.67473pt on input lin
-e 155.
+e 158.
  [14
 
  <./A11p3.png>]
-<A11p4.png, id=107, 855.195pt x 638.385pt>
+<A11p4.png, id=132, 855.195pt x 638.385pt>
 File: A11p4.png Graphic file (type png)
 <use A11p4.png>
-Package pdftex.def Info: A11p4.png  used on input line 164. on input line 164.
+Package pdftex.def Info: A11p4.png  used on input line 167. on input line 167.
 Package pdftex.def Info: Requested size: 171.03596pt x 127.67473pt on input lin
-e 164.
+e 167.
 [15
 
  <./A11p4.png>]
-Overfull \hbox (32.86345pt too wide) detected at line 201
+Overfull \hbox (32.86345pt too wide) detected at line 204
 \OT1/cmss/m/it/10.95 U[] \OT1/cmss/m/n/10.95 = [] \OMS/cmsy/m/n/10.95 ^^C \OT1/
 cmss/m/n/10.95 (\OT1/cmss/m/it/10.95 x\OT1/cmss/m/n/10.95 (\OT1/cmss/m/it/10.95
  x \OMS/cmsy/m/n/10.95 ^^@ \OT1/cmss/m/it/10.95 L\OT1/cmss/m/n/10.95 ))[]
  []
 
 
-Overfull \hbox (34.25417pt too wide) detected at line 201
+Overfull \hbox (34.25417pt too wide) detected at line 204
 \OT1/cmss/m/it/10.95 U[] \OT1/cmss/m/n/10.95 = [] \OMS/cmsy/m/n/10.95 ^^C \OT1/
 cmss/m/n/10.95 (\OT1/cmss/m/it/10.95 x\OT1/cmss/m/n/10.95 (\OT1/cmss/m/it/10.95
  x \OMS/cmsy/m/n/10.95 ^^@ \OT1/cmss/m/it/10.95 L\OT1/cmss/m/n/10.95 ))[]
  []
 
 
-Overfull \vbox (164.26772pt too high) detected at line 201
+Overfull \vbox (164.26772pt too high) detected at line 204
  []
 
 [16
 
 ]
-<A3p0.png, id=119, 981.6675pt x 572.1375pt>
+<A3p0.png, id=143, 981.6675pt x 572.1375pt>
 File: A3p0.png Graphic file (type png)
 <use A3p0.png>
-Package pdftex.def Info: A3p0.png  used on input line 213. on input line 213.
+Package pdftex.def Info: A3p0.png  used on input line 216. on input line 216.
 Package pdftex.def Info: Requested size: 196.33002pt x 114.42546pt on input lin
-e 213.
+e 216.
  [17
 
  <./A3p0.png>]
-<A2p3.png, id=126, 981.6675pt x 570.13pt>
+<A2p3.png, id=149, 981.6675pt x 570.13pt>
 File: A2p3.png Graphic file (type png)
 <use A2p3.png>
-Package pdftex.def Info: A2p3.png  used on input line 222. on input line 222.
+Package pdftex.def Info: A2p3.png  used on input line 225. on input line 225.
 Package pdftex.def Info: Requested size: 196.33002pt x 114.02397pt on input lin
-e 222.
+e 225.
  [18
 
  <./A2p3.png>]
 File: A2p3.png Graphic file (type png)
 <use A2p3.png>
-Package pdftex.def Info: A2p3.png  used on input line 231. on input line 231.
+Package pdftex.def Info: A2p3.png  used on input line 234. on input line 234.
 Package pdftex.def Info: Requested size: 196.33002pt x 114.02397pt on input lin
-e 231.
+e 234.
  [19
 
 ] [20
 
 ]
 \tf@nav=\write6
-\openout6 = `test3.nav'.
+\openout6 = `pres2.nav'.
 
 \tf@toc=\write7
-\openout7 = `test3.toc'.
+\openout7 = `pres2.toc'.
 
 \tf@snm=\write8
-\openout8 = `test3.snm'.
+\openout8 = `pres2.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 245.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 245.
- (./test3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 245.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 245.
-
-
-Package rerunfilecheck Warning: File `test3.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `test3.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  C9981C4C52CC5A78ADC80A8832B5C67B;368.
-
-LaTeX Warning: There were multiply-defined labels.
-
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 248.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 248.
+ (./pres2.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 248.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 248.
+Package rerunfilecheck Info: File `pres2.out' has not changed.
+(rerunfilecheck)             Checksum: C9981C4C52CC5A78ADC80A8832B5C67B;368.
  ) 
 Here is how much of TeX's memory you used:
- 17429 strings out of 494931
- 327871 string characters out of 6180851
- 414914 words of memory out of 5000000
- 20275 multiletter control sequences out of 15000+600000
+ 17506 strings out of 494931
+ 328527 string characters out of 6180851
+ 414325 words of memory out of 5000000
+ 20345 multiletter control sequences out of 15000+600000
  12459 words of font info for 46 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  48i,11n,51p,791b,374s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1122,10 +1130,10 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist
 s/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/amsfonts/symbols/msam10.pfb>
-Output written on test3.pdf (20 pages, 313017 bytes).
+Output written on pres2.pdf (20 pages, 314384 bytes).
 PDF statistics:
- 187 PDF objects out of 1000 (max. 8388607)
- 137 compressed objects within 2 object streams
- 48 named destinations out of 1000 (max. 500000)
- 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 211 PDF objects out of 1000 (max. 8388607)
+ 161 compressed objects within 2 object streams
+ 49 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 

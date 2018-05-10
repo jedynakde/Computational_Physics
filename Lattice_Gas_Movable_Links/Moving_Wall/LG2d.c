@@ -257,7 +257,6 @@ void Measure(){
 void FindLink_Dynamic(){
 	int tmp_x_shift = 0;
 	
-
 		linkcount_dynamic = 0;
 		//draw vertical walls	
 		for(int y = yy3; y<yy4+1;y++){
@@ -283,10 +282,6 @@ void FindLink_Dynamic(){
 			links_dynamic_velocity[linkcount_dynamic][0] = dynamic_wall_vx;//set x velocity
 			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;
-
-
-	
-			
 			}
 
 			links_dynamic[linkcount_dynamic][0] = tmp_x_shift; //x-position
@@ -303,8 +298,6 @@ void FindLink_Dynamic(){
 			links_dynamic_velocity[linkcount_dynamic][1] = 0;//set y velocity
 			linkcount_dynamic++;
 			
-
-		
 		dynamic_wall_position_x += dynamic_wall_vx*dt;
 }
 
@@ -386,8 +379,6 @@ void bounceback(){
   static_wall_momentum_x = 0;
   static_wall_momentum_y = 0;
   
-
-  
   for (int lc=0; lc<linkcount; lc++){
     //quantity of partices
    
@@ -417,8 +408,6 @@ if(dynamic_walls_on == 1){
     int vy=1-v/3;
     int tmp_0 = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
     int tmp = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v];
-    //printf("switch : %i with %i \n",(((vx+x)%XDIM)+XDIM)%XDIM,x);
-    //printf("tmp: %i \n",tmp);
 	//find the smaller value to be the max for the random function to avoid having negative densisties
     //determining values for forward and backward particle flow
 	int max_random = 1;
@@ -434,7 +423,6 @@ if(dynamic_walls_on == 1){
 	else{
 		flow = 0;
 		}
-
 
     //summing all momemtums
     dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp+flow);

@@ -1,4 +1,6 @@
+
 \documentclass{beamer}
+\usepackage{listings}
 %
 % Choose how your presentation looks.
 %
@@ -46,16 +48,7 @@
 
 \end{frame}
 
-\begin{frame}{}
 
-\begin{itemize}
-  \item Explore interactions between gas and rigid shapes
-  \item Build off of existing Lattice Gas Simulation Code
-\end{itemize}
-
-\vskip 1cm
-
-\end{frame}
 
 \section{planning}
 \begin{frame}{initial goals}
@@ -68,12 +61,32 @@
 
 \section{Methods & Results}
 
-\subsection{Approach 2}
+\subsection{Approach 1}
 \begin{frame}{Method 1}
 $$
 \textrm{Expected value of flow}$$\\
 $$<flow> = \textrm{particle density * wall velocity}$$\\
 $$0 < flow < \textrm{min particle density}$$\\
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+	int tmp_0 = n[vx+x][y+vy][8-v];
+    int tmp = n[vx+x][y+vy][v];
+	int max_random = 1;
+	
+	if(tmp > tmp_0){ max_random = tmp_0;}
+	
+	else{ max_random = tmp;}
+	
+	if(max_random > 0){ flow = (rand()%max_random)*dynamic_wall_vx;}
+		
+	else{ flow = 0;}
+
+    n[x+vx][((y+vy)][v] = n[x][y][8-v] - flow;
+    n[x][y][8-v] = tmp + flow;	
+	
+\end{lstlisting}
 \end{frame}
 
 \begin{frame}
@@ -124,6 +137,24 @@ $$0 < flow < \textrm{min particle density}$$\\
 
 \begin{frame}{Method 2}
 In more detail, the probability that $$ pr * \textrm{particle density}$$ number of particles will be moved is $$pr = \frac{\textrm{Wall Vx}}{1-(\textrm{real(Wall x) - int(Wall x)})}$$.
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+int tmp = n[x_v_b][y_v_b][v];
+int iwp = dynamic_wall_position_x;//integer wall position
+int flow = 0;//particles to be moved
+double pr = dynamic_wall_vx/(1-(dynamic_wall_position_x - iwp));
+if(rand()%1000 <= 1000*pr){
+	flow = pr*n[x_b][y_b][v];
+	n[x_b+1][y_b][v] +=flow;
+	n[x_b][y_b][v] -=flow;}
+			
+n[x_v_b][y_v_b][v] = n[x_b][y_b][8-v];
+n[x_b][y_b][8-v] = tmp;// + flow;	
+
+\end{lstlisting}
 \end{frame}
 
 \subsection{Approach 2}
@@ -200,6 +231,30 @@ The expected number of particles being moved by a set force is related to the eq
 \end{equation}
 \end{frame}
 
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+void moveParticles(){
+for(int x = 0;x<xdim;x++){
+	for(int y = 0;y<ydim;y++){
+		//additional code for flipping some horizontal particles
+		int flip_parts = particle_flip_w*
+			((double)rand()/RAND_MAX)*n[x][y][5];
+		n[x][y][3] += flip_parts;
+		n[x][y][5] -= flip_parts;
+		flip_parts = particle_flip_w*
+			((double)rand()/(double)RAND_MAX)*n[x][y][8];
+		n[x][y][6] += flip_parts;
+		n[x][y][8] -= flip_parts;
+		flip_parts = particle_flip_w*
+			((double)rand()/(double)RAND_MAX)*n[x][y][2];
+		n[x][y][0] += flip_parts;
+		n[x][y][2] -= flip_parts;
+		}
+	}
+}
+\end{lstlisting}
+\end{frame}
 
 \subsection{Approach 3}
 

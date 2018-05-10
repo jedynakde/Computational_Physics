@@ -1,80 +1,3 @@
-\documentclass{beamer}
-%
-% Choose how your presentation looks.
-%
-% For more themes, color themes and font themes, see:
-% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
-%
-\mode<presentation>
-{
-  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
-  \usecolortheme{default} % or try albatross, beaver, crane, ...
-  \usefonttheme{default}  % or try serif, structurebold, ...
-  \setbeamertemplate{navigation symbols}{}
-  \setbeamertemplate{caption}[numbered]
-} 
-
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-
-\title[Introducing Dynamic Walls into Integer Lattice Gas Simulations]{Introducing Dynamic Walls into Integer Lattice Gas Simulations}
-\author{David Jedynak}
-\institute{NDSU}
-\date{May 10th, 2018}
-
-\begin{document}
-
-\begin{frame}
-  \titlepage
-\end{frame}
-
-% Uncomment these lines for an automatically generated outline.
-%\begin{frame}{Outline}
-%  \tableofcontents
-%\end{frame}
-
-\section{Introduction}
-
-\begin{frame}{Introduction}
-
-\begin{itemize}
-  \item Explore interactions between gas and rigid shapes
-  \item Build off of existing Lattice Gas Simulation Code
-\end{itemize}
-
-\vskip 1cm
-
-\end{frame}
-
-\begin{frame}{}
-
-\begin{itemize}
-  \item Explore interactions between gas and rigid shapes
-  \item Build off of existing Lattice Gas Simulation Code
-\end{itemize}
-
-\vskip 1cm
-
-\end{frame}
-
-\section{planning}
-\begin{frame}{initial goals}
-\begin{itemize}
-\item Non leaking dynamic walls
-\item Make complex shapes out of these dynamic walls
-\item reproduce the Feynman tube experiment. 
-\end{itemize}
-\end{frame}
-
-\section{Methods & Results}
-
-\subsection{Approach 2}
-\begin{frame}{Method 1}
-$$
-\textrm{Expected value of flow}$$\\
-$$<flow> = \textrm{particle density * wall velocity}$$\\
-$$0 < flow < \textrm{min particle density}$$\\
-\end{frame}
 
 \begin{frame}
 \frametitle{Results}
@@ -176,7 +99,7 @@ This gives us:
 \end{equation}
 
 
-$$ \nabla(\rho) = F$$ 
+$$ \nabla(\rho) = F$$
 
 \begin{equation}
 0 = F + \upsilon *\nabla(\nabla(U_x))
@@ -194,7 +117,7 @@ For C (Particle Collisions) high enough in the integer lattice gas code $$\upsil
 U_x =\frac{F*6}{2}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
 \end{equation}
 
-The expected number of particles being moved by a set force is related to the equation below.  
+The expected number of particles being moved by a set force is related to the equation below.
 \begin{equation}
 <\textrm{particles moved}> = force*\rho
 \end{equation}
@@ -236,7 +159,7 @@ The expected number of particles being moved by a set force is related to the eq
   \item significant leakage for most walls
   \item partially working
   \item problem depth and complexity
-  \item Approach 3 Issue might be solvable   
+  \item Approach 3 Issue might be solvable
 \end{itemize}
 
 \vskip 1cm
