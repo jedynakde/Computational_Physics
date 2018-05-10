@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{measure\PYGZus{}function}\PYG{p}{()\PYGZob{}}
+\PYG{n}{particle\PYGZus{}vx} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{particle\PYGZus{}vy} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{total\PYGZus{}particles} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{YDIM} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	\PYG{n}{total\PYGZus{}particles} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+	\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+	\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x0} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{x0}\PYG{o}{\PYGZlt{}}\PYG{n}{xdim}\PYG{p}{;}\PYG{n}{x0}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{5}\PYG{p}{]}\PYG{o}{+}\PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{]}\PYG{o}{+}\PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{8}\PYG{p}{]} \PYG{o}{\PYGZhy{}}
+		\PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{3}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{6}\PYG{p}{];}
+			 \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{v} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{v}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{9}\PYG{p}{;}\PYG{n}{v}\PYG{o}{++}\PYG{p}{)} \PYG{n}{total\PYGZus{}particles} \PYG{o}{+=} \PYG{n}{n}\PYG{p}{[}\PYG{n}{x0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{][}\PYG{n}{v}\PYG{p}{];}
+			\PYG{p}{\PYGZcb{}}
+		\PYG{c+c1}{//find average particle velocity}
+		\PYG{k}{if}\PYG{p}{(}\PYG{n}{total\PYGZus{}particles} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+			\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=}
+			\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{(}\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{/}\PYG{n}{total\PYGZus{}particles}\PYG{p}{);}\PYG{c+c1}{//+shift[i];}
+			\PYG{n}{theoretical\PYGZus{}particle\PYGZus{}vx\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=}
+			\PYG{p}{(}\PYG{k+kt}{double}\PYG{p}{(}\PYG{n}{particle\PYGZus{}flip\PYGZus{}w}\PYG{o}{*}\PYG{l+m+mf}{6.0}\PYG{o}{/}\PYG{l+m+mf}{9.}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{25}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{75}\PYG{p}{);}
+
+			\PYG{p}{\PYGZcb{}}
+		\PYG{k}{else}\PYG{p}{\PYGZob{}}
+			\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+			\PYG{n}{theoretical\PYGZus{}particle\PYGZus{}vx\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+			\PYG{p}{\PYGZcb{}}
+
+		\PYG{n}{measure\PYGZus{}particle\PYGZus{}force\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+		 \PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front\PYGZus{}last}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+		\PYG{n}{measure\PYGZus{}particle\PYGZus{}velocity\PYGZus{}front\PYGZus{}last}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{measure\PYGZus{}particle\PYGZus{}force\PYGZus{}front}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

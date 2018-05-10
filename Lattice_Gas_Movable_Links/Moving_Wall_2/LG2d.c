@@ -103,9 +103,6 @@ double static_wall_momentum_x = 0,static_wall_momentum_y = 0;
 double measure_static_wall_momentum_x[MeasMax],measure_static_wall_momentum_y[MeasMax];
 //filtered data
 double measure_static_wall_momentum_x_filt[MeasMax],measure_static_wall_momentum_y_filt[MeasMax];
-//double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
-//double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
-
 
 int MeasLen = MeasMax/2;
 int range_val = 20;
@@ -212,18 +209,14 @@ for(int x = 0;x<xdim;x++){
 	for(int y = 0;y<ydim;y++){
 		//additional code for flipping some horizontal particles
 		int flip_parts = particle_flip_w*((double)rand()/RAND_MAX)*n[x][y][5];
-		n[x][y][3] += flip_parts;//n[x][y][3] + flip_parts;
-		n[x][y][5] -= flip_parts;//n[x][y][5] - flip_parts;
+		n[x][y][3] += flip_parts;
+		n[x][y][5] -= flip_parts;
 		flip_parts = particle_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][8];
-	
 		n[x][y][6] += flip_parts;
 		n[x][y][8] -= flip_parts;
-	
 		flip_parts = particle_flip_w*((double)rand()/(double)RAND_MAX)*n[x][y][2];
 		n[x][y][0] += flip_parts;
 		n[x][y][2] -= flip_parts;
-		
-
 		}
 	}
 }

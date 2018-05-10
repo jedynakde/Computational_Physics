@@ -55,7 +55,7 @@
 \begin{itemize}
 \item Non leaking dynamic walls
 \item Make complex shapes out of these dynamic walls
-\item Reproduce the Feynman tube experiment. 
+\item reproduce the Feynman tube experiment. 
 \end{itemize}
 \end{frame}
 
@@ -219,13 +219,10 @@ Solving the differential equation for $$U_x$$ (mean velocity) above gives us:
 U_x =\frac{F}{2*\upsilon}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
 \end{equation}
 
-For C high enough
-\begin{equation}
-\upsilon = \frac{1}{6}
-\end{equation}
+For C (Particle Collisions) high enough in the integer lattice gas code $$\upsilon = \frac{1}{6}$$.
 
 \begin{equation}
-U_x =\frac{F6}{3}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
+U_x =\frac{F*6}{2}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
 \end{equation}
 
 The expected number of particles being moved by a set force is related to the equation below.  

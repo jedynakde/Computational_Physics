@@ -191,7 +191,7 @@ Initial results were promising, but this approach did not factor in the number o
 \end{figure}
 
 \subsection{Approach 2}
-Approach 2 is very similar to the first approach, but the primary focus was to ensure that all the particles would be removed from the lattice site by the time the wall would exit to the next lattice site. The wall has a real number for its position whereas the lattice grid is integer, so the wall will be transitioning between lattice sites. In more detail, the probability that $$ pr * \textrm{particle density}$$ number of particles will be moved is $$pr = \frac{\textrm{Wall Vx}}{1-(\textrm{real(Wall x) - int(Wall x)})}$$. As the wall becomes closer and closer to changing lattice sites, the probability that all the particles will be moved to the next lattice site will converge to one. This is only for a case where a wall is moving to the right. This can be reproduced for a left moving wall, but was not in this program for simplicity.
+Approach 2 is very similar to the first approach, but the primary focus was to ensure that all the particles would be removed from the lattice site by the time the wall would exit to the next lattice site. The wall has a real number for its position whereas the lattice grid is integer, so the wall will be transitioning between lattice sites. In more detail, the probability that $ pr * \textrm{particle density}$ number of particles will be moved is defined by $$pr = \frac{\textrm{Wall Vx}}{1-(\textrm{real(Wall x) - int(Wall x)})}$$. As the wall becomes closer and closer to changing lattice sites, the probability that all the particles will be moved to the next lattice site will converge to one. This is only for a case where a wall is moving to the right. This can be reproduced for a left moving wall, but was not in this program for simplicity.
 
 \vspace{5mm}
 Code added for determining the flow of particles as the wall moves.
@@ -231,7 +231,6 @@ This approach had a similar amount of leaking particles as the first approach.
 \caption{\label{fig} The wall begins to move with velocity of 0.02 in the positive x direction. Notice how a notable wave of particles are being leaked when the wall changes lattice sites.}
 \end{figure}
 
-
 \begin{figure}[H]
 \includegraphics[scale=0.35]{A11p3.png}
 \caption{\label{fig} Graph of the particles being leaked by the wall over time}
@@ -241,7 +240,6 @@ This approach had a similar amount of leaking particles as the first approach.
 \includegraphics[scale=0.35]{A11p4.png}
 \caption{\label{fig} Graph of the walls x position as it moved towards equilibrium overt time}
 \end{figure}
-
 
 \subsection{Approach 3}
 
@@ -277,6 +275,7 @@ For C (Particle Collisions) the viscosity is: \\
  \upsilon = \frac{1}{6}
  \end{equation}
 
+This is the theoretical curve for the mean x velocity in the tube
 \begin{equation}
 U_x =\frac{F*6}{2}*(x(x-L)) 
 \end{equation}
@@ -286,7 +285,6 @@ The expected value of particles being moved by a set force is related to the equ
 \begin{equation}
 <\textrm{particles moved}> = force*\rho
 \end{equation}
-
 
 \vspace{5mm}
 Code for applying a force to the particles. The variable "particle flip w" is the force applied.
@@ -314,22 +312,23 @@ Code for calculating the theoretical curve and measuring the mean x velocity of 
 \vspace{5mm}
 \begin{minted}{c}
 void measure_function(){
-	particle_vx = 0;
-	particle_vy = 0;
-	int total_particles = 0;
-
-	for(int i = 0; i < YDIM -1;i++){
-		total_particles = 0;
-		measure_particle_velocity_front[i] = 0;
-		for(int x0 = 0;x0<xdim;x0++){
-			measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] -
-			 n[x0][i][3]-n[x0][i][0]-n[x0][i][6];			
+particle_vx = 0;
+particle_vy = 0;
+int total_particles = 0;
+for(int i = 0; i < YDIM -1;i++){
+	total_particles = 0;
+	measure_particle_velocity_front[i] = 0;
+	for(int x0 = 0;x0<xdim;x0++){
+		measure_particle_velocity_front[i] += n[x0][i][5]+n[x0][i][2]+n[x0][i][8] -
+		n[x0][i][3]-n[x0][i][0]-n[x0][i][6];			
 			 for(int v = 0;v<9;v++) total_particles += n[x0][i][v];	
 			}
 		//find average particle velocity
 		if(total_particles > 0){
-			measure_particle_velocity_front[i] = (double)(measure_particle_velocity_front[i]/total_particles);//+shift[i];
-			theoretical_particle_vx_front[i] = (double)(particle_flip_w*6.0/9.)*(i-25)*(i-75);
+			measure_particle_velocity_front[i] = 
+			(double(measure_particle_velocity_front[i]/total_particles);//+shift[i];
+			theoretical_particle_vx_front[i] = 	
+			(double(particle_flip_w*6.0/9.)*(i-25)*(i-75);
 
 			}
 		else{
@@ -337,10 +336,9 @@ void measure_function(){
 			theoretical_particle_vx_front[i] = 0;
 			}
 		
-		measure_particle_force_front[i] = (measure_particle_velocity_front[i] -
+		measure_particle_force_front[i] = (measure_particle_velocity_front[i]
 		 measure_particle_velocity_front_last[i]);	
-		 	measure_particle_velocity_front_last[i] = measure_particle_force_front[i];
-		
+		measure_particle_velocity_front_last[i] = measure_particle_force_front[i];
 		}
 	}
 

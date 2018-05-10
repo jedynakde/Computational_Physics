@@ -120,10 +120,13 @@ $$0 < flow < \textrm{min particle density}$$\\
 
 
 
-The code for calculating flow is defined below. First the 2 particle densities are assigned to 2 temp variables. The smaller of the two is used as the max value in the random distribution. 
+Code for calculating flow
 \begin{minted}{c}
   int tmp_0 = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][8-v];
     int tmp = n[(((vx+x)%XDIM)+XDIM)%XDIM][((y+vy)%YDIM+YDIM)%YDIM][v];
+	//find the smaller value to be the max for the random function to 
+	//avoid having negative densisties
+    //determining values for forward and backward particle flow
 	int max_random = 1;
 	if(tmp > tmp_0){
 		max_random = tmp_0;

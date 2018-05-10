@@ -55,7 +55,6 @@ int yy3 = 26,yy4 = 75,dynamic_walls_on = 1,dynamic_wall_control_on = 1;
 double flow = 0;
 //dynamic wall
 // position
-//double x_shift = 50;
 double dynamic_wall_position_x = 25,dynamic_wall_position_y = 0;
 //velocity
 double dynamic_wall_vx = 0,dynamic_wall_vy = 0;
@@ -93,8 +92,6 @@ double static_wall_momentum_x = 0,static_wall_momentum_y = 0;
 double measure_static_wall_momentum_x[MeasMax],measure_static_wall_momentum_y[MeasMax];
 //filtered data
 double measure_static_wall_momentum_x_filt[MeasMax],measure_static_wall_momentum_y_filt[MeasMax];
-//double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
-//double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
 
 
 int MeasLen = MeasMax/2;
@@ -105,8 +102,6 @@ int filt_data[] ={0,0,0,0,0,0,0,0,0,0,0}; //dynamic walls -> x,y,px,py,vx,vy  st
 
 //added a running average to smooth out the graphs
 void average(int range){
-	//val[0] = 0;
-	//val[1] = 0;
 	//clear previous filtered data
 	for(int i = 0; i < 11;i++){
 		filt_data[i] = 0;
@@ -418,16 +413,12 @@ if(dynamic_walls_on == 1){
 		int tmp = n[x_v_b][y_v_b][v];
 		int iwp = dynamic_wall_position_x;//integer wall position
 		int flow = 0;//particles to be moved
-		
 		double pr = dynamic_wall_vx/(1-(dynamic_wall_position_x - iwp));//probability that p*pr particles will be moved
 		if(rand()%1000 <= 1000*pr){
 			flow = pr*n[x_b][y_b][v];
 			n[x_b+1][y_b][v] +=flow;
 			n[x_b][y_b][v] -=flow;
 		}
-		//printf("flow = %d pr = %f \n",flow,pr);
-
-
 
     		//summing all momemtums
     		dynamic_wall_momentum_x += -2*vx*(n[x][y][8-v]-tmp);//+flow);
@@ -435,8 +426,8 @@ if(dynamic_walls_on == 1){
 
     		//swapping the particles trying to enter and leave to have the effect of a wall
     		n[x_v_b][y_v_b][v] = n[x_b][y_b][8-v];
-    		n[x_b][y_b][8-v] = tmp;// + flow;	
-		//n[x_b][y_b][v] += n[x_v_b][y_v_b][v];
+    		n[x_b][y_b][8-v] = tmp;	
+
  		 }
 	}
 	if(dynamic_wall_control_on == 0){

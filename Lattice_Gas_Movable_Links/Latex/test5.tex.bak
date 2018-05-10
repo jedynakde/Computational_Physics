@@ -225,7 +225,7 @@ For C high enough
 \end{equation}
 
 \begin{equation}
-U_x =\frac{F6}{3}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
+U_x =F*\frac{6}{2}*(x(x-L)) \textrm{Where L is the length of the tube in Lattice sites.}
 \end{equation}
 
 The expected number of particles being moved by a set force is related to the equation below.  

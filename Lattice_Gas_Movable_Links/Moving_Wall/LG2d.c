@@ -89,9 +89,6 @@ double static_wall_momentum_x = 0,static_wall_momentum_y = 0;
 double measure_static_wall_momentum_x[MeasMax],measure_static_wall_momentum_y[MeasMax];
 //filtered data
 double measure_static_wall_momentum_x_filt[MeasMax],measure_static_wall_momentum_y_filt[MeasMax];
-//double momentum_est_x[MeasMax],momentum_est_y[MeasMax];
-//double momentum_est_x_filt[MeasMax],momentum_est_y_filt[MeasMax];
-
 
 int MeasLen = MeasMax/2;
 int range_val = 20;

@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{k+kt}{int} \PYG{n}{tmp\PYGZus{}0} \PYG{o}{=} \PYG{n}{n}\PYG{p}{[(((}\PYG{n}{vx}\PYG{o}{+}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{XDIM}\PYG{p}{)}\PYG{o}{+}\PYG{n}{XDIM}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{XDIM}\PYG{p}{][((}\PYG{n}{y}\PYG{o}{+}\PYG{n}{vy}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{YDIM}\PYG{o}{+}\PYG{n}{YDIM}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{YDIM}\PYG{p}{][}\PYG{l+m+mi}{8}\PYG{o}{\PYGZhy{}}\PYG{n}{v}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{tmp} \PYG{o}{=} \PYG{n}{n}\PYG{p}{[(((}\PYG{n}{vx}\PYG{o}{+}\PYG{n}{x}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{XDIM}\PYG{p}{)}\PYG{o}{+}\PYG{n}{XDIM}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{XDIM}\PYG{p}{][((}\PYG{n}{y}\PYG{o}{+}\PYG{n}{vy}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{YDIM}\PYG{o}{+}\PYG{n}{YDIM}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{YDIM}\PYG{p}{][}\PYG{n}{v}\PYG{p}{];}
+	\PYG{k+kt}{int} \PYG{n}{max\PYGZus{}random} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n}{tmp} \PYG{o}{\PYGZgt{}} \PYG{n}{tmp\PYGZus{}0}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{max\PYGZus{}random} \PYG{o}{=} \PYG{n}{tmp\PYGZus{}0}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{k}{else}\PYG{p}{\PYGZob{}}
+		\PYG{n}{max\PYGZus{}random} \PYG{o}{=} \PYG{n}{tmp}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n}{max\PYGZus{}random} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{flow} \PYG{o}{=} \PYG{p}{(}\PYG{n}{rand}\PYG{p}{()}\PYG{o}{\PYGZpc{}}\PYG{n}{max\PYGZus{}random}\PYG{p}{)}\PYG{o}{*}\PYG{n}{dynamic\PYGZus{}wall\PYGZus{}vx}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{k}{else}\PYG{p}{\PYGZob{}}
+		\PYG{n}{flow} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

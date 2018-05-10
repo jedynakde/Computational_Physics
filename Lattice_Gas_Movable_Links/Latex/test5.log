@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.3.21)  10 MAY 2018 11:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.3.21)  10 MAY 2018 11:47
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**pres4.tex
-(./pres4.tex
+**test5.tex
+(./test5.tex
 LaTeX2e <2017-04-15>
 Babel <3.12> and hyphenation patterns for 3 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/beamer/beamer.cls
@@ -709,8 +709,8 @@ File: uni-global.def 2013/05/13 UCS: Unicode global data
 \uc@combtoks=\toks46
 \uc@combtoksb=\toks47
 \uc@temptokena=\toks48
-) (./pres4.aux)
-\openout1 = `pres4.aux'.
+) (./test5.aux)
+\openout1 = `test5.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
 LaTeX Font Info:    ... okay on input line 27.
@@ -807,9 +807,9 @@ LaTeX Info: Redefining \ref on input line 27.
 LaTeX Info: Redefining \pageref on input line 27.
 LaTeX Info: Redefining \nameref on input line 27.
 
-(./pres4.out) (./pres4.out)
+(./test5.out) (./test5.out)
 \@outlinefile=\write5
-\openout5 = `pres4.out'.
+\openout5 = `test5.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 27.
@@ -882,7 +882,7 @@ Dictionary: translator-theorem-dictionary, Language: English
 
 (/usr/share/texlive/texmf-dist/tex/latex/ucs/ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
-) (./pres4.nav)
+) (./test5.nav)
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
@@ -907,9 +907,9 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 [4
 
 ]
-\openout4 = `pres4.vrb'.
+\openout4 = `test5.vrb'.
 
- (./pres4.vrb
+ (./test5.vrb
 LaTeX Font Info:    Try loading font information for OML+cmss on input line 6.
 LaTeX Font Info:    No file OMLcmss.fd. on input line 6.
 
@@ -988,9 +988,9 @@ Overfull \vbox (0.76518pt too high) detected at line 135
  <./A1p5.png>] [11
 
 ]
-\openout4 = `pres4.vrb'.
+\openout4 = `test5.vrb'.
 
- (./pres4.vrb
+ (./test5.vrb
 Overfull \hbox (67.20403pt too wide) in paragraph at lines 3--4
 [][][][][][][][][][][][][][][] 
  []
@@ -1046,22 +1046,23 @@ cmss/m/n/10.95 (\OT1/cmss/m/it/10.95 x\OT1/cmss/m/n/10.95 (\OT1/cmss/m/it/10.95
  []
 
 
-Overfull \hbox (23.91258pt too wide) detected at line 235
-\OT1/cmss/m/it/10.95 U[] \OT1/cmss/m/n/10.95 = [] \OMS/cmss/m/n/10.95 ^^C \OT1/
-cmss/m/n/10.95 (\OT1/cmss/m/it/10.95 x\OT1/cmss/m/n/10.95 (\OT1/cmss/m/it/10.95
- x \OMS/cmss/m/n/10.95 ^^@ \OT1/cmss/m/it/10.95 L\OT1/cmss/m/n/10.95 ))[]
+Overfull \hbox (29.38759pt too wide) detected at line 235
+\OT1/cmss/m/it/10.95 U[] \OT1/cmss/m/n/10.95 = \OT1/cmss/m/it/10.95 F \OMS/cmss
+/m/n/10.95 ^^C [] ^^C \OT1/cmss/m/n/10.95 (\OT1/cmss/m/it/10.95 x\OT1/cmss/m/n/
+10.95 (\OT1/cmss/m/it/10.95 x \OMS/cmss/m/n/10.95 ^^@ \OT1/cmss/m/it/10.95 L\OT
+1/cmss/m/n/10.95 ))[]
  []
 
 
-Overfull \vbox (139.19687pt too high) detected at line 235
+Overfull \vbox (138.77104pt too high) detected at line 235
  []
 
 [17
 
 ]
-\openout4 = `pres4.vrb'.
+\openout4 = `test5.vrb'.
 
- (./pres4.vrb
+ (./test5.vrb
 Overfull \hbox (47.49382pt too wide) in paragraph at lines 10--11
 [][][][][][][][][][][][][][][][][][] 
  []
@@ -1103,20 +1104,20 @@ e 288.
 
 ]
 \tf@nav=\write6
-\openout6 = `pres4.nav'.
+\openout6 = `test5.nav'.
 
 \tf@toc=\write7
-\openout7 = `pres4.toc'.
+\openout7 = `test5.toc'.
 
 \tf@snm=\write8
-\openout8 = `pres4.snm'.
+\openout8 = `test5.snm'.
 
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 302.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 302.
- (./pres4.aux)
+ (./test5.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 302.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 302.
-Package rerunfilecheck Info: File `pres4.out' has not changed.
+Package rerunfilecheck Info: File `test5.out' has not changed.
 (rerunfilecheck)             Checksum: 9C36D5A13C1586048A1A815572035CF8;368.
 
 
@@ -1140,7 +1141,7 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist
 s/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/amsfonts/symbols/msam10.pfb>
-Output written on pres4.pdf (22 pages, 318138 bytes).
+Output written on test5.pdf (22 pages, 318116 bytes).
 PDF statistics:
  220 PDF objects out of 1000 (max. 8388607)
  168 compressed objects within 2 object streams
